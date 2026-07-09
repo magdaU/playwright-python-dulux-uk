@@ -2,7 +2,7 @@
 
 Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) — same Dulux UK journeys (buy a colour tester, open the Visualizer), same Page Object Model + BDD architecture, Python ecosystem instead of Java.
 
-**Status:** skeleton only. Feature files and step signatures are ported; step bodies and page object methods are `NotImplementedError` stubs (see `# TODO` markers) — implementation is the next step.
+**Status:** implemented and verified against the live site. `pytest -m visualizer` passes end to end (desktop + mobile). `pytest -m purchase` currently fails on both viewports — not a bug in this project: the "Gentle Lavender" shade used in the test data is no longer listed under the "Violet" colour family on production today. Confirmed by running the equivalent scenario in [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk), which fails identically. This is the live-production data-drift risk documented in the [Test Strategy](docs/TEST_STRATEGY.md#10-risk-analysis--mitigations) materialising, not a porting error.
 
 > 🧭 **New here?** Read the [**Test Strategy**](docs/TEST_STRATEGY.md) — what we test, why, the scope, risk analysis and the roadmap.
 
@@ -52,5 +52,5 @@ pip install -r requirements.txt
 playwright install --with-deps chromium
 
 pytest --collect-only         # confirms scenarios/markers wire up without a browser
-pytest -m smoke               # once steps are implemented
+pytest -m smoke                # runs the fast critical-path set
 ```

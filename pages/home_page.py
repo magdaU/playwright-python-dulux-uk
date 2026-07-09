@@ -2,4 +2,12 @@ from pages.base_page import BasePage
 
 
 class HomePage(BasePage):
-    """TODO: port HomePage.java — open_home_page(), reject_all_cookies()."""
+    URL = "https://www.dulux.co.uk"
+    REJECT_ALL = "#onetrust-reject-all-handler"
+
+    def open_home_page(self) -> None:
+        self.page.goto(self.URL)
+        self.page.wait_for_load_state()
+
+    def reject_all_cookies(self) -> None:
+        self.page.locator(self.REJECT_ALL).click()
