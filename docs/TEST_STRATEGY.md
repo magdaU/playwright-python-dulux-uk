@@ -208,7 +208,7 @@ signals (a test that fails then passes on re-run without a code change).
 | **Third-party Visualizer/Adjust** returns environment-specific messages | Medium | Medium | Mobile scenario asserts the known store-data message rather than assuming success; behaviour is documented, not hidden |
 | **New-tab handling** for the Visualizer | Low | Medium | Playwright's `expect_page()` context manager captures the popup deterministically on desktop |
 | **Single browser (Chromium) only** | Medium | Low | Accepted for now; cross-browser is on the roadmap (§13) |
-| **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". A truly self-healing fix (pick "the first listed shade" instead of a fixed name) remains on the roadmap (§13), since this can recur |
+| **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". Self-healing selection was investigated and rejected — see §13 — since not every shade in the catalogue has a tester available, so picking an arbitrary one is not actually more reliable than a pinned, verified name |
 
 ---
 
@@ -247,9 +247,15 @@ Planned work, roughly in priority order:
   Verified against production: all 4 scenarios pass.
 - [x] **Refresh purchase test data** — "Gentle Lavender" was no longer listed under
   "Violet"; replaced with "Violet Morning", confirmed present in the catalogue.
-- [ ] **Self-healing shade selection** — pick "the first listed shade under the family"
-  instead of a fixed name, so a future catalogue change can't silently re-break the
-  `purchase` scenarios the same way.
+- [x] ~~**Self-healing shade selection**~~ — **considered and rejected.** Investigated
+  picking "the first listed shade under the family" instead of a fixed name. Found that
+  not every shade in the grid has a tester available for direct purchase — the first
+  shade returned by the catalogue ("Cotton Breeze") only offers a "Find Products in this
+  colour" flow, with no "Buy a Tester in this colour" button at all. A truly self-healing
+  version would need to loop through candidates until one with a tester is found, adding
+  real complexity and extra navigations for a low-likelihood risk (see §10 — catalogue
+  drift is now Medium likelihood, not High, since it only fired once so far). Decision:
+  keep the pinned "Violet Morning" and re-evaluate if it drifts again.
 - [ ] **Verify the Docker build** — `Dockerfile`/`docker-compose.yml` exist and
   `docker compose config` validates, but a full `docker build` has not yet been run
   successfully in this environment.
