@@ -4,6 +4,8 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 
 **Status:** skeleton only. Feature files and step signatures are ported; step bodies and page object methods are `NotImplementedError` stubs (see `# TODO` markers) — implementation is the next step.
 
+> 🧭 **New here?** Read the [**Test Strategy**](docs/TEST_STRATEGY.md) — what we test, why, the scope, risk analysis and the roadmap.
+
 ## Why this stack
 
 | Concern | Java project | This project | Note |
@@ -20,6 +22,10 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 ├── requirements.txt
 ├── pytest.ini                          # markers = pytest equivalent of Cucumber tags
 ├── conftest.py                         # desktop_page / mobile_page viewport fixtures
+├── Dockerfile / docker-compose.yml     # reproducible run, mirrors CI
+├── .github/workflows/e2e-tests.yml     # CI: smoke suite + Allure report + GitHub Pages
+├── docs/
+│   └── TEST_STRATEGY.md
 ├── features/
 │   ├── tester_purchase.feature         # ported as-is (Gherkin is language-agnostic)
 │   └── visualizer_experience.feature
