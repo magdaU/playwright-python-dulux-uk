@@ -1,0 +1,85 @@
+name: E2E Tests (Python)
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - fix/**
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      pytest_markers:
+        description: "Pytest marker expression to run"
+        required: false
+        default: "smoke"
+
+permissions:
+  contents: write   # required by peaceiris/actions-gh-pages to push to gh-pages branch
+
+jobs:
+  pytest-smoke:
+    name: Pytest smoke suite
+    runs-on: ubuntu-latest
+    env:
+      PYTEST_MARKERS: ${{ github.event.inputs.pytest_markers || 'smoke' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Restore previous Allure history
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser
+        run: playwright install --with-deps chromium
+
+      - name: Run pytest suite
+        run: pytest -m "${PYTEST_MARKERS}" --alluredir=allure-results
+
+      - name: Install Allure CLI
+        if: always()
+        run: npm install -g allure-commandline --save-dev
+
+      - name: Carry over Allure history (Trend widget)
+        if: always()
+        run: |
+          if [ -d gh-pages/history ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages/history/. allure-results/history/
+          fi
+
+      - name: Generate Allure HTML report
+        if: always()
+        run: allure generate allure-results --clean -o allure-report
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Deploy Allure report to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          publish_branch: gh-pages
+          commit_message: "ci: publish Allure report [skip ci]"

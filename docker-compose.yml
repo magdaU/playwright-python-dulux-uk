@@ -1,0 +1,16 @@
+# Run the E2E suite in a container with one command:
+#   docker compose up --build
+#
+# Override the marker expression without editing this file:
+#   PYTEST_MARKERS="regression" docker compose up --build
+services:
+  e2e-tests:
+    build: .
+    image: dulux-python-e2e-tests:latest
+    environment:
+      PYTEST_MARKERS: "${PYTEST_MARKERS:-smoke}"
+    # Chromium can crash with the default 64 MB /dev/shm inside containers.
+    shm_size: "1gb"
+    # Surface the Allure results on the host after the run.
+    volumes:
+      - ./allure-results:/app/allure-results
