@@ -2,7 +2,7 @@
 
 Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) — same Dulux UK journeys (buy a colour tester, open the Visualizer), same Page Object Model + BDD architecture, Python ecosystem instead of Java.
 
-**Status:** implemented and verified against the live site. `pytest -m visualizer` passes end to end (desktop + mobile). `pytest -m purchase` currently fails on both viewports — not a bug in this project: the "Gentle Lavender" shade used in the test data is no longer listed under the "Violet" colour family on production today. Confirmed by running the equivalent scenario in [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk), which fails identically. This is the live-production data-drift risk documented in the [Test Strategy](docs/TEST_STRATEGY.md#10-risk-analysis--mitigations) materialising, not a porting error.
+**Status:** implemented and verified against the live site — all 4 scenarios pass (`pytest -m smoke`/`regression`, desktop + mobile). The `purchase` scenarios originally used the shade "Gentle Lavender", which turned out to have been removed from the "Violet" family on production (confirmed by the identical scenario failing in [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) too — see the [Test Strategy](docs/TEST_STRATEGY.md#10-risk-analysis--mitigations) risk log). Test data was refreshed to "Violet Morning".
 
 > 🧭 **New here?** Read the [**Test Strategy**](docs/TEST_STRATEGY.md) — what we test, why, the scope, risk analysis and the roadmap.
 

@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production. `visualizer`-marked scenarios pass end-to-end (desktop + mobile). `purchase`-marked scenarios currently fail on both viewports due to a live-production data-drift (§10) — not a framework defect; the identical scenario in the Java sibling project fails the same way today. |
+| **Status** | Implemented and verified against production — all 4 scenarios pass (desktop + mobile, purchase + visualizer). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. |
 
 ---
 
@@ -208,7 +208,7 @@ signals (a test that fails then passes on re-run without a code change).
 | **Third-party Visualizer/Adjust** returns environment-specific messages | Medium | Medium | Mobile scenario asserts the known store-data message rather than assuming success; behaviour is documented, not hidden |
 | **New-tab handling** for the Visualizer | Low | Medium | Playwright's `expect_page()` context manager captures the popup deterministically on desktop |
 | **Single browser (Chromium) only** | Medium | Low | Accepted for now; cross-browser is on the roadmap (§13) |
-| **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | **Materialised** | High | Confirmed 2026-07-09: "Gentle Lavender" is no longer listed under the "Violet" family, breaking both `purchase`-marked scenarios (desktop + mobile) here and in the Java sibling project identically. Fix is to refresh the test data to a currently-listed shade, or move to equivalence classes that self-heal (pick "the first listed shade") — tracked in §13 |
+| **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". A truly self-healing fix (pick "the first listed shade" instead of a fixed name) remains on the roadmap (§13), since this can recur |
 
 ---
 
@@ -244,11 +244,12 @@ signals (a test that fails then passes on re-run without a code change).
 Planned work, roughly in priority order:
 
 - [x] **Implement step bodies & page objects** — ported from `playwright-java-dulux-uk`.
-  Verified against production: `visualizer` scenarios pass; `purchase` scenarios fail on
-  a live data-drift, not a code defect (see §10).
-- [ ] **Refresh purchase test data** — "Gentle Lavender" is no longer listed under
-  "Violet"; pick a shade currently in the catalogue (or a self-healing equivalence class)
-  so the `purchase` scenarios pass again.
+  Verified against production: all 4 scenarios pass.
+- [x] **Refresh purchase test data** — "Gentle Lavender" was no longer listed under
+  "Violet"; replaced with "Violet Morning", confirmed present in the catalogue.
+- [ ] **Self-healing shade selection** — pick "the first listed shade under the family"
+  instead of a fixed name, so a future catalogue change can't silently re-break the
+  `purchase` scenarios the same way.
 - [ ] **Verify the Docker build** — `Dockerfile`/`docker-compose.yml` exist and
   `docker compose config` validates, but a full `docker build` has not yet been run
   successfully in this environment.
