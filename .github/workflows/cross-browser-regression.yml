@@ -1,0 +1,49 @@
+name: Cross-Browser Regression (Python)
+
+# Manually-triggered regression run across all three Playwright engines
+# (Chromium, Firefox, WebKit). Kept separate from the smoke workflow so that
+# every push/PR stays fast and Chromium-only; cross-browser coverage is
+# opt-in, on demand.
+on:
+  workflow_dispatch:
+    inputs:
+      pytest_markers:
+        description: "Pytest marker expression to run"
+        required: false
+        default: "regression"
+
+jobs:
+  pytest-cross-browser:
+    name: Pytest (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    env:
+      PYTEST_MARKERS: ${{ github.event.inputs.pytest_markers || 'regression' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser (${{ matrix.browser }})
+        run: playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run pytest suite on ${{ matrix.browser }}
+        run: pytest -m "${PYTEST_MARKERS}" --browser ${{ matrix.browser }} --alluredir="allure-results-${{ matrix.browser }}"
+
+      - name: Upload Allure results (${{ matrix.browser }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: allure-results-${{ matrix.browser }}
