@@ -312,7 +312,15 @@ Planned work, roughly in priority order:
   independent of the cross-browser workflow and the push/PR gate, so drift is caught on
   days with no code changes.
 - [ ] **Visual regression** — snapshot key pages once layouts stabilise (see the Java
-  project's `image-comparison`-based approach for a reusable pattern).
+  project's `image-comparison`-based approach for a reusable pattern). **Revisited and
+  deliberately deferred** (2026-08-03): the precondition isn't met. In this same working
+  session the basket page markup was found to have been redesigned (§10, "Basket UI
+  markup drift") and the shade catalogue had already drifted once before (§10, "Product
+  catalogue drift") — two concrete, recent signs this production site's layout is still
+  actively changing. Snapshotting now would bake in a baseline that goes stale at the
+  next incidental UI tweak, producing pixel-diff noise on changes that aren't real
+  regressions — directly against the §1 principle that a red build must mean a real
+  regression. Re-evaluate once a period passes without an unannounced layout change.
 
 ---
 
