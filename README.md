@@ -82,7 +82,10 @@ playwright-python-dulux-uk/
 ├── pytest.ini                          # markers = pytest equivalent of Cucumber tags
 ├── conftest.py                          # desktop_page / tablet_page / mobile_page viewport fixtures
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
-├── .github/workflows/e2e-tests.yml      # CI: smoke suite + Allure report + GitHub Pages
+├── .github/workflows/
+│   ├── e2e-tests.yml                    # CI: smoke suite + Allure report + GitHub Pages
+│   ├── cross-browser-regression.yml     # on-demand: regression marker across Chromium/Firefox/WebKit
+│   └── nightly-regression.yml           # scheduled: regression marker daily against production
 ├── docs/
 │   └── TEST_STRATEGY.md                 # scope, risk analysis, roadmap
 ├── features/
@@ -117,7 +120,8 @@ A real scenario from [`features/tester_purchase.feature`](features/tester_purcha
 Scenario: Desktop customer adds a tester from the colour finder
   Given a desktop customer starts with an empty basket
   When the customer browses to shade "Violet Morning" from colour family "Violet"
-  And the customer adds a tester to the basket
+  Then the shade page has no unexpected accessibility violations
+  When the customer adds a tester to the basket
   Then the basket contains 1 item
   And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 ```
@@ -136,6 +140,12 @@ def desktop_empty_basket(desktop_page):
 @when(parsers.parse('the customer browses to shade "{shade}" from colour family "{colour_family}"'))
 def browse_to_shade(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=False)
+
+
+@then("the shade page has no unexpected accessibility violations")
+def shade_page_has_no_unexpected_a11y_violations(ctx):
+    violations = ctx.get_unexpected_accessibility_violations()
+    assert not violations, [f"{v['impact']}:{v['id']}" for v in violations]
 
 
 @then(parsers.parse("the basket contains {count:d} item"))
