@@ -256,9 +256,9 @@ Planned work, roughly in priority order:
   real complexity and extra navigations for a low-likelihood risk (see §10 — catalogue
   drift is now Medium likelihood, not High, since it only fired once so far). Decision:
   keep the pinned "Violet Morning" and re-evaluate if it drifts again.
-- [ ] **Verify the Docker build** — `Dockerfile`/`docker-compose.yml` exist and
-  `docker compose config` validates, but a full `docker build` has not yet been run
-  successfully in this environment.
+- [x] **Verify the Docker build** — `docker compose build` completes successfully
+  (Python deps, Chromium + OS deps, non-root user setup all pass), producing the
+  `dulux-python-e2e-tests:latest` image. Verified 2026-08-03.
 - [ ] **Cross-browser** — add Firefox and WebKit to widen real coverage.
 - [ ] **Accessibility checks** — integrate an a11y scan into the critical journeys.
 - [ ] **Tablet viewport** — a third breakpoint between mobile and desktop.
