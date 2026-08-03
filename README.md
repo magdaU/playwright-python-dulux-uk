@@ -21,7 +21,7 @@
 
 Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) — the **same** real Dulux UK customer journeys (buy a colour tester, launch the Visualizer app), the **same** Page Object Model + BDD architecture, a different stack. Where the Java version reaches for Cucumber + PicoContainer DI, this one leans on `pytest-bdd` + plain pytest fixtures — idiomatic Python, not a line-by-line transliteration.
 
-> **Status:** implemented and verified against production — all 4 scenarios pass (desktop + mobile, purchase + visualizer). See [Verified against a live catalogue drift](#-verified-against-a-live-catalogue-drift) below for a real example of this suite catching (and adapting to) a production data change.
+> **Status:** implemented and verified against production — all 5 scenarios pass (desktop + tablet + mobile `purchase`, desktop + mobile `visualizer`). See [Verified against a live catalogue drift](#-verified-against-a-live-catalogue-drift) below for a real example of this suite catching (and adapting to) a production data change.
 
 > 🧭 **New here?** Read the [**Test Strategy**](docs/TEST_STRATEGY.md) — what we test, why, the scope, risk analysis and the roadmap.
 
@@ -31,7 +31,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 
 - 🧱 **Page Object Model + Component Objects** — `HomePage`, `ColorSelectionPage`, `CartPage` and reusable components (`NavigationComponent`, `AlertComponent`) each extend a shared `BasePage`.
 - 🥒 **BDD with pytest-bdd** — scenarios written in plain-language Gherkin; `@tag`s become pytest markers automatically, filterable with `-m "smoke"` etc. — no separate tag-mapping config needed.
-- 📱 **Cross-viewport coverage** — every journey runs at desktop (`1920×1080`) and mobile (`375×667`) via dedicated `desktop_page` / `mobile_page` fixtures.
+- 📱 **Cross-viewport coverage** — `purchase` runs at desktop (`1920×1080`), tablet (`768×1024`) and mobile (`375×667`); `visualizer` at desktop and mobile — via dedicated `desktop_page` / `tablet_page` / `mobile_page` fixtures.
 - 🪶 **No DI container needed** — `pytest-bdd`'s `target_fixture` binds a `Context` object (business methods + page objects) to each scenario from its `Given` step; later steps just request it as a fixture. The Python-idiomatic equivalent of the Java project's PicoContainer setup.
 - ✅ **Assertions in the test layer only** — page objects never assert; plain `assert` + Playwright's web-first `expect()` live in the step layer.
 - 📊 **Allure reporting** (`allure-pytest-bdd`) — Gherkin steps rendered per scenario, published to GitHub Pages via CI.
@@ -78,7 +78,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 playwright-python-dulux-uk/
 ├── requirements.txt
 ├── pytest.ini                          # markers = pytest equivalent of Cucumber tags
-├── conftest.py                          # desktop_page / mobile_page viewport fixtures
+├── conftest.py                          # desktop_page / tablet_page / mobile_page viewport fixtures
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
 ├── .github/workflows/e2e-tests.yml      # CI: smoke suite + Allure report + GitHub Pages
 ├── docs/
@@ -180,6 +180,7 @@ pytest                          # full suite
 | `smoke` | Fast critical-path set — desktop-only, both journeys |
 | `regression` | Full journey coverage |
 | `desktop` | Desktop-viewport (`1920×1080`) scenarios |
+| `tablet` | Tablet-viewport (`768×1024`) scenarios |
 | `mobile` | Mobile-viewport (`375×667`) scenarios |
 | `purchase` | Tester purchase journey |
 | `visualizer` | Visualizer experience journey |
