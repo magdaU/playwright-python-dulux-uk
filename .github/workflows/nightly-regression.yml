@@ -1,0 +1,47 @@
+name: Nightly Regression (Python)
+
+# Scheduled regression run against production, independent of any push/PR, so
+# catalogue/UI drift on the live Dulux site (see docs/TEST_STRATEGY.md S10) is
+# caught even on days with no code changes. Chromium only — cross-browser
+# coverage is the separate, manually-triggered cross-browser-regression.yml.
+on:
+  schedule:
+    - cron: "0 2 * * *"  # 02:00 UTC daily
+  workflow_dispatch:
+    inputs:
+      pytest_markers:
+        description: "Pytest marker expression to run"
+        required: false
+        default: "regression"
+
+jobs:
+  pytest-nightly-regression:
+    name: Pytest regression suite
+    runs-on: ubuntu-latest
+    env:
+      PYTEST_MARKERS: ${{ github.event.inputs.pytest_markers || 'regression' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser
+        run: playwright install --with-deps chromium
+
+      - name: Run pytest suite
+        run: pytest -m "${PYTEST_MARKERS}" --alluredir=allure-results
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-nightly
+          path: allure-results

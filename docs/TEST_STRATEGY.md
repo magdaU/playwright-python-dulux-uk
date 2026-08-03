@@ -190,6 +190,13 @@ headless → generate Allure report → upload artifacts → publish to GitHub P
 manually-triggered (`workflow_dispatch`), matrix over Chromium/Firefox/WebKit, defaults
 to the `regression` marker. Kept separate from the push/PR gate (§10).
 
+**Nightly regression** ([`.github/workflows/nightly-regression.yml`](../.github/workflows/nightly-regression.yml)):
+scheduled (`02:00 UTC` daily) plus `workflow_dispatch`, Chromium only, defaults to the
+`regression` marker. Runs independently of any push/PR so production drift (catalogue
+changes, UI regressions — §10) is caught even on days with no code changes. Results are
+uploaded as a build artifact rather than published to the main GitHub Pages report, to
+keep the push-driven Allure Trend history uncontaminated by a differently-scoped run.
+
 **Reporting layers:**
 
 - **Allure** (`allure-pytest-bdd`) — the primary dashboard, with Gherkin steps rendered
@@ -300,8 +307,10 @@ Planned work, roughly in priority order:
   silently indistinguishable from one that needed a retry. Re-verified on Firefox: the
   same interaction that previously timed out outright now fails attempt 1 and succeeds
   on attempt 2, visibly reported both times.
-- [ ] **Scheduled regression run** — nightly `regression`-marked run against production to
-  catch drift.
+- [x] **Scheduled regression run** — [`nightly-regression.yml`](../.github/workflows/nightly-regression.yml)
+  runs the `regression` marker against production daily at 02:00 UTC (Chromium only),
+  independent of the cross-browser workflow and the push/PR gate, so drift is caught on
+  days with no code changes.
 - [ ] **Visual regression** — snapshot key pages once layouts stabilise (see the Java
   project's `image-comparison`-based approach for a reusable pattern).
 
