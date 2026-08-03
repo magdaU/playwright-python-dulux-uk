@@ -215,6 +215,7 @@ signals (a test that fails then passes on re-run without a code change).
 | **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". Self-healing selection was investigated and rejected — see §13 — since not every shade in the catalogue has a tester available, so picking an arbitrary one is not actually more reliable than a pinned, verified name |
 | **Basket UI markup drift** — production can restructure a page in a way that breaks a locator's uniqueness, not just its match | Medium | High | **Materialised** (2026-08-03, found while verifying cross-browser support): the basket's quantity control was redesigned into a `group` wrapping decrease/input/increase controls, all exposing an accessible name containing "Quantity" — `get_by_label("Quantity")` in `cart_page.py` went from matching 1 element to 4, failing strict mode. Fixed by narrowing to `get_by_role("spinbutton", name="Quantity input")`, which targets the input specifically rather than any element merely labelled "Quantity" |
 | **Cross-engine navigation timing** — the same client-side interaction (selecting a colour family) can behave differently per browser engine | Medium | Medium | **Materialised** (2026-08-03): running the `purchase` journey against production with `--browser firefox`/`webkit` showed both engines failing to pick up the "Violet" family filter reliably before the next step queries for a shade button, well before the `smoke` gate's own basket-locator issue above was even reached on those engines. Chromium does not exhibit this. Not yet fixed — tracked as a known limitation of the opt-in `cross-browser-regression.yml` workflow (§13) rather than silently retried or skipped |
+| **Pre-existing accessibility violations on production we don't own** — a strict a11y gate would permanently redden the build for defects we can't fix | Medium | Medium | **Materialised** (2026-08-03): an `axe-core` scan of the shade page found a real `critical` violation (`image-alt`) and a `serious` one (`color-contrast`) on desktop, plus a second `critical` (`label`) on mobile. Rather than hard-failing on all of them (permanently red for reasons outside our control) or not asserting at all (no real signal), the known IDs are allow-listed in `support/accessibility.py` — the suite still fails on any *new* critical/serious violation, so it catches regressions without gating on Dulux's existing issues |
 
 ---
 
@@ -275,7 +276,14 @@ Planned work, roughly in priority order:
   real site, though Firefox/WebKit currently surface a genuine navigation-timing
   difference in the `purchase` journey (§10) that Chromium does not — left as a
   known, documented limitation rather than papered over.
-- [ ] **Accessibility checks** — integrate an a11y scan into the critical journeys.
+- [x] **Accessibility checks** — an `axe-core` scan (via `axe-playwright-python`) now
+  runs on the shade page in both `purchase` scenarios (desktop + mobile), asserting no
+  *unexpected* `critical`/`serious` violations (`support/accessibility.py`). Verified
+  against production while implementing this: the shade page has real, pre-existing
+  violations (`image-alt`, `color-contrast` on desktop; also `label` on mobile) that we
+  don't own and can't fix — these are allow-listed by ID so the suite doesn't gate on
+  defects outside our control, while still failing on any *new* critical/serious
+  violation ID. See §10 for the full finding.
 - [ ] **Tablet viewport** — a third breakpoint between mobile and desktop.
 - [ ] **Retry policy for known-flaky steps** — bounded, explicit, and reported (never silent).
 - [ ] **Scheduled regression run** — nightly `regression`-marked run against production to

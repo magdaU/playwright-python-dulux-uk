@@ -2,6 +2,9 @@
 playwright==1.61.0
 pytest-playwright==0.8.0     # adds the browser/context/page fixtures + --headed/--browser CLI flags
 
+# Accessibility scanning (axe-core under the hood)
+axe-playwright-python==0.1.8
+
 # Test runner
 pytest==9.1.1
 

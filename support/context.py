@@ -7,6 +7,7 @@ from pages.color_selection_page import ColorSelectionPage
 from pages.components.alert_component import AlertComponent
 from pages.components.navigation_component import NavigationComponent
 from pages.home_page import HomePage
+from support.accessibility import get_unexpected_violations
 
 
 class Context:
@@ -54,6 +55,9 @@ class Context:
     def add_tester_to_basket(self) -> None:
         self.color_selection.buy_a_tester_colour()
         self.alert.close_alert()
+
+    def get_unexpected_accessibility_violations(self) -> list[dict]:
+        return get_unexpected_violations(self.page)
 
     def open_visualizer_experience(self) -> None:
         if self.desktop:
