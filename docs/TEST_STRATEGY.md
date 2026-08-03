@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 4 scenarios pass (desktop + mobile, purchase + visualizer). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. |
+| **Status** | Implemented and verified against production — all 5 scenarios pass (desktop + tablet + mobile `purchase`, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. |
 
 ---
 
@@ -60,9 +60,9 @@ Characteristics that shape the test design:
 
 | Area | Covered journeys |
 |---|---|
-| **Tester purchase** | Browse to a shade via the colour finder and add a tester to the basket (desktop + mobile) |
+| **Tester purchase** | Browse to a shade via the colour finder and add a tester to the basket (desktop + tablet + mobile) |
 | **Visualizer experience** | Open the Visualizer from a selected shade page (desktop opens a new tab; mobile surfaces the store-data message) |
-| **Cross-viewport** | Every journey runs at desktop `1920×1080` and mobile `375×667` |
+| **Cross-viewport** | `purchase` runs at desktop `1920×1080`, tablet `768×1024` and mobile `375×667`; `visualizer` at desktop and mobile |
 | **Cookie consent** | Implicitly exercised — every journey rejects cookies before proceeding |
 
 ### ❌ Out of scope (for this suite)
@@ -100,7 +100,7 @@ Characteristics that shape the test design:
 |---|---|
 | **Page Object Model** | Each page (`HomePage`, `ColorSelectionPage`, `CartPage`) and reusable component (`NavigationComponent`, `AlertComponent`) extends a shared `BasePage`. UI locators live in one place. |
 | **No assertions in page objects** | Pages only *act* and *expose* locators. All assertions live in the step layer (plain `assert`, rewritten by pytest for rich failure output — no fluent-assertion library needed). |
-| **Fixtures instead of a DI container** | The Java project injects a shared `CucumberContext` via PicoContainer. Here, `conftest.py` fixtures (`desktop_page`, `mobile_page`, and the `browser`/`context` fixtures `pytest-playwright` provides for free) fill the same role idiomatically. |
+| **Fixtures instead of a DI container** | The Java project injects a shared `CucumberContext` via PicoContainer. Here, `conftest.py` fixtures (`desktop_page`, `tablet_page`, `mobile_page`, and the `browser`/`context` fixtures `pytest-playwright` provides for free) fill the same role idiomatically. |
 | **Role-based locators** | Locators prefer `get_by_role` / `get_by_label` / `get_by_text` over brittle CSS/XPath, matching how a user perceives the page and surviving DOM churn. |
 | **Web-first waits** | Playwright's auto-waiting assertions replace manual sleeps; explicit `wait_for_load_state()` is used only where a real navigation occurs. |
 
@@ -111,8 +111,8 @@ Characteristics that shape the test design:
   stands in for the colour-finder space; the *flow*, not the data permutation, is the risk.
 - **State verification** — basket starts empty → exactly 1 item with the right product and
   shade after adding (guards against silent over/under-counting).
-- **Cross-configuration testing** — desktop vs. mobile as distinct navigation paths and
-  distinct pytest fixtures (`desktop_page` / `mobile_page`).
+- **Cross-configuration testing** — desktop vs. tablet vs. mobile as distinct navigation
+  paths and distinct pytest fixtures (`desktop_page` / `tablet_page` / `mobile_page`).
 
 ---
 
@@ -122,7 +122,7 @@ Characteristics that shape the test design:
   expected product label) — no external fixtures to drift out of sync.
 - **No persistent data is created** on production: the basket flow stops *before* checkout,
   and each scenario runs in a fresh, isolated Playwright `BrowserContext` (no shared
-  cookies/storage) via the `desktop_page` / `mobile_page` fixtures, so runs never
+  cookies/storage) via the `desktop_page` / `tablet_page` / `mobile_page` fixtures, so runs never
   contaminate one another.
 - **Self-cleaning** — because no order is placed and contexts are disposed after every
   scenario (`conftest.py` closes the context on fixture teardown), there is no
@@ -284,7 +284,14 @@ Planned work, roughly in priority order:
   don't own and can't fix — these are allow-listed by ID so the suite doesn't gate on
   defects outside our control, while still failing on any *new* critical/serious
   violation ID. See §10 for the full finding.
-- [ ] **Tablet viewport** — a third breakpoint between mobile and desktop.
+- [x] **Tablet viewport** — added a `768x1024` (iPad portrait) `tablet_page` fixture and
+  a `@tablet`-tagged `purchase` scenario. Verified against production while implementing
+  this: the site's responsive nav collapses to the hamburger drawer already at this
+  width (confirmed the breakpoint sits between 1024px and 1280px, by bounding-box-checking
+  both the hamburger and the top nav at several widths) — so tablet portrait reuses the
+  same mobile-navigation interaction, not the desktop top nav. Scoped to the `purchase`
+  journey only (the priority-1 revenue path, §1); not added to `visualizer` to avoid
+  guessing at untested tablet-specific Visualizer behaviour.
 - [ ] **Retry policy for known-flaky steps** — bounded, explicit, and reported (never silent).
 - [ ] **Scheduled regression run** — nightly `regression`-marked run against production to
   catch drift.

@@ -14,6 +14,14 @@ def desktop_empty_basket(desktop_page):
     return ctx
 
 
+@given("a tablet customer starts with an empty basket", target_fixture="ctx")
+def tablet_empty_basket(tablet_page):
+    ctx = Context(page=tablet_page, desktop=False)
+    ctx.open_empty_cart()
+    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
+    return ctx
+
+
 @given("a mobile customer starts with an empty basket", target_fixture="ctx")
 def mobile_empty_basket(mobile_page):
     ctx = Context(page=mobile_page, desktop=False)
@@ -25,6 +33,13 @@ def mobile_empty_basket(mobile_page):
 @when(parsers.parse('the customer browses to shade "{shade}" from colour family "{colour_family}"'))
 def browse_to_shade(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=False)
+
+
+@when(parsers.parse(
+    'the customer browses to shade "{shade}" from colour family "{colour_family}" using tablet navigation'
+))
+def browse_to_shade_tablet(ctx, shade, colour_family):
+    ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
 
 
 @when(parsers.parse(
