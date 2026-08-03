@@ -36,6 +36,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 - ✅ **Assertions in the test layer only** — page objects never assert; plain `assert` + Playwright's web-first `expect()` live in the step layer.
 - 📊 **Allure reporting** (`allure-pytest-bdd`) — Gherkin steps rendered per scenario, published to GitHub Pages via CI.
 - 🚀 **CI/CD with GitHub Actions** — smoke suite on every push/PR, Allure report generated and uploaded as an artifact.
+- 🌐 **Cross-browser regression** — Chromium, Firefox and WebKit via `pytest --browser <name>`; wired into an on-demand [`cross-browser-regression.yml`](.github/workflows/cross-browser-regression.yml) workflow (matrix job) so the push/PR gate stays fast and Chromium-only.
 - 🐳 **Docker / Docker Compose** — reproducible run matching CI, mirrors the Java project's container setup.
 
 ---
@@ -186,6 +187,8 @@ pytest -m "regression"
 pytest -m "desktop"
 pytest -m "smoke and desktop"
 pytest --headed                 # watch it run in a real browser window
+
+pytest -m "regression" --browser firefox   # or webkit — needs `playwright install firefox`/`webkit` first
 ```
 
 ---

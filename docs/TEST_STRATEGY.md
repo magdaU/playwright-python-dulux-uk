@@ -186,6 +186,10 @@ Selection is driven by `pytest -m "..."` (CI defaults to `smoke`, overridable vi
 checkout → Python 3.12 → install dependencies → install Chromium → run smoke suite
 headless → generate Allure report → upload artifacts → publish to GitHub Pages (on `main`).
 
+**Cross-browser regression** ([`.github/workflows/cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml)):
+manually-triggered (`workflow_dispatch`), matrix over Chromium/Firefox/WebKit, defaults
+to the `regression` marker. Kept separate from the push/PR gate (§10).
+
 **Reporting layers:**
 
 - **Allure** (`allure-pytest-bdd`) — the primary dashboard, with Gherkin steps rendered
@@ -207,8 +211,10 @@ signals (a test that fails then passes on re-run without a code change).
 | **Flakiness** from network, animations, third-party scripts | Medium | High | Playwright auto-waiting, isolated `BrowserContext` per scenario, `shm_size: 1gb` in Docker to prevent Chromium crashes |
 | **Third-party Visualizer/Adjust** returns environment-specific messages | Medium | Medium | Mobile scenario asserts the known store-data message rather than assuming success; behaviour is documented, not hidden |
 | **New-tab handling** for the Visualizer | Low | Medium | Playwright's `expect_page()` context manager captures the popup deterministically on desktop |
-| **Single browser (Chromium) only** | Medium | Low | Accepted for now; cross-browser is on the roadmap (§13) |
+| **Single browser (Chromium) only** on the every-push `smoke` gate | Medium | Low | Accepted as a deliberate trade-off — the same fast-feedback-vs-coverage call already made for `smoke` vs `regression` (§8). Firefox/WebKit coverage exists via the on-demand [`cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml) workflow rather than gating every push, since a real production site can have genuine per-engine differences that would otherwise make the push gate flaky for reasons unrelated to the code under test |
 | **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". Self-healing selection was investigated and rejected — see §13 — since not every shade in the catalogue has a tester available, so picking an arbitrary one is not actually more reliable than a pinned, verified name |
+| **Basket UI markup drift** — production can restructure a page in a way that breaks a locator's uniqueness, not just its match | Medium | High | **Materialised** (2026-08-03, found while verifying cross-browser support): the basket's quantity control was redesigned into a `group` wrapping decrease/input/increase controls, all exposing an accessible name containing "Quantity" — `get_by_label("Quantity")` in `cart_page.py` went from matching 1 element to 4, failing strict mode. Fixed by narrowing to `get_by_role("spinbutton", name="Quantity input")`, which targets the input specifically rather than any element merely labelled "Quantity" |
+| **Cross-engine navigation timing** — the same client-side interaction (selecting a colour family) can behave differently per browser engine | Medium | Medium | **Materialised** (2026-08-03): running the `purchase` journey against production with `--browser firefox`/`webkit` showed both engines failing to pick up the "Violet" family filter reliably before the next step queries for a shade button, well before the `smoke` gate's own basket-locator issue above was even reached on those engines. Chromium does not exhibit this. Not yet fixed — tracked as a known limitation of the opt-in `cross-browser-regression.yml` workflow (§13) rather than silently retried or skipped |
 
 ---
 
@@ -259,7 +265,16 @@ Planned work, roughly in priority order:
 - [x] **Verify the Docker build** — `docker compose build` completes successfully
   (Python deps, Chromium + OS deps, non-root user setup all pass), producing the
   `dulux-python-e2e-tests:latest` image. Verified 2026-08-03.
-- [ ] **Cross-browser** — add Firefox and WebKit to widen real coverage.
+- [x] **Cross-browser** — `regression`-marked scenarios can now run against Firefox and
+  WebKit as well as Chromium via `pytest --browser <name>` (provided by
+  `pytest-playwright`, no `conftest.py` change needed). Wired into a separate,
+  manually-triggered [`cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml)
+  CI workflow (matrix over the three engines) so the every-push `smoke` workflow
+  stays fast and Chromium-only — cross-browser coverage is opt-in, not a gate.
+  Verified end-to-end against production: both engines run and interact with the
+  real site, though Firefox/WebKit currently surface a genuine navigation-timing
+  difference in the `purchase` journey (§10) that Chromium does not — left as a
+  known, documented limitation rather than papered over.
 - [ ] **Accessibility checks** — integrate an a11y scan into the critical journeys.
 - [ ] **Tablet viewport** — a third breakpoint between mobile and desktop.
 - [ ] **Retry policy for known-flaky steps** — bounded, explicit, and reported (never silent).
