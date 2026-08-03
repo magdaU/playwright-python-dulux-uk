@@ -38,6 +38,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 - 🚀 **CI/CD with GitHub Actions** — smoke suite on every push/PR, Allure report generated and uploaded as an artifact.
 - 🌐 **Cross-browser regression** — Chromium, Firefox and WebKit via `pytest --browser <name>`; wired into an on-demand [`cross-browser-regression.yml`](.github/workflows/cross-browser-regression.yml) workflow (matrix job) so the push/PR gate stays fast and Chromium-only.
 - ♿ **Accessibility scanning** — `axe-core` (via `axe-playwright-python`) checks the shade page in both `purchase` scenarios; known, pre-existing production violations are allow-listed by ID (`support/accessibility.py`) so the suite still fails on *new* critical/serious issues without gating on defects we don't own.
+- 🔁 **Bounded, reported retries** — `support/retry.py` retries the one interaction identified as genuinely flaky across browser engines, up to 3 attempts; every attempt is logged and attached to the Allure report, so a retried pass is never silently indistinguishable from a clean one.
 - 🐳 **Docker / Docker Compose** — reproducible run matching CI, mirrors the Java project's container setup.
 
 ---
@@ -96,7 +97,8 @@ playwright-python-dulux-uk/
 │       └── alert_component.py           # "added to basket" confirmation
 ├── support/
 │   ├── context.py                       # Context: business methods + page objects per scenario
-│   └── accessibility.py                 # axe-core scan + allow-listed known violation IDs
+│   ├── accessibility.py                 # axe-core scan + allow-listed known violation IDs
+│   └── retry.py                         # bounded, reported retry for known-flaky steps
 └── tests/
     └── step_defs/
         ├── test_tester_purchase.py
