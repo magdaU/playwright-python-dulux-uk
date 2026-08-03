@@ -1,5 +1,5 @@
 import logging
-from typing import Callable
+from collections.abc import Callable
 
 import allure
 
@@ -34,9 +34,7 @@ def retry(action: Callable[[], None], *, attempts: int, description: str) -> Non
                     f"({error.__class__.__name__}), retrying"
                 )
 
-    raise RetryExhaustedError(
-        f'"{description}" did not succeed after {attempts} attempts'
-    ) from last_error
+    raise RetryExhaustedError(f'"{description}" did not succeed after {attempts} attempts') from last_error
 
 
 def _report(message: str) -> None:

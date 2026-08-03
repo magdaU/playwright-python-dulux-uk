@@ -15,9 +15,9 @@ class ColorSelectionPage(BasePage):
         self.page.get_by_role("button", name=self.BUY_A_TESTER_TEXT).click()
 
     def open_visualizer_app(self) -> None:
-        self.page.get_by_role("listitem").filter(
-            has_text=self.VISUALIZER_APP_TEXT
-        ).get_by_role("link").click()
+        self.page.get_by_role("listitem").filter(has_text=self.VISUALIZER_APP_TEXT).get_by_role(
+            "link"
+        ).click()
 
     def _click_button_by_name(self, name: str) -> None:
         self.page.get_by_role("button", name=name).click()

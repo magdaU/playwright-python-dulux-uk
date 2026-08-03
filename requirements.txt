@@ -5,6 +5,9 @@ pytest-playwright==0.8.0     # adds the browser/context/page fixtures + --headed
 # Accessibility scanning (axe-core under the hood)
 axe-playwright-python==0.1.8
 
+# Linting / formatting
+ruff==0.16.1
+
 # Test runner
 pytest==9.1.1
 
