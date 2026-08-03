@@ -1,5 +1,3 @@
-from typing import Optional
-
 from playwright.sync_api import Page
 
 from pages.cart_page import CartPage
@@ -25,7 +23,7 @@ class Context:
     def __init__(self, page: Page, desktop: bool):
         self.page = page
         self.desktop = desktop
-        self.visualizer_tab: Optional[Page] = None
+        self.visualizer_tab: Page | None = None
 
         self.home = HomePage(page)
         self.navigation = NavigationComponent(page)

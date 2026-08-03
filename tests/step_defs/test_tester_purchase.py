@@ -35,16 +35,20 @@ def browse_to_shade(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=False)
 
 
-@when(parsers.parse(
-    'the customer browses to shade "{shade}" from colour family "{colour_family}" using tablet navigation'
-))
+@when(
+    parsers.parse(
+        'the customer browses to shade "{shade}" from colour family "{colour_family}" using tablet navigation'
+    )
+)
 def browse_to_shade_tablet(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
 
 
-@when(parsers.parse(
-    'the customer browses to shade "{shade}" from colour family "{colour_family}" using mobile navigation'
-))
+@when(
+    parsers.parse(
+        'the customer browses to shade "{shade}" from colour family "{colour_family}" using mobile navigation'
+    )
+)
 def browse_to_shade_mobile(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
 

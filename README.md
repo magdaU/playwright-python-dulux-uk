@@ -5,6 +5,8 @@
 ### UI end-to-end test automation for [Dulux UK](https://www.dulux.co.uk) — Python · Playwright · pytest-bdd · Allure · CI/CD
 
 [![E2E Tests](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml)
+[![Cross-Browser Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml)
+[![Nightly Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml)
 [![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Playwright](https://img.shields.io/badge/Playwright-1.61-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/python/)
 [![pytest](https://img.shields.io/badge/pytest-9.1-0A9EDC?logo=pytest&logoColor=white)](https://docs.pytest.org/)
@@ -36,6 +38,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 - ✅ **Assertions in the test layer only** — page objects never assert; plain `assert` + Playwright's web-first `expect()` live in the step layer.
 - 📊 **Allure reporting** (`allure-pytest-bdd`) — Gherkin steps rendered per scenario, published to GitHub Pages via CI.
 - 🚀 **CI/CD with GitHub Actions** — smoke suite on every push/PR, Allure report generated and uploaded as an artifact.
+- 🧹 **Linting gate** — `ruff check` + `ruff format --check` run in CI before the browser is even installed, so style/import issues fail fast.
 - 🌙 **Nightly regression** — [`nightly-regression.yml`](.github/workflows/nightly-regression.yml) runs the full `regression` suite against production daily (02:00 UTC), independent of any push, to catch drift on days with no code changes.
 - 🌐 **Cross-browser regression** — Chromium, Firefox and WebKit via `pytest --browser <name>`; wired into an on-demand [`cross-browser-regression.yml`](.github/workflows/cross-browser-regression.yml) workflow (matrix job) so the push/PR gate stays fast and Chromium-only.
 - ♿ **Accessibility scanning** — `axe-core` (via `axe-playwright-python`) checks the shade page in both `purchase` scenarios; known, pre-existing production violations are allow-listed by ID (`support/accessibility.py`) so the suite still fails on *new* critical/serious issues without gating on defects we don't own.
@@ -55,6 +58,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 | pytest-bdd | 8.1.0 | BDD layer (Gherkin feature files → pytest test items) |
 | Allure (`allure-pytest-bdd`) | 2.16.0 | Test reporting with Gherkin step rendering |
 | axe-playwright-python | 0.1.8 | Accessibility scanning (`axe-core`) |
+| ruff | 0.16.1 | Linting + formatting, enforced in CI |
 | Docker / Docker Compose | – | Containerised, reproducible test runs |
 | GitHub Actions | – | CI/CD pipeline, GitHub Pages |
 
@@ -79,6 +83,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 ```
 playwright-python-dulux-uk/
 ├── requirements.txt
+├── pyproject.toml                       # ruff lint + format config
 ├── pytest.ini                          # markers = pytest equivalent of Cucumber tags
 ├── conftest.py                          # desktop_page / tablet_page / mobile_page viewport fixtures
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
@@ -233,6 +238,10 @@ allure serve allure-results           # or serve the report directly
 ```
 
 In CI, the report is generated automatically and published to GitHub Pages on every push to `main` — see [`.github/workflows/e2e-tests.yml`](.github/workflows/e2e-tests.yml).
+
+A real run of the full suite, rendered locally from this repo's own Allure output:
+
+![Allure report dashboard — 5 test cases, 100% pass rate](docs/assets/allure-dashboard.png)
 
 ---
 
