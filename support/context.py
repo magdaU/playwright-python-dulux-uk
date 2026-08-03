@@ -8,6 +8,7 @@ from pages.components.alert_component import AlertComponent
 from pages.components.navigation_component import NavigationComponent
 from pages.home_page import HomePage
 from support.accessibility import get_unexpected_violations
+from support.retry import retry
 
 
 class Context:
@@ -17,6 +18,9 @@ class Context:
     so later When/Then steps just request the `ctx` fixture — the pytest
     equivalent of the Java project's CucumberContext + PicoContainer DI.
     """
+
+    # Bounded retry for a known-flaky interaction (see browse_to_shade below).
+    SHADE_SELECTION_ATTEMPTS = 3
 
     def __init__(self, page: Page, desktop: bool):
         self.page = page
@@ -45,6 +49,19 @@ class Context:
 
         self.navigation.click_dropdown_find_colour()
         self.navigation.click_find_colour()
+
+        # Known-flaky on Firefox/WebKit: selecting the colour family
+        # occasionally doesn't take effect before the next click queries for
+        # a shade button (docs/TEST_STRATEGY.md S10, "Cross-engine navigation
+        # timing"). Bounded, explicit retry of just this interaction rather
+        # than the whole scenario.
+        retry(
+            lambda: self._select_colour_family_and_shade(colour_family, shade),
+            attempts=self.SHADE_SELECTION_ATTEMPTS,
+            description=f'select shade "{shade}" from colour family "{colour_family}"',
+        )
+
+    def _select_colour_family_and_shade(self, colour_family: str, shade: str) -> None:
         self.color_selection.choose_colour(colour_family)
         self.color_selection.choose_shade(shade)
 
