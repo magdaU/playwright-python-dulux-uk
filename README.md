@@ -37,6 +37,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 - 📊 **Allure reporting** (`allure-pytest-bdd`) — Gherkin steps rendered per scenario, published to GitHub Pages via CI.
 - 🚀 **CI/CD with GitHub Actions** — smoke suite on every push/PR, Allure report generated and uploaded as an artifact.
 - 🌐 **Cross-browser regression** — Chromium, Firefox and WebKit via `pytest --browser <name>`; wired into an on-demand [`cross-browser-regression.yml`](.github/workflows/cross-browser-regression.yml) workflow (matrix job) so the push/PR gate stays fast and Chromium-only.
+- ♿ **Accessibility scanning** — `axe-core` (via `axe-playwright-python`) checks the shade page in both `purchase` scenarios; known, pre-existing production violations are allow-listed by ID (`support/accessibility.py`) so the suite still fails on *new* critical/serious issues without gating on defects we don't own.
 - 🐳 **Docker / Docker Compose** — reproducible run matching CI, mirrors the Java project's container setup.
 
 ---
@@ -51,6 +52,7 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 | pytest-playwright | 0.8.0 | `browser`/`context`/`page` fixtures, `--headed`/`--browser` CLI flags |
 | pytest-bdd | 8.1.0 | BDD layer (Gherkin feature files → pytest test items) |
 | Allure (`allure-pytest-bdd`) | 2.16.0 | Test reporting with Gherkin step rendering |
+| axe-playwright-python | 0.1.8 | Accessibility scanning (`axe-core`) |
 | Docker / Docker Compose | – | Containerised, reproducible test runs |
 | GitHub Actions | – | CI/CD pipeline, GitHub Pages |
 
@@ -93,7 +95,8 @@ playwright-python-dulux-uk/
 │       ├── navigation_component.py      # top nav, hamburger menu, search
 │       └── alert_component.py           # "added to basket" confirmation
 ├── support/
-│   └── context.py                       # Context: business methods + page objects per scenario
+│   ├── context.py                       # Context: business methods + page objects per scenario
+│   └── accessibility.py                 # axe-core scan + allow-listed known violation IDs
 └── tests/
     └── step_defs/
         ├── test_tester_purchase.py

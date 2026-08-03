@@ -49,3 +49,9 @@ def basket_contains_items(ctx, count):
 def basket_includes_tester(ctx, tester_name, shade):
     expect(ctx.cart.find_text(tester_name)).to_be_visible()
     expect(ctx.cart.find_text(shade)).to_be_visible()
+
+
+@then("the shade page has no unexpected accessibility violations")
+def shade_page_has_no_unexpected_a11y_violations(ctx):
+    violations = ctx.get_unexpected_accessibility_violations()
+    assert not violations, [f"{v['impact']}:{v['id']}" for v in violations]

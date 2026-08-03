@@ -8,7 +8,8 @@ Feature: Purchase a colour tester
   Scenario: Desktop customer adds a tester from the colour finder
     Given a desktop customer starts with an empty basket
     When the customer browses to shade "Violet Morning" from colour family "Violet"
-    And the customer adds a tester to the basket
+    Then the shade page has no unexpected accessibility violations
+    When the customer adds a tester to the basket
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 
@@ -16,6 +17,7 @@ Feature: Purchase a colour tester
   Scenario: Mobile customer adds a tester from the colour finder
     Given a mobile customer starts with an empty basket
     When the customer browses to shade "Violet Morning" from colour family "Violet" using mobile navigation
-    And the customer adds a tester to the basket
+    Then the shade page has no unexpected accessibility violations
+    When the customer adds a tester to the basket
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
