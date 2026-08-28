@@ -21,6 +21,7 @@ RUN playwright install --with-deps chromium
 COPY conftest.py pytest.ini ./
 COPY pages ./pages
 COPY features ./features
+COPY support ./support
 COPY tests ./tests
 
 # 4) Run as a non-root user so Chromium's sandbox behaves exactly as it does on
