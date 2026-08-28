@@ -36,20 +36,15 @@ def browse_to_shade(ctx, shade, colour_family):
 
 
 @when(
-    parsers.parse(
-        'the customer browses to shade "{shade}" from colour family "{colour_family}" using tablet navigation'
+    parsers.re(
+        r'the customer browses to shade "(?P<shade>[^"]+)" from colour family "(?P<colour_family>[^"]+)"'
+        r" using (?:tablet|mobile) navigation"
     )
 )
-def browse_to_shade_tablet(ctx, shade, colour_family):
-    ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
-
-
-@when(
-    parsers.parse(
-        'the customer browses to shade "{shade}" from colour family "{colour_family}" using mobile navigation'
-    )
-)
-def browse_to_shade_mobile(ctx, shade, colour_family):
+def browse_to_shade_hamburger_menu(ctx, shade, colour_family):
+    # Tablet portrait collapses to the same hamburger-menu navigation as
+    # mobile (confirmed against production — see docs/TEST_STRATEGY.md S13,
+    # "Tablet viewport"), so one step definition covers both phrasings.
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
 
 

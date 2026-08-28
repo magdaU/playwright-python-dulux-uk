@@ -272,7 +272,15 @@ Planned work, roughly in priority order:
   keep the pinned "Violet Morning" and re-evaluate if it drifts again.
 - [x] **Verify the Docker build** — `docker compose build` completes successfully
   (Python deps, Chromium + OS deps, non-root user setup all pass), producing the
-  `dulux-python-e2e-tests:latest` image. Verified 2026-08-03.
+  `dulux-python-e2e-tests:latest` image. Verified 2026-08-03. **Correction (2026-08-28):**
+  a build succeeding doesn't prove the image *runs* — `COPY` doesn't fail when a source
+  directory is simply missing from the list. The Dockerfile copied `pages`, `features` and
+  `tests` but never `support/`, so every step-definition module's `from support.context
+  import Context` raised `ModuleNotFoundError` at collection time — `docker compose up`
+  failed 100% of the time despite the image building cleanly. Fixed by adding `COPY support
+  ./support`; re-verified end-to-end with `docker run` against production (smoke suite
+  passes inside the container). Lesson: "the build succeeded" and "the container runs" are
+  different claims, and only the second one was ever actually checked.
 - [x] **Cross-browser** — `regression`-marked scenarios can now run against Firefox and
   WebKit as well as Chromium via `pytest --browser <name>` (provided by
   `pytest-playwright`, no `conftest.py` change needed). Wired into a separate,
