@@ -329,6 +329,12 @@ Planned work, roughly in priority order:
   next incidental UI tweak, producing pixel-diff noise on changes that aren't real
   regressions — directly against the §1 principle that a red build must mean a real
   regression. Re-evaluate once a period passes without an unannounced layout change.
+- [ ] **`pytest-bdd` / future pytest 10 compatibility** — every run currently emits
+  `PytestRemovedIn10Warning` from `pytest_bdd/compat.py` (`_register_fixture` called with
+  `nodeid`/`baseid` instead of `node`), because `pytest-bdd` 8.1.0 relies on internal pytest
+  fixture-scoping APIs slated for removal in pytest 10. Harmless today since `pytest` is
+  pinned to 9.1.1, but bumping pytest to 10.x without a `pytest-bdd` upgrade first would
+  break test collection. Re-evaluate when `pytest-bdd` ships a fix, before upgrading pytest.
 
 ---
 
