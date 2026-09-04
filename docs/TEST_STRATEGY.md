@@ -80,6 +80,23 @@ Characteristics that shape the test design:
 > (slower, more brittle) by keeping the suite small, journey-focused, and tag-sliced so the
 > critical `smoke` set stays fast.
 
+### 3.1 Test scenarios implemented
+
+Five scenarios across two features, all in Gherkin under [`features/`](../features/):
+
+| # | Scenario | Feature | Tags | Viewport | Verifies |
+|---|---|---|---|---|---|
+| 1 | Desktop customer adds a tester from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | Full purchase flow via the top nav colour finder; no unexpected a11y violations on the shade page; basket ends up with exactly 1 item, correct product + shade |
+| 2 | Tablet customer adds a tester from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@tablet @purchase @regression` | Tablet `768×1024` | Same flow, via the hamburger-menu (mobile-style) navigation the responsive breakpoint forces at this width |
+| 3 | Mobile customer adds a tester from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@mobile @purchase @regression` | Mobile `375×667` | Same flow, via hamburger-menu navigation |
+| 4 | Desktop customer opens the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@smoke @desktop @visualizer @regression` | Desktop | Visualizer opens in a **new tab**, at the expected URL |
+| 5 | Mobile customer tries to open the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@mobile @visualizer @regression` | Mobile | Mobile surfaces the known store-data message instead of opening the app (documented third-party behaviour, not a bug) |
+
+Scenario 1 and scenario 4 carry `@smoke` — the every-push/PR gate — because they're the
+single desktop path through each of the two in-scope journeys; scenarios 2, 3 and 5 run
+under `@regression` (on-demand / nightly) since they're viewport variants of an
+already-smoke-tested flow, not independent risk.
+
 ---
 
 ## 4. Test approach
@@ -335,6 +352,27 @@ Planned work, roughly in priority order:
   fixture-scoping APIs slated for removal in pytest 10. Harmless today since `pytest` is
   pinned to 9.1.1, but bumping pytest to 10.x without a `pytest-bdd` upgrade first would
   break test collection. Re-evaluate when `pytest-bdd` ships a fix, before upgrading pytest.
+
+---
+
+## 14. Coverage gaps & improvement opportunities
+
+Areas deliberately left untested today (§3), plus a few gaps found *within* the current
+scope while building the suite — what the risk actually is if they stay uncovered, and a
+concrete way each could be tested rather than just a note that it's "future work".
+
+| Area | Risk if left untested | How it could be tested | Priority |
+|---|---|---|---|
+| **Checkout / payment / order fulfilment** | A broken checkout ships unnoticed until a customer complaint or a revenue drop is reported — the single biggest gap given this is an e-commerce site | Not against production (no real transactions). Would need a retailer-provided staging/sandbox environment with a test payment provider (e.g. a Stripe/Braintree test mode) before this is testable at all | High — blocked on environment access, not effort |
+| **Only one colour family / shade path exercised (`Violet` / "Violet Morning")** | A shade with no tester option, or a family with an unusual layout (single shade, out-of-stock tester), could break the flow without being caught — the suite has already been surprised once by this class of issue (see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) | Turn the `purchase` scenario into a `Scenario Outline` / `pytest.mark.parametrize`-style data table with 2-3 more family/shade pairs, chosen to include an edge case (e.g. a family with few shades) | Medium |
+| **Basket edit/remove flows** | Only *adding* a tester is verified; incrementing/decrementing quantity or removing an item entirely is unverified UI the basket redesign (§10, "Basket UI markup drift") already proved can silently change | Extend `CartPage`/`cart_page.py` with increment/decrement/remove actions and add a `@regression`-tagged scenario asserting basket state after each | Medium |
+| **Site search** | The nav component exposes search (`navigation_component.py`), but no scenario drives it — a broken search box would go undetected | Add a scenario: search for a known product/shade term, assert results contain the expected item | Low–Medium |
+| **Negative / error-state paths** (e.g. an out-of-stock tester, a failed add-to-basket request) | The suite only proves the happy path; a customer-visible error state (broken error messaging, silent failure) is invisible to it today | Use Playwright's `page.route()` to intercept and force an error response on the add-to-basket call, then assert the UI surfaces it correctly, without needing production to actually be in that state | Medium |
+| **Full cross-browser coverage on every push** | A Firefox/WebKit-only regression ships on `main` and is only caught at the next nightly run (up to ~24h later), not immediately | Deliberate trade-off already made (§10) to protect push/PR speed. If the lag becomes a real problem, the narrowest fix is adding the two `@smoke`-tagged scenarios (not the whole suite) to a small WebKit job on the push gate, keeping the cost bounded | Low (accepted trade-off; revisit only if the lag causes a real incident) |
+| **Visual regression** | Unintended CSS/layout breakage that doesn't change accessible roles/text (e.g. a broken grid, an overlapping element) isn't caught by role-based assertions | Already scoped and deliberately deferred until the site's layout stabilises — see [Lessons Learned #6](LESSONS_LEARNED.md#6-visual-regression--deferred-not-skipped) for why now is the wrong time to start | Low (intentionally deferred, not forgotten) |
+| **`pytest-bdd` / pytest 10 compatibility** | A future, unrelated `pytest` version bump could break test collection outright with no advance warning beyond today's harmless deprecation warning | Track `pytest-bdd` releases for a pytest-10-compatible version; add it as a pinned-version bump *with* a `pytest --collect-only` check in the same PR, before touching the `pytest` pin itself | Low (no action needed until a `pytest-bdd` fix ships — see [Lessons Learned #7](LESSONS_LEARNED.md#7-a-pinned-dependency-can-hide-a-ticking-compatibility-problem)) |
+| **API / contract-level testing** | None today — a backend contract change could break the UI with only this slow, browser-driven E2E layer to catch it | Not currently actionable: Dulux is a third-party site exposing no API we're entitled to test against. Would only become relevant if this suite were adapted to test an internally-owned service | Not planned |
+| **Performance / load** | A slow-loading shade page or checkout step degrades conversion without failing any functional assertion here | Out of scope for a UI E2E suite by design; would need a dedicated tool (Lighthouse CI for page-level budgets, k6/Locust for load) against a staging environment, not production | Not planned |
 
 ---
 
