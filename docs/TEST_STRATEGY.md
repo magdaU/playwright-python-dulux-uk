@@ -238,7 +238,7 @@ signals (a test that fails then passes on re-run without a code change).
 | **Single browser (Chromium) only** on the every-push `smoke` gate | Medium | Low | Accepted as a deliberate trade-off — the same fast-feedback-vs-coverage call already made for `smoke` vs `regression` (§8). Firefox/WebKit coverage exists via the on-demand [`cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml) workflow rather than gating every push, since a real production site can have genuine per-engine differences that would otherwise make the push gate flaky for reasons unrelated to the code under test |
 | **Product catalogue drift** — a shade used in test data can be removed/re-grouped by the retailer without notice | Medium | High | **Materialised once already** (2026-07-09): "Gentle Lavender" was found removed from the "Violet" family, breaking both `purchase`-marked scenarios here and in the Java sibling project identically. Test data refreshed to "Violet Morning". Self-healing selection was investigated and rejected — see §13 — since not every shade in the catalogue has a tester available, so picking an arbitrary one is not actually more reliable than a pinned, verified name |
 | **Basket UI markup drift** — production can restructure a page in a way that breaks a locator's uniqueness, not just its match | Medium | High | **Materialised** (2026-08-03, found while verifying cross-browser support): the basket's quantity control was redesigned into a `group` wrapping decrease/input/increase controls, all exposing an accessible name containing "Quantity" — `get_by_label("Quantity")` in `cart_page.py` went from matching 1 element to 4, failing strict mode. Fixed by narrowing to `get_by_role("spinbutton", name="Quantity input")`, which targets the input specifically rather than any element merely labelled "Quantity" |
-| **Cross-engine navigation timing** — the same client-side interaction (selecting a colour family) can behave differently per browser engine | Medium | Medium | **Materialised** (2026-08-03): running the `purchase` journey against production with `--browser firefox`/`webkit` showed both engines failing to pick up the "Violet" family filter reliably before the next step queries for a shade button, well before the `smoke` gate's own basket-locator issue above was even reached on those engines. Chromium does not exhibit this. Mitigated by the bounded retry in `support/retry.py` (§13) — re-verified on Firefox: attempt 1 failed with a real `TimeoutError`, attempt 2 succeeded, both reported via a logged warning and an Allure attachment rather than silently passing |
+1| **Cross-engine navigation timing** — the same client-side interaction (selecting a colour family) can behave differently per browser engine | Medium | Medium | **Materialised** (2026-08-03): running the `purchase` journey against production with `--browser firefox`/`webkit` showed both engines failing to pick up the "Violet" family filter reliably before the next step queries for a shade button, well before the `smoke` gate's own basket-locator issue above was even reached on those engines. Chromium does not exhibit this. Mitigated by the bounded retry in `support/retry.py` (§13) — re-verified on Firefox: attempt 1 failed with a real `TimeoutError`, attempt 2 succeeded, both reported via a logged warning and an Allure attachment rather than silently passing. **Recurred and deepened** (2026-09-08): running `cross-browser-regression.yml` found the whole `purchase` journey now failing outright on Firefox and WebKit. Two distinct causes, both in `NavigationComponent`/`Context`, not the site's markup structure changing: (1) `click_find_colour()` targets a link that lives in a hover-revealed sub-menu — Chromium happens to leave the pointer resting over the trigger after the prior page load, which incidentally keeps the sub-menu open, while Firefox/WebKit don't carry that hover state across a fresh page; fixed with an explicit `.hover()` before the click. (2) The existing family/shade retry could silently "succeed" on Firefox: a failed first attempt left the shade grid half-transitioned, so retrying the same two clicks landed on it before it re-hydrated — the click raised no exception but never opened the shade detail panel, so the next step (`add_tester_to_basket`) timed out instead, with no warning logged for the real failure. Fixed by (a) reloading the page before each retry attempt instead of re-clicking on top of the half-applied state, and (b) asserting the "Buy a Tester" button is actually visible as part of a successful selection, so a silent no-op is now caught and retried rather than reported as green. Attempt budget raised from 3 to 4 since the added reload sometimes needs the full budget to converge. Re-verified: 5/5 `regression` scenarios pass on Chromium, Firefox and WebKit |
 | **Pre-existing accessibility violations on production we don't own** — a strict a11y gate would permanently redden the build for defects we can't fix | Medium | Medium | **Materialised** (2026-08-03): an `axe-core` scan of the shade page found a real `critical` violation (`image-alt`) and a `serious` one (`color-contrast`) on desktop, plus a second `critical` (`label`) on mobile. Rather than hard-failing on all of them (permanently red for reasons outside our control) or not asserting at all (no real signal), the known IDs are allow-listed in `support/accessibility.py` — the suite still fails on any *new* critical/serious violation, so it catches regressions without gating on Dulux's existing issues |
 
 ---
@@ -305,9 +305,10 @@ Planned work, roughly in priority order:
   CI workflow (matrix over the three engines) so the every-push `smoke` workflow
   stays fast and Chromium-only — cross-browser coverage is opt-in, not a gate.
   Verified end-to-end against production: both engines run and interact with the
-  real site, though Firefox/WebKit currently surface a genuine navigation-timing
-  difference in the `purchase` journey (§10) that Chromium does not — left as a
-  known, documented limitation rather than papered over.
+  real site. Firefox/WebKit surfaced genuine navigation-timing differences in the
+  `purchase` journey (§10) that Chromium does not — root-caused and fixed
+  (2026-09-08) rather than left as an accepted gap; all 5 `regression` scenarios
+  now pass on all three engines.
 - [x] **Accessibility checks** — an `axe-core` scan (via `axe-playwright-python`) now
   runs on the shade page in both `purchase` scenarios (desktop + mobile), asserting no
   *unexpected* `critical`/`serious` violations (`support/accessibility.py`). Verified
@@ -325,13 +326,18 @@ Planned work, roughly in priority order:
   journey only (the priority-1 revenue path, §1); not added to `visualizer` to avoid
   guessing at untested tablet-specific Visualizer behaviour.
 - [x] **Retry policy for known-flaky steps** — `support/retry.py` provides a bounded
-  (3 attempts), explicit retry (applied only to the one interaction we've identified as
+  (4 attempts), explicit retry (applied only to the one interaction we've identified as
   flaky — selecting a colour family/shade, §10 "Cross-engine navigation timing" — not a
   blanket wrapper). Every failed attempt, and every success that only happened on a
   retry, is logged **and** attached to the Allure report, so a green run is never
-  silently indistinguishable from one that needed a retry. Re-verified on Firefox: the
-  same interaction that previously timed out outright now fails attempt 1 and succeeds
-  on attempt 2, visibly reported both times.
+  silently indistinguishable from one that needed a retry. **Strengthened (2026-09-08):**
+  a failed first attempt was found to leave the page half-transitioned, so simply
+  re-clicking on a retry could land on that stale state and silently no-op (no exception,
+  but the shade detail never opened) — the interaction now reloads the page before each
+  retry attempt and asserts the shade detail actually opened, so a no-op is caught and
+  retried instead of reported as green (§10). Re-verified on Firefox across multiple runs:
+  attempts 1-2 fail with a real `TimeoutError`, a later attempt succeeds, all visibly
+  reported.
 - [x] **Scheduled regression run** — [`nightly-regression.yml`](../.github/workflows/nightly-regression.yml)
   runs the `regression` marker against production daily at 02:00 UTC (Chromium only),
   independent of the cross-browser workflow and the push/PR gate, so drift is caught on
