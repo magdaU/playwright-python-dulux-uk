@@ -19,6 +19,12 @@ class NavigationComponent(BasePage):
         self.page.get_by_role("button", name=self.MENU_HAMBURGER).click()
 
     def click_find_colour(self) -> None:
+        # The link lives in a hover-revealed sub-menu. Chromium happens to leave
+        # the pointer "resting" over the trigger after the previous navigation,
+        # which keeps the sub-menu open by coincidence — Firefox/WebKit don't
+        # carry that hover state across the page load, so the link stays hidden
+        # until we hover explicitly.
+        self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM).hover()
         self.page.get_by_role("link", name=self.FIND_A_COLOUR_MENU_ITEM).click()
 
     def open_shopping_cart(self) -> None:

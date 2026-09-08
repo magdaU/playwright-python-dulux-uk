@@ -18,7 +18,7 @@ class Context:
     """
 
     # Bounded retry for a known-flaky interaction (see browse_to_shade below).
-    SHADE_SELECTION_ATTEMPTS = 3
+    SHADE_SELECTION_ATTEMPTS = 4
 
     def __init__(self, page: Page, desktop: bool):
         self.page = page
@@ -52,9 +52,23 @@ class Context:
         # occasionally doesn't take effect before the next click queries for
         # a shade button (docs/TEST_STRATEGY.md S10, "Cross-engine navigation
         # timing"). Bounded, explicit retry of just this interaction rather
-        # than the whole scenario.
+        # than the whole scenario. A retry reloads the page first — re-issuing
+        # the same two clicks on top of a half-applied first attempt was found
+        # to leave the shade grid open with no exception raised (the clicks
+        # "succeed" but never open the shade detail panel); a fresh reload
+        # avoids compounding that state.
+        attempted = False
+
+        def select_shade_and_verify() -> None:
+            nonlocal attempted
+            if attempted:
+                self.page.reload()
+                self.page.wait_for_load_state()
+            attempted = True
+            self._select_colour_family_and_shade(colour_family, shade)
+
         retry(
-            lambda: self._select_colour_family_and_shade(colour_family, shade),
+            select_shade_and_verify,
             attempts=self.SHADE_SELECTION_ATTEMPTS,
             description=f'select shade "{shade}" from colour family "{colour_family}"',
         )
@@ -62,6 +76,7 @@ class Context:
     def _select_colour_family_and_shade(self, colour_family: str, shade: str) -> None:
         self.color_selection.choose_colour(colour_family)
         self.color_selection.choose_shade(shade)
+        self.color_selection.expect_tester_purchase_option_visible()
 
     def search_for_shade(self, shade: str) -> None:
         self.navigation.search_click_on_page()
