@@ -1,1 +1,1 @@
-[]
+[{"uid":"e1f9d8cb288b1b6e","name":"Desktop customer opens the Visualizer for a shade","time":{"start":1789722760279,"stop":1789722766112,"duration":5833},"status":"passed","severity":"normal"},{"uid":"c0005fb028d06e7e","name":"Desktop customer adds a tester from the colour finder","time":{"start":1789722745232,"stop":1789722760270,"duration":15038},"status":"passed","severity":"normal"}]
