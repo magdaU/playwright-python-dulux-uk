@@ -20,9 +20,7 @@ class ColorSelectionPage(BasePage):
         # "Cross-engine navigation timing" — on Firefox/WebKit the click can
         # silently no-op if it lands before the just-rendered grid finishes
         # hydrating, leaving the grid view showing with no exception raised).
-        self.page.get_by_role("button", name=self.BUY_A_TESTER_TEXT).wait_for(
-            state="visible", timeout=8000
-        )
+        self.page.get_by_role("button", name=self.BUY_A_TESTER_TEXT).wait_for(state="visible", timeout=8000)
 
     def open_visualizer_app(self) -> None:
         self.page.get_by_role("listitem").filter(has_text=self.VISUALIZER_APP_TEXT).get_by_role(
