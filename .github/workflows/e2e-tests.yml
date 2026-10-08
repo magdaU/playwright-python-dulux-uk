@@ -87,4 +87,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
           publish_branch: gh-pages
+          keep_files: true   # keep the nightly report published under nightly/
           commit_message: "ci: publish Allure report [skip ci]"
