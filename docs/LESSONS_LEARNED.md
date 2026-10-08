@@ -34,6 +34,15 @@ complexity and its own new failure modes.
 
 ---
 
+**Recurred (2026-10-08):** the replacement shade "Violet Morning" stayed in the catalogue but
+lost its tester option — it now offers only "Find Products in this colour". The nightly run
+failed, and the log was misleading: the last retry attempt reported "waiting for button Violet
+Morning" although the button existed; the real failure was the missing tester button on the
+first attempt. Test data changed to "Romantic Reverie" after checking every "Violet" shade
+(only Cotton Breeze, Violet Morning and Deep Aubergine lacked a tester). Two drifts in three
+months — a third would justify revisiting the "loop until a shade with a tester is found"
+approach rejected in [Test Strategy §13](TEST_STRATEGY.md).
+
 ## 2. Basket UI markup drift — a redesign broke a locator's *uniqueness*, not its match
 
 **What happened:** while verifying cross-browser support, the basket's quantity control
@@ -162,6 +171,26 @@ safe — is worth doing at the moment it's noticed, not left for whoever runs th
 dependency bump to rediscover from scratch.
 
 ---
+
+## 8. A declared limit is not the enforced limit — and a transient UI state can fool an assertion
+
+**What happened:** while adding boundary-value coverage for the basket quantity, the field's
+HTML declared `min=1 max=999`, but production only accepted 1–23. A 24th tester is rejected
+by the server (`POST /store/api/order` → HTTP 422) and the field then reverts to the last
+accepted value. Values below 1 never reach the server at all.
+
+**Root cause of a near-miss in the test itself:** the first version asserted the field's
+value straight after typing. The field briefly shows what was typed before the server's
+verdict arrives, so a deliberately wrong expectation ("24 → 24") still passed.
+
+**Fix:** `CartPage.change_quantity()` waits for the order-API response whenever the value
+can reach the server (inside the field's min/max and different from the current value), and
+the assertion then reads the settled value. The test was re-checked with the wrong
+expectation to confirm it now fails.
+
+**Takeaway:** derive boundaries from observed behaviour, not from markup attributes, and
+prove a new assertion can fail before trusting that it passes. The 23 cap is undocumented
+and server-side, so it is a catalogue-drift-style risk too.
 
 ## See also
 
