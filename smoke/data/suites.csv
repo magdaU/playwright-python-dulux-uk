@@ -1,0 +1,15 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"To preview a colour before making a purchase decision
+As a Dulux customer
+I want to open the Visualizer from a selected shade page
+
+From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
+open in a new browser tab, at the expected address.","4526","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-08","passed","2026-10-08","","Open the Dulux Visualizer experience","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The critical purchase path (TC-01). The customer finds a shade through the colour finder
+in the top navigation, adds a tester to the basket and must end up with exactly one tester
+for that shade. The shade page is also scanned for new serious or critical accessibility
+violations.","11748","Desktop customer adds a tester from the colour finder","Desktop","2026-10-08","passed","2026-10-08","","Purchase a colour tester","",""
