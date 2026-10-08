@@ -3,10 +3,16 @@ from playwright.sync_api import Browser, Page
 
 import allure
 from support.allure_metadata import apply_to_items
+from support.network import block_third_party_noise
 
 DESKTOP_VIEWPORT = {"width": 1920, "height": 1080}
 TABLET_VIEWPORT = {"width": 768, "height": 1024}
 MOBILE_VIEWPORT = {"width": 375, "height": 667}
+
+# Playwright's default of 30 s only matters when something is missing, and then it makes a
+# failing step wait that long (times every retry). Passing steps take seconds, even on the
+# slower Firefox, so 15 s keeps real failures quick without risking false ones.
+DEFAULT_ACTION_TIMEOUT_MS = 15_000
 
 
 def pytest_collection_modifyitems(items):
@@ -39,6 +45,8 @@ def _test_failed(item) -> bool:
 
 def _page_with_viewport(browser: Browser, viewport: dict, item) -> Page:
     context = browser.new_context(viewport=viewport)
+    context.set_default_timeout(DEFAULT_ACTION_TIMEOUT_MS)
+    block_third_party_noise(context)
     page = context.new_page()
     yield page
     if _test_failed(item):

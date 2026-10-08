@@ -11,6 +11,7 @@ class CartPage(BasePage):
     DECREASE_QUANTITY_LABEL = "Decrease quantity"
     REMOVE_ITEM_LABEL = "Remove"
     ADD_TO_BASKET_API_PATTERN = "**/store/api/v2/cart"
+    ADD_TO_BASKET_URL = "https://www.dulux.co.uk/en/store/api/v2/cart"
     YOUR_BASKET_IS_EMPTY_TEXT = "Your basket is empty"
 
     def open_cart_page(self) -> None:
