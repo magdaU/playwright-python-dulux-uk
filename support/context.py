@@ -97,6 +97,16 @@ class Context:
         self.color_selection.buy_a_tester_colour()
         self.alert.close_alert()
 
+    def fail_add_to_basket_requests(self) -> None:
+        # Stubbed in the browser, so the failed request never reaches production.
+        def fail(route) -> None:
+            if route.request.method == "POST":
+                route.fulfill(status=500, content_type="application/json", body='{"error": "stubbed"}')
+            else:
+                route.continue_()
+
+        self.page.route(self.cart.ADD_TO_BASKET_API_PATTERN, fail)
+
     def get_unexpected_accessibility_violations(self) -> list[dict]:
         return get_unexpected_violations(self.page)
 

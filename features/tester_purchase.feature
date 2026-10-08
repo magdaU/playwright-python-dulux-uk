@@ -68,3 +68,33 @@ Feature: Purchase a colour tester
       | 23      | 23       | maximum accepted             |
       | 0       | 1        | below minimum, rejected      |
       | 24      | 1        | above maximum, rejected      |
+
+  @desktop
+  Scenario: Desktop customer changes the basket quantity and removes the tester
+    Editing the basket after a purchase (TC-04). The customer raises and lowers the quantity
+    with the + and - buttons, finds the - button disabled at 1 (the minimum), and finally
+    removes the tester, leaving an empty basket.
+    Given a desktop customer starts with an empty basket
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    And the customer adds a tester to the basket
+    And the customer increases the tester quantity
+    Then the basket quantity is 2
+    When the customer decreases the tester quantity
+    Then the basket quantity is 1
+    And the tester quantity cannot be decreased any further
+    When the customer removes the tester from the basket
+    Then the basket is empty
+
+  @desktop @negative
+  Scenario: Desktop customer is told when adding a tester to the basket fails
+    Failure path (TC-05). The add-to-basket request is stubbed to fail in the browser, so it never
+    reaches production. The customer must be shown an error message rather than the "added to your
+    cart" confirmation, and the basket must stay empty. The message is short-lived (it fades after
+    about three seconds), so it is asserted as soon as it appears.
+    Given a desktop customer starts with an empty basket
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    And the add-to-basket request fails
+    And the customer tries to add a tester to the basket
+    Then the customer is told something went wrong
+    And the customer is not told the tester was added
+    And the basket is still empty

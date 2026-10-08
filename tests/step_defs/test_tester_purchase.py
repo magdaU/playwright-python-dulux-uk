@@ -5,6 +5,9 @@ from support.context import Context
 
 scenarios("tester_purchase.feature")
 
+FAILED_ADD_MESSAGE = "Something has gone wrong, please try again."
+SUCCESS_MESSAGE = "successfully added to your cart"
+
 
 @given("a desktop customer starts with an empty basket", target_fixture="ctx")
 def desktop_empty_basket(desktop_page):
@@ -53,6 +56,31 @@ def open_shade_without_tester(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=False, tester_available=False)
 
 
+@when("the customer increases the tester quantity")
+def increase_tester_quantity(ctx):
+    ctx.cart.increase_quantity()
+
+
+@when("the customer decreases the tester quantity")
+def decrease_tester_quantity(ctx):
+    ctx.cart.decrease_quantity()
+
+
+@when("the customer removes the tester from the basket")
+def remove_tester_from_basket(ctx):
+    ctx.cart.remove_item()
+
+
+@when("the add-to-basket request fails")
+def add_to_basket_request_fails(ctx):
+    ctx.fail_add_to_basket_requests()
+
+
+@when("the customer tries to add a tester to the basket")
+def try_to_add_tester(ctx):
+    ctx.color_selection.buy_a_tester_colour()
+
+
 @when("the customer adds a tester to the basket")
 def add_tester_to_basket(ctx):
     ctx.add_tester_to_basket()
@@ -69,6 +97,27 @@ def basket_quantity_is(ctx, quantity):
     # Auto-waits, so a rejected value (which reverts after the server's 422)
     # is only accepted once the field has settled on the expected quantity.
     expect(ctx.cart.get_quantity()).to_have_value(str(quantity))
+
+
+@then("the tester quantity cannot be decreased any further")
+def quantity_is_at_minimum(ctx):
+    expect(ctx.cart.get_decrease_button()).to_be_disabled()
+
+
+@then("the basket is empty")
+def basket_is_empty(ctx):
+    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
+
+
+@then("the customer is told something went wrong")
+def customer_told_something_went_wrong(ctx):
+    expect(ctx.alert.get_alert()).to_contain_text(FAILED_ADD_MESSAGE)
+
+
+@then("the customer is not told the tester was added")
+def customer_not_told_tester_added(ctx):
+    messages = ctx.alert.get_alert().all_inner_texts()
+    assert not any(SUCCESS_MESSAGE in message for message in messages), messages
 
 
 @then("the shade offers products but no tester to buy")

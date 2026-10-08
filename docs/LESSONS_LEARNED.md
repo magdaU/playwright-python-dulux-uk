@@ -192,6 +192,25 @@ expectation to confirm it now fails.
 prove a new assertion can fail before trusting that it passes. The 23 cap is undocumented
 and server-side, so it is a catalogue-drift-style risk too.
 
+## 9. A short-lived message can hide from a slow check
+
+**What happened:** while writing the "add to basket fails" scenario (TC-05), the first probe
+stubbed the request to return HTTP 500, waited four seconds, saw no alert, and concluded that the
+site fails silently. That was wrong: the site does show "Something has gone wrong, please try
+again." — it appears after about 0.7 s and is gone by about 3.5 s.
+
+**Root cause:** the check looked after the message had already faded. A later version of the test
+made the same class of mistake the other way round: `expect(...).to_have_count(0)` retries, so it
+passed once the *success* alert had faded, which would have hidden a real regression.
+
+**Fix:** assert the error message positively and straight away (it appears within a second), and
+check "not told it was added" on the alerts present at that moment. Both directions were proved by
+running the scenario with and without the stub.
+
+**Takeaway:** for toast-style messages, a negative assertion that retries proves nothing, and a
+probe that waits is not evidence of absence. Poll for the message instead, and always run the
+test once against the opposite condition to see it fail.
+
 ## See also
 
 - [Test Strategy §10 — Risk analysis & mitigations](TEST_STRATEGY.md#10-risk-analysis--mitigations) — the same incidents as a likelihood/impact register.

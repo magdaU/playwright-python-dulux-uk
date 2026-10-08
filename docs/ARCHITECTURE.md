@@ -61,6 +61,7 @@ playwright-python-dulux-uk/
 │   └── ARCHITECTURE.md                  # this file
 ├── features/
 │   ├── tester_purchase.feature          # ported as-is (Gherkin is language-agnostic)
+│   ├── site_navigation.feature          # site search + cookie consent
 │   └── visualizer_experience.feature
 ├── pages/
 │   ├── base_page.py                     # shared `page` handle
@@ -78,6 +79,7 @@ playwright-python-dulux-uk/
 └── tests/
     └── step_defs/
         ├── test_tester_purchase.py
+        ├── test_site_navigation.py
         └── test_visualizer_experience.py
 ```
 
