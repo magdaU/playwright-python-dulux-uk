@@ -7,7 +7,9 @@
 > aren't automated today. See the [Features Guide](FEATURES_GUIDE.md) for what each area
 > under test actually does.
 
-**Legend — Priority:** P1 critical path · P2 important · P3 nice-to-have.
+**Legend — Priority:** P1 critical path · P2 important · P3 nice-to-have. The Priority of an
+automated case also sets that test's **severity** in the Allure report (P1 → critical, P2 → normal,
+P3 → minor) — `support/allure_metadata.py` reads it from this file, so changing it here changes the report.
 **Legend — Automation:** ✅ automated (linked) · 🟡 candidate for automation · ⚪ manual/exploratory only.
 
 ---
