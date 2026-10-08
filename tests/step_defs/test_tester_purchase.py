@@ -48,6 +48,11 @@ def browse_to_shade_hamburger_menu(ctx, shade, colour_family):
     ctx.browse_to_shade(colour_family, shade, mobile_navigation=True)
 
 
+@when(parsers.parse('the customer opens shade "{shade}" from colour family "{colour_family}"'))
+def open_shade_without_tester(ctx, shade, colour_family):
+    ctx.browse_to_shade(colour_family, shade, mobile_navigation=False, tester_available=False)
+
+
 @when("the customer adds a tester to the basket")
 def add_tester_to_basket(ctx):
     ctx.add_tester_to_basket()
@@ -64,6 +69,18 @@ def basket_quantity_is(ctx, quantity):
     # Auto-waits, so a rejected value (which reverts after the server's 422)
     # is only accepted once the field has settled on the expected quantity.
     expect(ctx.cart.get_quantity()).to_have_value(str(quantity))
+
+
+@then("the shade offers products but no tester to buy")
+def shade_offers_no_tester(ctx):
+    expect(ctx.color_selection.get_find_products_text()).to_be_visible()
+    expect(ctx.color_selection.get_buy_a_tester_button()).to_have_count(0)
+
+
+@then("the basket is still empty")
+def basket_is_still_empty(ctx):
+    ctx.navigation.open_shopping_cart()
+    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
 
 
 @then(parsers.parse("the basket contains {count:d} item"))

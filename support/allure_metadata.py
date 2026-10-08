@@ -43,6 +43,9 @@ SCENARIOS = {
     "Mobile customer adds a tester from the colour finder": ScenarioMetadata(
         "TC-03", BUYING, "Add a tester to the basket"
     ),
+    "Desktop customer views a shade that has no tester available": ScenarioMetadata(
+        "TC-06", BUYING, "Shade without a tester option"
+    ),
     "Desktop customer changes the tester quantity at its boundaries": ScenarioMetadata(
         "TC-04a", BUYING, "Change the tester quantity"
     ),

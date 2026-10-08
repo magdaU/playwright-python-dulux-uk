@@ -71,14 +71,14 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Force the add-to-basket request to fail (mocked error response).<br>2. Click "Buy a Tester in this colour". |
 | **Expected result** | The customer sees a visible error/failure indication — not a silent no-op |
 
-### TC-06 — Shade with no tester option *(manual/exploratory)*
+### TC-06 — Shade with no tester option
 | | |
 |---|---|
 | **Priority** | P3 |
-| **Automation** | ⚪ manual — data-dependent on which shades currently lack a tester |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer views a shade that has no tester available"](../features/tester_purchase.feature) (`@negative`) — data-dependent on which shades currently lack a tester |
 | **Preconditions** | A shade known to expose only "Find Products in this colour", no "Buy a Tester" button (e.g. "Cotton Breeze" under "Violet" at time of writing — catalogue can drift, see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) |
-| **Steps** | 1. Navigate to that shade's page.<br>2. Confirm no "Buy a Tester" control is present. |
-| **Expected result** | Confirms the assumption behind the pinned-shade decision still holds; re-run whenever choosing a new pinned shade |
+| **Steps** | 1. Start with an empty basket; open the shade's page via the colour finder.<br>2. Confirm "Find Products in this colour" is shown and no "Buy a Tester" control is present.<br>3. Open the basket. |
+| **Expected result** | No tester is offered and the basket is still empty. Confirms the assumption behind the pinned-shade decision still holds. As an automated test it also acts as a canary: if it fails, the retailer has added a tester for this shade — pick another shade without one |
 
 ---
 

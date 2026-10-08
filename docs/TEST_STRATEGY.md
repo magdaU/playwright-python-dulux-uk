@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 9 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
+| **Status** | Implemented and verified against production — all 10 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, a desktop `negative` scenario, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
 
 ---
 
@@ -82,7 +82,7 @@ Characteristics that shape the test design:
 
 ### 3.1 Test scenarios implemented
 
-Six scenarios (nine test cases — scenario 6 is a four-example outline) across two features, all in Gherkin under [`features/`](../features/):
+Seven scenarios (ten test cases — scenario 6 is a four-example outline) across two features, all in Gherkin under [`features/`](../features/):
 
 | # | Scenario | Feature | Tags | Viewport | Verifies |
 |---|---|---|---|---|---|
@@ -92,9 +92,10 @@ Six scenarios (nine test cases — scenario 6 is a four-example outline) across 
 | 4 | Desktop customer opens the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@smoke @desktop @visualizer @regression` | Desktop | Visualizer opens in a **new tab**, at the expected URL |
 | 5 | Mobile customer tries to open the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@mobile @visualizer @regression` | Mobile | Mobile surfaces the known store-data message instead of opening the app (documented third-party behaviour, not a bug) |
 | 6 | Desktop customer changes the tester quantity at its boundaries *(Scenario Outline, 4 examples)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @boundary @purchase @regression` | Desktop `1920×1080` | Quantity `1` and `23` are accepted; `0` and `24` are rejected and the field settles back on the last accepted value. The 23 cap is enforced server-side (`POST /store/api/order` → 422) although the field's HTML declares `max=999` |
+| 7 | Desktop customer views a shade that has no tester available *(negative path)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @negative @purchase @regression` | Desktop `1920×1080` | A shade with no tester ("Cotton Breeze") offers only "Find Products in this colour": no "Buy a Tester" button is shown and the basket stays empty. Doubles as a canary — it fails if the retailer adds a tester for this shade, flagging drift in the pinned-shade assumption |
 
 Scenario 1 and scenario 4 carry `@smoke` — the every-push/PR gate — because they're the
-single desktop path through each of the two in-scope journeys; scenarios 2, 3, 5 and 6 run
+single desktop path through each of the two in-scope journeys; scenarios 2, 3, 5, 6 and 7 run
 under `@regression` (on-demand / nightly) since they're viewport variants of an
 already-smoke-tested flow, not independent risk.
 
