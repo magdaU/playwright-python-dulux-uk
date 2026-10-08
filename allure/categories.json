@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Catalogue drift (shade or tester no longer available)",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": "(?s).*RetryExhaustedError.*"
+  },
+  {
+    "name": "Accessibility violations",
+    "matchedStatuses": ["failed"],
+    "messageRegex": "(?s).*(critical|serious):.*"
+  },
+  {
+    "name": "Infrastructure problems (network, browser, timeouts)",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": "(?s).*(TimeoutError|net::ERR_|Target (page|closed)|browser has been closed).*"
+  },
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Test defects",
+    "matchedStatuses": ["broken"]
+  }
+]

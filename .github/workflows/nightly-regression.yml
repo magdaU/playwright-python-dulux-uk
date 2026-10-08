@@ -54,6 +54,26 @@ jobs:
         if: always()
         run: npm install -g allure-commandline --save-dev
 
+      - name: Write Allure executor info
+        if: always()
+        run: |
+          mkdir -p allure-results
+          cat > allure-results/executor.json <<EOF
+          {
+            "name": "GitHub Actions",
+            "type": "github",
+            "buildName": "Nightly #${{ github.run_number }}",
+            "buildOrder": ${{ github.run_number }},
+            "buildUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }
+          EOF
+
+      - name: Add Allure categories
+        if: always()
+        run: |
+          mkdir -p allure-results
+          cp allure/categories.json allure-results/categories.json
+
       - name: Carry over Allure history (Trend widget)
         if: always()
         run: |
