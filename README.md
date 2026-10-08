@@ -7,6 +7,8 @@
 [![E2E Tests](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml)
 [![Cross-Browser Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml)
 [![Nightly Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml)
+[![Allure Report](https://img.shields.io/badge/Allure-smoke%20report-brightgreen)](https://magdau.github.io/playwright-python-dulux-uk/)
+[![Allure Nightly Report](https://img.shields.io/badge/Allure-nightly%20report-brightgreen)](https://magdau.github.io/playwright-python-dulux-uk/nightly/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
@@ -16,6 +18,28 @@
 ## 📖 Overview
 
 Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) — real Dulux UK customer journeys (buy a colour tester, launch the Visualizer app), tested with a Page Object Model + BDD architecture built on `pytest-bdd`, Playwright and Allure.
+
+---
+
+## 📊 Test Reports
+
+Allure reports are published to GitHub Pages by CI — two reports, two purposes:
+
+| Report | Updated | Covers |
+|---|---|---|
+| [**Smoke report**](https://magdau.github.io/playwright-python-dulux-uk/) | on every merge to `main` | the 2 `@smoke` scenarios — the fast, every-push gate |
+| [**Nightly regression report**](https://magdau.github.io/playwright-python-dulux-uk/nightly/) | daily, and on manual run | all 9 `@regression` test cases against production, including the quantity boundary-value outline |
+
+Each report links back to the CI run that produced it (*Executors* widget) and groups any
+failure into a category — catalogue drift, accessibility, infrastructure, product or test defect.
+
+<div align="center">
+
+<a href="https://magdau.github.io/playwright-python-dulux-uk/"><img src="docs/images/allure-report-smoke.png" alt="Allure smoke report overview" width="420"></a>
+&nbsp;
+<a href="https://magdau.github.io/playwright-python-dulux-uk/nightly/"><img src="docs/images/allure-report-nightly.png" alt="Allure nightly regression report overview" width="420"></a>
+
+</div>
 
 ---
 
@@ -62,6 +86,7 @@ scenario walkthrough: [Architecture](docs/ARCHITECTURE.md).
 
 ## 📚 Docs
 
+- 📊 Reports: [smoke](https://magdau.github.io/playwright-python-dulux-uk/) · [nightly regression](https://magdau.github.io/playwright-python-dulux-uk/nightly/)
 - [Getting Started](docs/GETTING_STARTED.md) — what this project is, what it demonstrates, prerequisites, install & run, day-to-day developer/tester workflow.
 - [Features Guide](docs/FEATURES_GUIDE.md) — a functional walkthrough of the site areas under test.
 - [Test Strategy](docs/TEST_STRATEGY.md) — what we test, why, scope, risk analysis, coverage gaps, roadmap.
