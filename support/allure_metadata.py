@@ -1,4 +1,4 @@
-"""Allure report metadata (epic, story, severity, owner, test-case link) per scenario.
+"""Allure report metadata (epic, story, severity, owner, test-case link, viewport suite) per scenario.
 
 The scenario -> test case (TC-xx) mapping lives here; everything else about a test
 case — its priority and the anchor of its write-up — is read from docs/TEST_CASES.md,
@@ -17,6 +17,10 @@ TEST_CASES_URL = "https://github.com/magdaU/playwright-python-dulux-uk/blob/main
 OWNER = "magdaU"
 
 SEVERITY_BY_PRIORITY = {"P1": "critical", "P2": "normal", "P3": "minor"}
+
+# The @desktop/@tablet/@mobile tag a scenario already carries decides its top-level
+# group in the report's Suites tab, so the viewport is never declared twice.
+VIEWPORT_SUITES = {"desktop": "Desktop", "tablet": "Tablet", "mobile": "Mobile"}
 
 BUYING = "Buying paint"
 EXPLORING = "Exploring colours"
@@ -75,7 +79,8 @@ def _read_test_cases() -> dict[str, tuple[str, str]]:
     return test_cases
 
 
-def apply_allure_metadata(item: pytest.Item, scenario_name: str, test_cases: dict) -> None:
+def apply_allure_metadata(item: pytest.Item, scenario, test_cases: dict) -> None:
+    scenario_name = scenario.name
     metadata = SCENARIOS.get(scenario_name)
     if metadata is None:
         return
@@ -94,6 +99,10 @@ def apply_allure_metadata(item: pytest.Item, scenario_name: str, test_cases: dic
         "owner": OWNER,
         "severity": SEVERITY_BY_PRIORITY[priority],
     }
+    viewport = next((name for name in VIEWPORT_SUITES if item.get_closest_marker(name)), None)
+    if viewport:
+        labels["parentSuite"] = VIEWPORT_SUITES[viewport]
+        labels["suite"] = scenario.feature.name  # keeps the feature level under the viewport group
     for label_type, value in labels.items():
         item.add_marker(pytest.mark.allure_label(value, label_type=label_type))
     item.add_marker(
@@ -106,4 +115,4 @@ def apply_to_items(items: list[pytest.Item]) -> None:
     for item in items:
         scenario = getattr(getattr(item, "obj", None), "__scenario__", None)
         if scenario is not None:
-            apply_allure_metadata(item, scenario.name, test_cases)
+            apply_allure_metadata(item, scenario, test_cases)
