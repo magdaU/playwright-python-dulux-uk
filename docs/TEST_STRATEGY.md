@@ -286,7 +286,11 @@ Planned work, roughly in priority order:
   version would need to loop through candidates until one with a tester is found, adding
   real complexity and extra navigations for a low-likelihood risk (see §10 — catalogue
   drift is now Medium likelihood, not High, since it only fired once so far). Decision:
-  keep the pinned "Violet Morning" and re-evaluate if it drifts again.
+  keep the pinned shade and re-evaluate if it drifts again. **Drifted again (2026-10-08):**
+  the nightly regression failed because "Violet Morning" lost its "Buy a Tester" option
+  (the shade still exists, but now offers only "Find Products in this colour"). Pinned shade
+  changed to "Romantic Reverie", verified to offer a tester. Two drifts in three months —
+  if it happens a third time, revisit the loop-until-a-tester-is-found approach.
 - [x] **Verify the Docker build** — `docker compose build` completes successfully
   (Python deps, Chromium + OS deps, non-root user setup all pass), producing the
   `dulux-python-e2e-tests:latest` image. Verified 2026-08-03. **Correction (2026-08-28):**
@@ -370,7 +374,7 @@ concrete way each could be tested rather than just a note that it's "future work
 | Area | Risk if left untested | How it could be tested | Priority |
 |---|---|---|---|
 | **Checkout / payment / order fulfilment** | A broken checkout ships unnoticed until a customer complaint or a revenue drop is reported — the single biggest gap given this is an e-commerce site | Not against production (no real transactions). Would need a retailer-provided staging/sandbox environment with a test payment provider (e.g. a Stripe/Braintree test mode) before this is testable at all | High — blocked on environment access, not effort |
-| **Only one colour family / shade path exercised (`Violet` / "Violet Morning")** | A shade with no tester option, or a family with an unusual layout (single shade, out-of-stock tester), could break the flow without being caught — the suite has already been surprised once by this class of issue (see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) | Turn the `purchase` scenario into a `Scenario Outline` / `pytest.mark.parametrize`-style data table with 2-3 more family/shade pairs, chosen to include an edge case (e.g. a family with few shades) | Medium |
+| **Only one colour family / shade path exercised (`Violet` / "Romantic Reverie")** | A shade with no tester option, or a family with an unusual layout (single shade, out-of-stock tester), could break the flow without being caught — the suite has already been surprised once by this class of issue (see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) | Turn the `purchase` scenario into a `Scenario Outline` / `pytest.mark.parametrize`-style data table with 2-3 more family/shade pairs, chosen to include an edge case (e.g. a family with few shades) | Medium |
 | **Basket edit/remove flows** | Only *adding* a tester is verified; incrementing/decrementing quantity or removing an item entirely is unverified UI the basket redesign (§10, "Basket UI markup drift") already proved can silently change | Extend `CartPage`/`cart_page.py` with increment/decrement/remove actions and add a `@regression`-tagged scenario asserting basket state after each | Medium |
 | **Site search** | The nav component exposes search (`navigation_component.py`), but no scenario drives it — a broken search box would go undetected | Add a scenario: search for a known product/shade term, assert results contain the expected item | Low–Medium |
 | **Negative / error-state paths** (e.g. an out-of-stock tester, a failed add-to-basket request) | The suite only proves the happy path; a customer-visible error state (broken error messaging, silent failure) is invisible to it today | Use Playwright's `page.route()` to intercept and force an error response on the add-to-basket call, then assert the UI surfaces it correctly, without needing production to actually be in that state | Medium |
