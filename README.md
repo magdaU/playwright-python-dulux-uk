@@ -7,7 +7,7 @@
 [![E2E Tests](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/e2e-tests.yml)
 [![Cross-Browser Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/cross-browser-regression.yml)
 [![Nightly Regression](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml/badge.svg)](https://github.com/magdaU/playwright-python-dulux-uk/actions/workflows/nightly-regression.yml)
-[![Allure Report](https://img.shields.io/badge/Allure-smoke%20report-brightgreen)](https://magdau.github.io/playwright-python-dulux-uk/)
+[![Allure Report](https://img.shields.io/badge/Allure-smoke%20report-brightgreen)](https://magdau.github.io/playwright-python-dulux-uk/smoke/)
 [![Allure Nightly Report](https://img.shields.io/badge/Allure-nightly%20report-brightgreen)](https://magdau.github.io/playwright-python-dulux-uk/nightly/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -23,11 +23,11 @@ Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-j
 
 ## 📊 Test Reports
 
-Allure reports are published to GitHub Pages by CI — two reports, two purposes:
+Allure reports are published to GitHub Pages by CI — two reports, two purposes (both linked from the [reports landing page](https://magdau.github.io/playwright-python-dulux-uk/)):
 
 | Report | Updated | Covers |
 |---|---|---|
-| [**Smoke report**](https://magdau.github.io/playwright-python-dulux-uk/) | on every merge to `main` | the 2 `@smoke` scenarios — the fast, every-push gate |
+| [**Smoke report**](https://magdau.github.io/playwright-python-dulux-uk/smoke/) | on every merge to `main` | the 2 `@smoke` scenarios — the fast, every-push gate |
 | [**Nightly regression report**](https://magdau.github.io/playwright-python-dulux-uk/nightly/) | daily, and on manual run | all 10 `@regression` test cases against production, including the quantity boundary-value outline and a negative-path scenario |
 
 Each report links back to the CI run that produced it (*Executors* widget) and groups any
@@ -40,7 +40,7 @@ without re-running it against production.
 
 <div align="center">
 
-<a href="https://magdau.github.io/playwright-python-dulux-uk/"><img src="docs/images/allure-report.png" alt="Allure smoke report overview: trend, environment and executor widgets" width="640"></a>
+<a href="https://magdau.github.io/playwright-python-dulux-uk/smoke/"><img src="docs/images/allure-report.png" alt="Allure smoke report overview: trend, environment and executor widgets" width="640"></a>
 
 <sub>Smoke report overview (the nightly report has the same layout).</sub>
 
@@ -91,7 +91,7 @@ scenario walkthrough: [Architecture](docs/ARCHITECTURE.md).
 
 ## 📚 Docs
 
-- 📊 Reports: [smoke](https://magdau.github.io/playwright-python-dulux-uk/) · [nightly regression](https://magdau.github.io/playwright-python-dulux-uk/nightly/)
+- 📊 Reports: [smoke](https://magdau.github.io/playwright-python-dulux-uk/smoke/) · [nightly regression](https://magdau.github.io/playwright-python-dulux-uk/nightly/)
 - [Getting Started](docs/GETTING_STARTED.md) — what this project is, what it demonstrates, prerequisites, install & run, day-to-day developer/tester workflow.
 - [Features Guide](docs/FEATURES_GUIDE.md) — a functional walkthrough of the site areas under test.
 - [Test Strategy](docs/TEST_STRATEGY.md) — what we test, why, scope, risk analysis, coverage gaps, roadmap.

@@ -54,7 +54,7 @@ site, which surfaces the same problems a professional QA/SDET role deals with da
 - ♿ **Accessibility scanning** — `axe-core` on the shade page; known pre-existing production violations are allow-listed by ID so the suite still catches *new* ones.
 - 🔁 **Bounded, reported retries** for the one interaction identified as genuinely flaky across browser engines — every attempt logged and attached to the Allure report.
 - 🌐 **Cross-browser & nightly regression** — Chromium/Firefox/WebKit on demand, full regression suite scheduled daily against production.
-- 📊 **Allure reporting** published to GitHub Pages via CI ([smoke](https://magdau.github.io/playwright-python-dulux-uk/) and [nightly](https://magdau.github.io/playwright-python-dulux-uk/nightly/) reports), plus a 🧹 **ruff** lint/format gate and 🐳 **Docker/Compose** for a reproducible run.
+- 📊 **Allure reporting** published to GitHub Pages via CI ([smoke](https://magdau.github.io/playwright-python-dulux-uk/smoke/) and [nightly](https://magdau.github.io/playwright-python-dulux-uk/nightly/) reports), plus a 🧹 **ruff** lint/format gate and 🐳 **Docker/Compose** for a reproducible run.
 
 See [Architecture](ARCHITECTURE.md) for the full feature list and the reasoning behind each design choice.
 
@@ -164,7 +164,7 @@ ruff format --check .   # format check only (what CI runs)
 
 - Branch off `main` for each change (`feature/…`, `fix/…`, `docs/…`, `chore/…`).
 - Open a PR into `main` — the smoke suite + lint run automatically on every push and PR.
-- `main` merges trigger the Allure report publish to GitHub Pages — the [smoke report](https://magdau.github.io/playwright-python-dulux-uk/); the daily/manual nightly run publishes the full-regression [nightly report](https://magdau.github.io/playwright-python-dulux-uk/nightly/).
+- `main` merges trigger the Allure report publish to GitHub Pages — the [smoke report](https://magdau.github.io/playwright-python-dulux-uk/smoke/); the daily/manual nightly run publishes the full-regression [nightly report](https://magdau.github.io/playwright-python-dulux-uk/nightly/).
 
 ### Where to look next
 
