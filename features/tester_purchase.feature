@@ -7,26 +7,26 @@ Feature: Purchase a colour tester
   @smoke @desktop
   Scenario: Desktop customer adds a tester from the colour finder
     Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Violet Morning" from colour family "Violet"
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
 
   @tablet
   Scenario: Tablet customer adds a tester from the colour finder
     Given a tablet customer starts with an empty basket
-    When the customer browses to shade "Violet Morning" from colour family "Violet" using tablet navigation
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet" using tablet navigation
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
 
   @mobile
   Scenario: Mobile customer adds a tester from the colour finder
     Given a mobile customer starts with an empty basket
-    When the customer browses to shade "Violet Morning" from colour family "Violet" using mobile navigation
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet" using mobile navigation
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"

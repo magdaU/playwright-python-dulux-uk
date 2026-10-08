@@ -20,8 +20,8 @@
 | **Priority** | P1 |
 | **Automation** | ✅ [`tester_purchase.feature` — Scenario 1](../features/tester_purchase.feature) |
 | **Preconditions** | Desktop viewport (`1920×1080`); basket is empty; cookie banner not yet dismissed |
-| **Steps** | 1. Open the home page and reject cookies.<br>2. Open "Find a colour" from the top nav.<br>3. Select colour family "Violet".<br>4. Select shade "Violet Morning".<br>5. Click "Buy a Tester in this colour".<br>6. Dismiss the confirmation alert.<br>7. Open the shopping cart. |
-| **Expected result** | Shade page has no unexpected accessibility violations; basket contains exactly 1 item; basket shows tester "Dulux Colour Tester" for shade "Violet Morning" |
+| **Steps** | 1. Open the home page and reject cookies.<br>2. Open "Find a colour" from the top nav.<br>3. Select colour family "Violet".<br>4. Select shade "Romantic Reverie".<br>5. Click "Buy a Tester in this colour".<br>6. Dismiss the confirmation alert.<br>7. Open the shopping cart. |
+| **Expected result** | Shade page has no unexpected accessibility violations; basket contains exactly 1 item; basket shows tester "Dulux Colour Tester" for shade "Romantic Reverie" |
 
 ### TC-02 — Tablet customer adds a tester from the colour finder
 | | |
