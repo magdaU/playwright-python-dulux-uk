@@ -14,6 +14,9 @@ on:
         required: false
         default: "regression"
 
+permissions:
+  contents: write   # required by peaceiris/actions-gh-pages to push to gh-pages branch
+
 jobs:
   pytest-nightly-regression:
     name: Pytest regression suite
@@ -76,3 +79,14 @@ jobs:
         with:
           name: allure-report-nightly
           path: allure-report
+
+      - name: Deploy Allure report to GitHub Pages (nightly/)
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          publish_branch: gh-pages
+          destination_dir: nightly
+          keep_files: true   # keep the smoke report published at the gh-pages root
+          commit_message: "ci: publish nightly Allure report [skip ci]"
