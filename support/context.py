@@ -39,7 +39,13 @@ class Context:
         self.home.open_home_page()
         self.home.reject_all_cookies()
 
-    def browse_to_shade(self, colour_family: str, shade: str, mobile_navigation: bool) -> None:
+    def browse_to_shade(
+        self,
+        colour_family: str,
+        shade: str,
+        mobile_navigation: bool,
+        tester_available: bool = True,
+    ) -> None:
         self.home.open_home_page()
 
         if mobile_navigation:
@@ -65,7 +71,7 @@ class Context:
                 self.page.reload()
                 self.page.wait_for_load_state()
             attempted = True
-            self._select_colour_family_and_shade(colour_family, shade)
+            self._select_colour_family_and_shade(colour_family, shade, tester_available)
 
         retry(
             select_shade_and_verify,
@@ -73,10 +79,15 @@ class Context:
             description=f'select shade "{shade}" from colour family "{colour_family}"',
         )
 
-    def _select_colour_family_and_shade(self, colour_family: str, shade: str) -> None:
+    def _select_colour_family_and_shade(self, colour_family: str, shade: str, tester_available: bool) -> None:
         self.color_selection.choose_colour(colour_family)
         self.color_selection.choose_shade(shade)
-        self.color_selection.expect_tester_purchase_option_visible()
+        # What a successful selection looks like depends on the shade: the tester
+        # button, or — for a shade with no tester — only "Find Products in this colour".
+        if tester_available:
+            self.color_selection.expect_tester_purchase_option_visible()
+        else:
+            self.color_selection.expect_find_products_option_visible()
 
     def search_for_shade(self, shade: str) -> None:
         self.navigation.search_click_on_page()

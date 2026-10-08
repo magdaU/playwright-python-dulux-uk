@@ -38,6 +38,17 @@ Feature: Purchase a colour tester
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
 
+  @desktop @negative
+  Scenario: Desktop customer views a shade that has no tester available
+    Negative path (TC-06). Not every shade can be bought as a tester: "Cotton Breeze" offers
+    only "Find Products in this colour". The customer must not be offered a tester to buy,
+    and the basket must stay empty. If the retailer ever adds a tester for this shade the test
+    fails, flagging catalogue drift in the pinned-shade assumption.
+    Given a desktop customer starts with an empty basket
+    When the customer opens shade "Cotton Breeze" from colour family "Violet"
+    Then the shade offers products but no tester to buy
+    And the basket is still empty
+
   @desktop @boundary
   Scenario Outline: Desktop customer changes the tester quantity at its boundaries
     Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
