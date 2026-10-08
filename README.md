@@ -32,6 +32,8 @@ Allure reports are published to GitHub Pages by CI — two reports, two purposes
 
 Each report links back to the CI run that produced it (*Executors* widget) and groups any
 failure into a category — catalogue drift, accessibility, infrastructure, product or test defect.
+A failed test also carries a full-page screenshot and the page URL, so it can be diagnosed
+without re-running it against production.
 
 <div align="center">
 

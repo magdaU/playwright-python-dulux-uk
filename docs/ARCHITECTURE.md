@@ -50,7 +50,7 @@ playwright-python-dulux-uk/
 ├── requirements.txt
 ├── pyproject.toml                       # ruff lint + format config
 ├── pytest.ini                           # markers = pytest equivalent of Cucumber tags
-├── conftest.py                          # desktop_page / tablet_page / mobile_page viewport fixtures
+├── conftest.py                          # viewport fixtures (desktop/tablet/mobile) + failure screenshot attached to Allure
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
 ├── .github/workflows/
 │   ├── e2e-tests.yml                    # CI: smoke suite + Allure report + GitHub Pages
