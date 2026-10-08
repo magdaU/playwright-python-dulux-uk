@@ -23,6 +23,8 @@ COPY pages ./pages
 COPY support ./support
 COPY features ./features
 COPY tests ./tests
+# support/allure_metadata.py reads each test case's priority from this file at collection time.
+COPY docs/TEST_CASES.md ./docs/TEST_CASES.md
 
 # 4) Run as a non-root user so Chromium's sandbox behaves exactly as it does on
 #    the CI runner. The shared /app and /ms-playwright are handed to that user.

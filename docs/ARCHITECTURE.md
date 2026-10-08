@@ -72,6 +72,7 @@ playwright-python-dulux-uk/
 │       └── alert_component.py           # "added to basket" confirmation
 ├── support/
 │   ├── context.py                       # Context: business methods + page objects per scenario
+│   ├── allure_metadata.py               # Allure epic/story/severity/owner/TC link per scenario (reads docs/TEST_CASES.md)
 │   ├── accessibility.py                 # axe-core scan + allow-listed known violation IDs
 │   └── retry.py                         # bounded, reported retry for known-flaky steps
 └── tests/

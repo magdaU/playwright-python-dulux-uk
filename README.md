@@ -32,6 +32,8 @@ Allure reports are published to GitHub Pages by CI — two reports, two purposes
 
 Each report links back to the CI run that produced it (*Executors* widget) and groups any
 failure into a category — catalogue drift, accessibility, infrastructure, product or test defect.
+Tests are organised in the report as epic → feature → story, carry a severity (from the priority in
+[Test Cases](docs/TEST_CASES.md)), an owner and a link to their TC-xx write-up.
 A failed test also carries a full-page screenshot and the page URL, so it can be diagnosed
 without re-running it against production.
 

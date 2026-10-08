@@ -2,10 +2,15 @@ import pytest
 from playwright.sync_api import Browser, Page
 
 import allure
+from support.allure_metadata import apply_to_items
 
 DESKTOP_VIEWPORT = {"width": 1920, "height": 1080}
 TABLET_VIEWPORT = {"width": 768, "height": 1024}
 MOBILE_VIEWPORT = {"width": 375, "height": 667}
+
+
+def pytest_collection_modifyitems(items):
+    apply_to_items(items)
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
