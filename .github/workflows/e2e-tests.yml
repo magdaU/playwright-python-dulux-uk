@@ -81,6 +81,21 @@ jobs:
           mkdir -p allure-results
           cp allure/categories.json allure-results/categories.json
 
+      - name: Write Allure environment info
+        if: always()
+        run: |
+          mkdir -p allure-results
+          cat > allure-results/environment.properties <<EOF
+          Target=Production (https://www.dulux.co.uk)
+          Browser=Chromium
+          Runner=${{ runner.os }} (ubuntu-latest)
+          Python=$(python --version | cut -d" " -f2)
+          Playwright=$(pip show playwright | sed -n "s/^Version: //p")
+          Markers=${PYTEST_MARKERS}
+          Branch=${{ github.ref_name }}
+          Commit=${GITHUB_SHA::7}
+          EOF
+
       - name: Carry over Allure history (Trend widget)
         if: always()
         run: |
