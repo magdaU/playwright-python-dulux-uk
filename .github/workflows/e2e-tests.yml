@@ -99,9 +99,13 @@ jobs:
       - name: Carry over Allure history (Trend widget)
         if: always()
         run: |
-          if [ -d gh-pages/history ]; then
+          # The smoke report moved from the gh-pages root to smoke/; fall back to the
+          # old location once so the existing trend is not lost.
+          src=gh-pages/smoke/history
+          [ -d "$src" ] || src=gh-pages/history
+          if [ -d "$src" ]; then
             mkdir -p allure-results/history
-            cp -r gh-pages/history/. allure-results/history/
+            cp -r "$src"/. allure-results/history/
           fi
 
       - name: Generate Allure HTML report
@@ -122,5 +126,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
           publish_branch: gh-pages
+          destination_dir: smoke
           keep_files: true   # keep the nightly report published under nightly/
-          commit_message: "ci: publish Allure report [skip ci]"
+          commit_message: "ci: publish smoke Allure report [skip ci]"
+
+      - name: Publish reports landing page to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .github/report-landing
+          publish_branch: gh-pages
+          keep_files: true   # adds index.html at the root, leaves smoke/ and nightly/ alone
+          commit_message: "ci: publish reports landing page [skip ci]"
