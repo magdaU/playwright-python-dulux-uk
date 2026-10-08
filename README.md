@@ -35,9 +35,9 @@ failure into a category — catalogue drift, accessibility, infrastructure, prod
 
 <div align="center">
 
-<a href="https://magdau.github.io/playwright-python-dulux-uk/"><img src="docs/images/allure-report-smoke.png" alt="Allure smoke report overview" width="420"></a>
-&nbsp;
-<a href="https://magdau.github.io/playwright-python-dulux-uk/nightly/"><img src="docs/images/allure-report-nightly.png" alt="Allure nightly regression report overview" width="420"></a>
+<a href="https://magdau.github.io/playwright-python-dulux-uk/"><img src="docs/images/allure-report.png" alt="Allure smoke report overview: trend, environment and executor widgets" width="640"></a>
+
+<sub>Smoke report overview (the nightly report has the same layout).</sub>
 
 </div>
 
