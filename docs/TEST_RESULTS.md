@@ -18,11 +18,13 @@
 | TC-01 | Desktop customer adds a tester from the colour finder | ✅ | ⚠️ | ⚠️ | 2026-08-03 | Chromium clean; Firefox/WebKit succeed via the bounded shade-selection retry |
 | TC-02 | Tablet customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | Cross-browser matrix currently exercises `regression` generally; tablet-specific per-engine results not separately tracked yet |
 | TC-03 | Mobile customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | See TC-02 note |
+| TC-04a | Tester quantity boundary values (1, 23, 0, 24) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, 4 examples, all engines. Cap of 23 is server-side (HTML declares `max=999`) |
 | TC-07 | Desktop customer opens the Visualizer for a shade | ✅ | — | — | 2026-08-03 | |
 | TC-08 | Mobile customer tries to open the Visualizer for a shade | ✅ | — | — | 2026-08-03 | Asserts the documented store-data message, not app success |
 | TC-11 | Shade page a11y scan (no new critical/serious violations) | ✅ | — | — | 2026-08-03 | Known violations allow-listed; scan itself run on Chromium as part of TC-01/TC-03 |
 
-**Overall status as of the last full verification:** all 5 automated scenarios pass on
+**Overall status as of the last full verification:** all 9 automated test cases (5 scenarios; one is a
+4-example outline) pass on
 Chromium (the `smoke`-gating engine); Firefox and WebKit pass the `purchase` journey via
 the documented, bounded retry rather than outright — see the risk register entry in
 [Test Strategy §10](TEST_STRATEGY.md#10-risk-analysis--mitigations) ("Cross-engine
@@ -40,11 +42,14 @@ navigation timing").
 
 ## Historical incidents affecting results
 
-Two past failures materially changed what "pass" means for this suite — both fully
+Three past failures materially changed what "pass" means for this suite — both fully
 root-caused rather than papered over:
 
 - **2026-07-09** — `purchase` scenarios failed because "Gentle Lavender" had been removed
   from the "Violet" family on production. Test data refreshed to "Violet Morning".
+- **2026-10-08** — nightly `regression` failed: "Violet Morning" still existed but no longer
+  offered "Buy a Tester in this colour". Test data changed to "Romantic Reverie", verified to
+  offer a tester.
 - **2026-08-03** — `purchase` scenarios failed on the basket-quantity assertion after a
   production markup redesign broke locator uniqueness. Fixed by narrowing the locator to
   role `spinbutton`.

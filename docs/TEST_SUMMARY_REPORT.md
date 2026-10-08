@@ -18,7 +18,7 @@
 
 The suite automates the two highest-value Dulux UK customer journeys — **tester
 purchase** and **Visualizer launch** — across desktop, tablet and mobile viewports, with
-an accessibility scan folded into the purchase journey. All 5 scenarios currently pass
+an accessibility scan folded into the purchase journey. All 9 test cases (5 scenarios, one of them a 4-example boundary-value outline) currently pass
 against live production on the primary engine (Chromium); the `purchase` journey also
 passes on Firefox and WebKit via a documented, bounded retry for one known cross-engine
 timing difference.
@@ -54,7 +54,7 @@ were seeded or simulated. Each is fully written up in [Lessons Learned](LESSONS_
 
 | # | Defect | Severity | Status |
 |---|---|---|---|
-| 1 | Product catalogue drift — pinned test shade removed from its colour family | Medium | ✅ Fixed (test data refreshed) |
+| 1 | Product catalogue drift — pinned test shade removed from its colour family | Medium | ✅ Fixed twice (test data refreshed 2026-07-09 and 2026-10-08) |
 | 2 | Basket UI redesign broke a locator's uniqueness (quantity control) | Medium | ✅ Fixed (locator narrowed to role) |
 | 3 | Cross-engine navigation timing difference (Firefox/WebKit) | Medium | ✅ Mitigated (bounded, reported retry) |
 | 4 | Pre-existing a11y violations on the shade page (not owned by this team) | Medium | ✅ Handled (allow-listed by ID, new violations still gate) |

@@ -4,7 +4,7 @@
 
 Python port of [playwright-java-dulux-uk](https://github.com/magdaU/playwright-java-dulux-uk) — the **same** real Dulux UK customer journeys (buy a colour tester, launch the Visualizer app), the **same** Page Object Model + BDD architecture, a different stack (`pytest-bdd` + plain pytest fixtures instead of Cucumber + PicoContainer DI).
 
-> **Status:** implemented and verified against production — all 5 scenarios pass (desktop + tablet + mobile `purchase`, desktop + mobile `visualizer`).
+> **Status:** implemented and verified against production — all 9 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, desktop + mobile `visualizer`).
 
 📚 **Docs:** [Features Guide](FEATURES_GUIDE.md) (functional walkthrough of the site areas under test) · [Test Strategy](TEST_STRATEGY.md) (what we test, why, scope, risk analysis, roadmap) · [Test Plan](TEST_PLAN.md) · [Test Cases](TEST_CASES.md) · [Test Results](TEST_RESULTS.md) · [Test Summary Report](TEST_SUMMARY_REPORT.md) · [Architecture](ARCHITECTURE.md) (tech stack, design rationale, project structure, a full sample scenario walkthrough) · [Lessons Learned](LESSONS_LEARNED.md) · [Testing Without Requirements](TESTING_WITHOUT_REQUIREMENTS.md).
 

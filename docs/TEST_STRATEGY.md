@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 5 scenarios pass (desktop + tablet + mobile `purchase`, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. |
+| **Status** | Implemented and verified against production — all 9 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
 
 ---
 
@@ -82,7 +82,7 @@ Characteristics that shape the test design:
 
 ### 3.1 Test scenarios implemented
 
-Five scenarios across two features, all in Gherkin under [`features/`](../features/):
+Six scenarios (nine test cases — scenario 6 is a four-example outline) across two features, all in Gherkin under [`features/`](../features/):
 
 | # | Scenario | Feature | Tags | Viewport | Verifies |
 |---|---|---|---|---|---|
@@ -91,9 +91,10 @@ Five scenarios across two features, all in Gherkin under [`features/`](../featur
 | 3 | Mobile customer adds a tester from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@mobile @purchase @regression` | Mobile `375×667` | Same flow, via hamburger-menu navigation |
 | 4 | Desktop customer opens the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@smoke @desktop @visualizer @regression` | Desktop | Visualizer opens in a **new tab**, at the expected URL |
 | 5 | Mobile customer tries to open the Visualizer for a shade | [`visualizer_experience.feature`](../features/visualizer_experience.feature) | `@mobile @visualizer @regression` | Mobile | Mobile surfaces the known store-data message instead of opening the app (documented third-party behaviour, not a bug) |
+| 6 | Desktop customer changes the tester quantity at its boundaries *(Scenario Outline, 4 examples)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @boundary @purchase @regression` | Desktop `1920×1080` | Quantity `1` and `23` are accepted; `0` and `24` are rejected and the field settles back on the last accepted value. The 23 cap is enforced server-side (`POST /store/api/order` → 422) although the field's HTML declares `max=999` |
 
 Scenario 1 and scenario 4 carry `@smoke` — the every-push/PR gate — because they're the
-single desktop path through each of the two in-scope journeys; scenarios 2, 3 and 5 run
+single desktop path through each of the two in-scope journeys; scenarios 2, 3, 5 and 6 run
 under `@regression` (on-demand / nightly) since they're viewport variants of an
 already-smoke-tested flow, not independent risk.
 
@@ -375,7 +376,7 @@ concrete way each could be tested rather than just a note that it's "future work
 |---|---|---|---|
 | **Checkout / payment / order fulfilment** | A broken checkout ships unnoticed until a customer complaint or a revenue drop is reported — the single biggest gap given this is an e-commerce site | Not against production (no real transactions). Would need a retailer-provided staging/sandbox environment with a test payment provider (e.g. a Stripe/Braintree test mode) before this is testable at all | High — blocked on environment access, not effort |
 | **Only one colour family / shade path exercised (`Violet` / "Romantic Reverie")** | A shade with no tester option, or a family with an unusual layout (single shade, out-of-stock tester), could break the flow without being caught — the suite has already been surprised once by this class of issue (see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) | Turn the `purchase` scenario into a `Scenario Outline` / `pytest.mark.parametrize`-style data table with 2-3 more family/shade pairs, chosen to include an edge case (e.g. a family with few shades) | Medium |
-| **Basket edit/remove flows** | Only *adding* a tester is verified; incrementing/decrementing quantity or removing an item entirely is unverified UI the basket redesign (§10, "Basket UI markup drift") already proved can silently change | Extend `CartPage`/`cart_page.py` with increment/decrement/remove actions and add a `@regression`-tagged scenario asserting basket state after each | Medium |
+| **Basket edit/remove flows** | Adding a tester and typing boundary quantities (1, 23, 0, 24 — scenario 6) are verified; incrementing/decrementing via the spinner or removing an item entirely is unverified UI the basket redesign (§10, "Basket UI markup drift") already proved can silently change | Extend `CartPage`/`cart_page.py` with increment/decrement/remove actions and add a `@regression`-tagged scenario asserting basket state after each | Medium |
 | **Site search** | The nav component exposes search (`navigation_component.py`), but no scenario drives it — a broken search box would go undetected | Add a scenario: search for a known product/shade term, assert results contain the expected item | Low–Medium |
 | **Negative / error-state paths** (e.g. an out-of-stock tester, a failed add-to-basket request) | The suite only proves the happy path; a customer-visible error state (broken error messaging, silent failure) is invisible to it today | Use Playwright's `page.route()` to intercept and force an error response on the add-to-basket call, then assert the UI surfaces it correctly, without needing production to actually be in that state | Medium |
 | **Full cross-browser coverage on every push** | A Firefox/WebKit-only regression ships on `main` and is only caught at the next nightly run (up to ~24h later), not immediately | Deliberate trade-off already made (§10) to protect push/PR speed. If the lag becomes a real problem, the narrowest fix is adding the two `@smoke`-tagged scenarios (not the whole suite) to a small WebKit job on the push gate, keeping the cost bounded | Low (accepted trade-off; revisit only if the lag causes a real incident) |
