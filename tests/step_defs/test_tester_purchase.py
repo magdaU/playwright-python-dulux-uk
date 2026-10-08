@@ -54,6 +54,18 @@ def add_tester_to_basket(ctx):
     ctx.navigation.open_shopping_cart()
 
 
+@when(parsers.parse("the customer changes the tester quantity to {quantity:d}"))
+def change_tester_quantity(ctx, quantity):
+    ctx.cart.change_quantity(quantity)
+
+
+@then(parsers.parse("the basket quantity is {quantity:d}"))
+def basket_quantity_is(ctx, quantity):
+    # Auto-waits, so a rejected value (which reverts after the server's 422)
+    # is only accepted once the field has settled on the expected quantity.
+    expect(ctx.cart.get_quantity()).to_have_value(str(quantity))
+
+
 @then(parsers.parse("the basket contains {count:d} item"))
 def basket_contains_items(ctx, count):
     expect(ctx.cart.get_quantity()).to_have_value(str(count))
