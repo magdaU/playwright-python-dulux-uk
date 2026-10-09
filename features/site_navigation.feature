@@ -12,7 +12,7 @@ Feature: Use the Dulux site
     Given a desktop customer is on the home page
     Then the main navigation offers the colour finder, site search and the shopping cart
 
-  @smoke @desktop @search
+  @desktop @search
   Scenario Outline: Desktop customer searches for a shade
     Site search (TC-09). A known shade is found and shown on the results page; a term that matches
     nothing gets the site's "no results" message instead of an empty or broken page.
@@ -21,10 +21,16 @@ Feature: Use the Dulux site
     Then the search results are for "<term>"
     And the results show "<result>"
 
-    Examples:
+    @smoke
+    Examples: the smoke pair
       | term             | result                                                  | rule                       |
       | Romantic Reverie | Romantic Reverie                                        | known shade is found       |
       | zzqqxxnoshade    | Sorry, we couldn't find any results for 'zzqqxxnoshade' | unknown term finds nothing |
+
+    Examples: how the term is typed
+      | term             | result           | rule                              |
+      | romantic reverie | Romantic Reverie | search ignores letter case        |
+      | Reverie          | Romantic Reverie | part of a name finds the shade    |
 
   @smoke @desktop @cookies
   Scenario: Desktop customer cannot use the site until the cookie banner is answered
@@ -36,3 +42,12 @@ Feature: Use the Dulux site
     When the customer rejects all cookies
     Then the cookie banner is gone
     And the navigation can be used
+
+  @mobile @cookies
+  Scenario: Mobile customer answers the cookie banner
+    Cookie consent on a phone (TC-19). On a first visit the banner is shown; after "Reject all" it is
+    gone. The navigation behind the banner is not checked here: on mobile it is the hamburger menu.
+    Given a mobile customer opens the home page without answering the cookie banner
+    Then the cookie banner is shown
+    When the customer rejects all cookies
+    Then the cookie banner is gone

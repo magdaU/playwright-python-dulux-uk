@@ -28,6 +28,16 @@ def desktop_home_page_banner_unanswered(desktop_page):
     return ctx
 
 
+@given(
+    "a mobile customer opens the home page without answering the cookie banner",
+    target_fixture="ctx",
+)
+def mobile_home_page_banner_unanswered(mobile_page):
+    ctx = Context(page=mobile_page, desktop=False)
+    ctx.home.open_home_page()
+    return ctx
+
+
 @when(parsers.parse('the customer searches for "{term}"'))
 def search_for_term(ctx, term):
     ctx.search_for_shade(term)
