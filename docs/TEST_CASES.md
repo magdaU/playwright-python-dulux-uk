@@ -188,6 +188,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Open the home page.<br>2. Click "Reject all". |
 | **Expected result** | The banner is shown first, and gone after "Reject all". The navigation behind it is not checked (on mobile it is the hamburger menu) |
 
+### TC-20 — Mobile home page shows the menu, search and cart
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Mobile customer sees the menu on the home page"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | Mobile viewport 375×667, home page open, cookies rejected |
+| **Steps** | 1. Look at the top navigation. |
+| **Expected result** | The "Menu" (hamburger) button, the "Search" button and the "Shopping Cart" link are visible. Only the home page is loaded |
+
+### TC-21 — Tablet home page shows the menu, search and cart
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Tablet customer sees the menu on the home page"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | Tablet viewport 768×1024, home page open, cookies rejected |
+| **Steps** | 1. Look at the top navigation. |
+| **Expected result** | Same as TC-20: at this width the site also uses the hamburger menu |
+
 ### TC-12 — Home page shows the main navigation
 | | |
 |---|---|

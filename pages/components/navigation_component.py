@@ -13,6 +13,9 @@ class NavigationComponent(BasePage):
     def get_find_a_colour_button(self) -> Locator:
         return self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM)
 
+    def get_menu_button(self) -> Locator:
+        return self.page.get_by_role("button", name=self.MENU_HAMBURGER)
+
     def get_search_button(self) -> Locator:
         return self.page.get_by_role("button", name=self.SEARCH_BUTTON)
 

@@ -18,7 +18,7 @@
 
 The suite automates the two highest-value Dulux UK customer journeys — **tester
 purchase** and **Visualizer launch** — across desktop, tablet and mobile viewports, with
-an accessibility scan folded into the purchase journey. All 26 test cases (19 scenarios; three of them are example-driven outlines) currently pass
+an accessibility scan folded into the purchase journey. All 28 test cases (21 scenarios; three of them are example-driven outlines) currently pass
 against live production on the primary engine (Chromium); the `purchase` journey also
 passes on Firefox and WebKit via a documented, bounded retry for one known cross-engine
 timing difference.

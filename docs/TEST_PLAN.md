@@ -44,7 +44,7 @@ what it would take to bring each in scope.
 - **BDD, black-box, browser-driven** — Gherkin scenarios in `features/`, executed via
   `pytest-bdd` against the real production site (no mocks, no staging environment
   available). See [Test Strategy §4](TEST_STRATEGY.md#4-test-approach).
-- **Tag-sliced execution** — `smoke` (fast, desktop-only, gates every push/PR),
+- **Tag-sliced execution** — `smoke` (fast, mostly desktop, gates every push/PR),
   `regression` (full viewport matrix, on-demand and nightly). See [Test Strategy §8](TEST_STRATEGY.md#8-test-selection--tagging-strategy).
 - **Three run modes**, each with a different cadence/purpose:
 

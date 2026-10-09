@@ -76,6 +76,12 @@ SCENARIOS = {
         "TC-18", BUYING, "Leave the basket"
     ),
     "Mobile customer answers the cookie banner": ScenarioMetadata("TC-19", USING_THE_SITE, "Cookie consent"),
+    "Mobile customer sees the menu on the home page": ScenarioMetadata(
+        "TC-20", USING_THE_SITE, "Main navigation"
+    ),
+    "Tablet customer sees the menu on the home page": ScenarioMetadata(
+        "TC-21", USING_THE_SITE, "Main navigation"
+    ),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),
