@@ -165,10 +165,10 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer searches for a shade"](../features/site_navigation.feature) (outline, 2 examples; `@smoke`) |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer searches for a shade"](../features/site_navigation.feature) (outline, 4 examples; the known-shade and unknown-term pair is `@smoke`) |
 | **Preconditions** | On the home page, cookies rejected |
 | **Steps** | 1. Open search.<br>2. Enter a term.<br>3. Press Enter. |
-| **Expected result** | Known shade ("Romantic Reverie"): the results page `/search-results?search=…` shows that shade. Unknown term ("zzqqxxnoshade"): the results page shows "Sorry, we couldn't find any results for '…'" |
+| **Expected result** | Known shade ("Romantic Reverie"): the results page `/search-results?search=…` shows that shade. Unknown term ("zzqqxxnoshade"): the results page shows "Sorry, we couldn't find any results for '…'". The term's letter case and a partial name ("romantic reverie", "Reverie") still find "Romantic Reverie" |
 
 ### TC-10 — Cookie banner blocks interaction until dismissed
 | | |
@@ -178,6 +178,15 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Preconditions** | Fresh browser context, cookie banner not yet interacted with |
 | **Steps** | 1. Open the home page.<br>2. Check that the "Find a colour" navigation button cannot be clicked (Playwright trial click, nothing is navigated to).<br>3. Click "Reject all".<br>4. Check the banner is gone and the navigation button can be clicked. |
 | **Expected result** | The banner blocks the navigation until "Reject all" is clicked; afterwards it is gone and the page is usable. The banner's buttons are localised (Polish was seen), so the test uses the stable `#onetrust-…` ids, not button text |
+
+### TC-19 — Cookie banner can be answered on a phone
+| | |
+|---|---|
+| **Priority** | P3 |
+| **Automation** | ✅ [`site_navigation.feature` — "Mobile customer answers the cookie banner"](../features/site_navigation.feature) |
+| **Preconditions** | Fresh browser context at 375×667, cookie banner not yet interacted with |
+| **Steps** | 1. Open the home page.<br>2. Click "Reject all". |
+| **Expected result** | The banner is shown first, and gone after "Reject all". The navigation behind it is not checked (on mobile it is the hamburger menu) |
 
 ### TC-12 — Home page shows the main navigation
 | | |

@@ -22,20 +22,21 @@
 | TC-06 | Shade with no tester option (negative path) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, "Cotton Breeze" under "Violet". Data-dependent: fails if the shade gains a tester |
 | TC-04 | Basket increment/decrement/remove | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; + / − / bin button |
 | TC-05 | Add-to-basket failure is surfaced (stubbed HTTP 500) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; the error alert is short-lived, asserted as soon as it appears |
-| TC-09 | Site search (known shade, unknown term) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; 2 examples |
+| TC-09 | Site search (known shade, unknown term, other letter case, part of a name) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; 2 examples; 2 more added 2026-10-09, Chromium only |
 | TC-10 | Cookie banner blocks interaction until dismissed | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; ids used because the banner text is localised |
 | TC-07 | Desktop customer opens the Visualizer for a shade | ✅ | — | — | 2026-08-03 | |
 | TC-08 | Mobile customer tries to open the Visualizer for a shade | ✅ | — | — | 2026-08-03 | Asserts the documented store-data message, not app success |
 | TC-13 | Tester for shades from other colour families (Blue / Green) | ✅ | — | — | 2026-10-09 | Desktop; 2 examples, Chromium only so far |
 | TC-14 | Basket shows tester price and order total | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected price is changed (checked) |
 | TC-15 | Basket survives a page reload | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected quantity is changed (checked) |
+| TC-19 | Cookie banner can be answered on a phone | ✅ | — | — | 2026-10-09 | Mobile viewport; Chromium only so far |
 | TC-17 | Empty basket tells the customer so and offers a way back | ✅ | — | — | 2026-10-09 | Desktop; basket page only |
 | TC-18 | Continue shopping leaves the basket for the product listing | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected address is changed (checked) |
 | TC-16 | A shade can be opened from the colour finder | ✅ | — | — | 2026-10-09 | Desktop; Chromium only so far |
 | TC-12 | Home page shows the main navigation | ✅ | — | — | 2026-10-09 | Desktop; Chromium only so far. Home page load only |
 | TC-11 | Shade page a11y scan (no new critical/serious violations) | ✅ | — | — | 2026-08-03 | Known violations allow-listed; scan itself run on Chromium as part of TC-01/TC-03 |
 
-**Overall status as of the last full verification:** all 23 automated test cases (18 scenarios; two are
+**Overall status as of the last full verification:** all 26 automated test cases (19 scenarios; two are
 4-example outline) pass on
 Chromium (the `smoke`-gating engine); Firefox and WebKit pass the `purchase` journey via
 the documented, bounded retry rather than outright — see the risk register entry in

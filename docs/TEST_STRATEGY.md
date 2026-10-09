@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 23 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
+| **Status** | Implemented and verified against production — all 26 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
 
 ---
 
@@ -82,7 +82,7 @@ Characteristics that shape the test design:
 
 ### 3.1 Test scenarios implemented
 
-Eighteen scenarios (twenty-three test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
+Nineteen scenarios (twenty-six test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
 
 | # | Scenario | Feature | Tags | Viewport | Verifies |
 |---|---|---|---|---|---|
@@ -95,7 +95,7 @@ Eighteen scenarios (twenty-three test cases — scenarios 6, 10 and 13 are examp
 | 7 | Desktop customer views a shade that has no tester available *(negative path)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @negative @purchase @regression` | Desktop `1920×1080` | A shade with no tester ("Cotton Breeze") offers only "Find Products in this colour": no "Buy a Tester" button is shown and the basket stays empty. Doubles as a canary — it fails if the retailer adds a tester for this shade, flagging drift in the pinned-shade assumption |
 | 8 | Desktop customer changes the basket quantity and removes the tester | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @purchase @regression` | Desktop `1920×1080` | + and − change the quantity (1 → 2 → 1), − is disabled at the minimum, removing the item gives "Your basket is empty" |
 | 9 | Desktop customer is told when adding a tester to the basket fails *(failure path)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @negative @purchase @regression` | Desktop `1920×1080` | With the add-to-basket request stubbed to HTTP 500 (never sent to production) the customer sees "Something has gone wrong, please try again.", not the success confirmation, and the basket stays empty |
-| 10 | Desktop customer searches for a shade *(Scenario Outline, 2 examples)* | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop @search @regression` | Desktop `1920×1080` | A known shade is found on the results page; an unknown term shows the site's "no results" message |
+| 10 | Desktop customer searches for a shade *(Scenario Outline, 4 examples)* | [`site_navigation.feature`](../features/site_navigation.feature) | `@desktop @search @regression` (`@smoke` on the first pair of examples) | Desktop `1920×1080` | A known shade is found on the results page; an unknown term shows the site's "no results" message; letter case and a partial name still find the shade |
 | 11 | Desktop customer cannot use the site until the cookie banner is answered | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop @cookies @regression` | Desktop `1920×1080` | On a first visit the banner blocks the navigation; after "Reject all" it is gone and the navigation works |
 | 12 | Desktop customer sees the main navigation on the home page | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop` | Desktop `1920×1080` | The colour finder, search and shopping cart entry points are visible on the home page (health check; one page load) |
 | 13 | Desktop customer adds a tester for a shade from another colour family *(Scenario Outline, 2 examples)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @purchase @regression` | Desktop `1920×1080` | Blue / "Breton Blue" and Green / "Fresh Sage" go through the colour finder into the basket like the pinned shade does |
@@ -104,6 +104,7 @@ Eighteen scenarios (twenty-three test cases — scenarios 6, 10 and 13 are examp
 | 16 | Desktop customer can open a shade from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | The colour finder leads to a shade that offers a tester; nothing is added to the basket |
 | 17 | Desktop customer with nothing in the basket is told so and can keep shopping | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | An empty basket says so and offers a "Continue shopping" link to the product listing |
 | 18 | Desktop customer can leave the basket and keep shopping | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | "Continue shopping" takes a customer with a tester in the basket to `/en/products` (seeded basket) |
+| 19 | Mobile customer answers the cookie banner | [`site_navigation.feature`](../features/site_navigation.feature) | `@mobile @cookies @regression` | Mobile `375×667` | The banner is shown on a first visit and gone after "Reject all" |
 
 Scenarios 1, 4, 10, 11, 12, 14, 16, 17 and 18 carry `@smoke` — the every-push/PR gate (10 tests, as 10 is a
 2-example outline). Scenarios 1 and 4 are the single desktop path through each in-scope journey;
