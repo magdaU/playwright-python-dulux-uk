@@ -12,10 +12,16 @@ class CartPage(BasePage):
     REMOVE_ITEM_LABEL = "Remove"
     ADD_TO_BASKET_API_PATTERN = "**/store/api/v2/cart"
     ADD_TO_BASKET_URL = "https://www.dulux.co.uk/en/store/api/v2/cart"
+    CONTINUE_SHOPPING_LABEL = "Continue shopping"
+    PRODUCTS_PAGE_PATH = "/en/products"
     YOUR_BASKET_IS_EMPTY_TEXT = "Your basket is empty"
 
     def open_cart_page(self) -> None:
         self.page.goto(self.CART_PAGE_URL)
+
+    def get_continue_shopping_link(self) -> Locator:
+        # The basket page has two of these links (header and order summary), both to the same address.
+        return self.page.get_by_role("link", name=self.CONTINUE_SHOPPING_LABEL).first
 
     def reload(self) -> None:
         self.page.reload()

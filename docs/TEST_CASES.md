@@ -117,6 +117,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Open the colour finder from the top navigation.<br>2. Choose colour family "Violet" and shade "Romantic Reverie". |
 | **Expected result** | The shade panel opens and offers "Buy a Tester in this colour". Nothing is added to the basket |
 
+### TC-17 — Empty basket tells the customer so and offers a way back
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer with nothing in the basket is told so and can keep shopping"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Fresh browser context, nothing added |
+| **Steps** | 1. Open the basket page. |
+| **Expected result** | "Your basket is empty" is shown, and a "Continue shopping" link to `/en/products` is offered |
+
+### TC-18 — Continue shopping leaves the basket for the product listing
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer can leave the basket and keep shopping"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Steps** | 1. Open the basket.<br>2. Click "Continue shopping". |
+| **Expected result** | The customer lands on `/en/products`. The basket page has two such links (header and order summary), both to the same address; the test uses the first |
+
 ---
 
 ## Visualizer journey

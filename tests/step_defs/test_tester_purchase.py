@@ -1,3 +1,5 @@
+import re
+
 from playwright.sync_api import expect
 from pytest_bdd import given, parsers, scenarios, then, when
 
@@ -175,3 +177,24 @@ def basket_shows_prices(ctx, price, delivery, total):
 @then("the shade offers a tester to buy")
 def shade_offers_tester(ctx):
     expect(ctx.color_selection.get_buy_a_tester_button()).to_be_visible()
+
+
+@when("the customer opens the basket")
+def open_basket(ctx):
+    ctx.cart.open_cart_page()
+    ctx.home.reject_all_cookies()
+
+
+@when("the customer chooses to continue shopping")
+def continue_shopping(ctx):
+    ctx.cart.get_continue_shopping_link().click()
+
+
+@then("the customer is offered a way to continue shopping")
+def continue_shopping_offered(ctx):
+    expect(ctx.cart.get_continue_shopping_link()).to_have_attribute("href", ctx.cart.PRODUCTS_PAGE_PATH)
+
+
+@then("the customer is on the products page")
+def customer_on_products_page(ctx):
+    expect(ctx.page).to_have_url(re.compile(rf"{re.escape(ctx.cart.PRODUCTS_PAGE_PATH)}$"))
