@@ -96,3 +96,38 @@ Feature: Purchase a colour tester
     Then the customer is told something went wrong
     And the customer is not told the tester was added
     And the basket is still empty
+
+  @desktop
+  Scenario Outline: Desktop customer adds a tester for a shade from another colour family
+    Catalogue coverage (TC-13). The purchase path does not depend on the one pinned shade: shades
+    from other colour families are found through the colour finder and added to the basket the same
+    way. Failing here while TC-01 passes points at that family or shade, not at the purchase flow.
+    Given a desktop customer starts with an empty basket
+    When the customer browses to shade "<shade>" from colour family "<colour_family>"
+    And the customer adds a tester to the basket
+    Then the basket contains 1 item
+    And the basket includes tester "Dulux Colour Tester" for shade "<shade>"
+
+    Examples:
+      | colour_family | shade        |
+      | Blue          | Breton Blue  |
+      | Green         | Fresh Sage   |
+
+  @desktop
+  Scenario: Desktop customer sees the price of a tester and the order total
+    Pricing (TC-14). One tester costs 2.90, delivery adds 1.50, so the order total is 4.40. The
+    basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
+    The amounts are production prices: a failure means the price changed, which is worth knowing.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Then the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+
+  @desktop
+  Scenario: Desktop customer finds the basket unchanged after reloading the page
+    Basket persistence (TC-15). The basket lives in the session, not in the page: after a reload
+    the customer still has the same tester, in the same quantity. The basket is seeded through the
+    site's own add-to-cart API.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer increases the tester quantity
+    And the customer reloads the basket page
+    Then the basket quantity is 2
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"

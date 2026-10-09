@@ -81,6 +81,33 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Start with an empty basket; open the shade's page via the colour finder.<br>2. Confirm "Find Products in this colour" is shown and no "Buy a Tester" control is present.<br>3. Open the basket. |
 | **Expected result** | No tester is offered and the basket is still empty. Confirms the assumption behind the pinned-shade decision still holds. As an automated test it also acts as a canary: if it fails, the retailer has added a tester for this shade — pick another shade without one |
 
+### TC-13 — Tester can be added for shades from other colour families
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer adds a tester for a shade from another colour family"](../features/tester_purchase.feature) (outline, 2 examples: Blue / "Breton Blue", Green / "Fresh Sage") |
+| **Preconditions** | Empty basket, desktop |
+| **Steps** | 1. Open the colour finder.<br>2. Choose the colour family and the shade.<br>3. Click "Buy a Tester in this colour".<br>4. Open the basket. |
+| **Expected result** | The basket holds one "Dulux Colour Tester" for that shade. Guards against catalogue drift and layout differences between families; a failure here with TC-01 green points at that family or shade |
+
+### TC-14 — Basket shows the tester price and the order total
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer sees the price of a tester and the order total"](../features/tester_purchase.feature) |
+| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the site's add-to-cart API) |
+| **Steps** | 1. Open the basket. |
+| **Expected result** | Tester £2.90 (shown as item price and subtotal), delivery £1.50, order total £4.40. These are production prices, so a failure usually means a price change |
+
+### TC-15 — Basket survives a page reload
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer finds the basket unchanged after reloading the page"](../features/tester_purchase.feature) |
+| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Steps** | 1. Increase the quantity to 2.<br>2. Reload the basket page. |
+| **Expected result** | The basket still holds the same tester, with quantity 2 |
+
 ---
 
 ## Visualizer journey

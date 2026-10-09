@@ -26,10 +26,13 @@
 | TC-10 | Cookie banner blocks interaction until dismissed | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; ids used because the banner text is localised |
 | TC-07 | Desktop customer opens the Visualizer for a shade | ✅ | — | — | 2026-08-03 | |
 | TC-08 | Mobile customer tries to open the Visualizer for a shade | ✅ | — | — | 2026-08-03 | Asserts the documented store-data message, not app success |
+| TC-13 | Tester for shades from other colour families (Blue / Green) | ✅ | — | — | 2026-10-09 | Desktop; 2 examples, Chromium only so far |
+| TC-14 | Basket shows tester price and order total | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected price is changed (checked) |
+| TC-15 | Basket survives a page reload | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected quantity is changed (checked) |
 | TC-12 | Home page shows the main navigation | ✅ | — | — | 2026-10-09 | Desktop; Chromium only so far. Home page load only |
 | TC-11 | Shade page a11y scan (no new critical/serious violations) | ✅ | — | — | 2026-08-03 | Known violations allow-listed; scan itself run on Chromium as part of TC-01/TC-03 |
 
-**Overall status as of the last full verification:** all 16 automated test cases (12 scenarios; two are
+**Overall status as of the last full verification:** all 20 automated test cases (15 scenarios; two are
 4-example outline) pass on
 Chromium (the `smoke`-gating engine); Firefox and WebKit pass the `purchase` journey via
 the documented, bounded retry rather than outright — see the risk register entry in
