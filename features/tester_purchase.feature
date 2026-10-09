@@ -158,3 +158,20 @@ Feature: Purchase a colour tester
     Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
     When the customer chooses to continue shopping
     Then the customer is on the products page
+
+  @smoke @mobile
+  Scenario: Mobile customer sees the tester in the basket
+    The basket page on a phone (TC-22). A tester put in the basket through the site's own add-to-cart
+    API is shown with its name, shade, quantity and price at 375 px wide. Only the basket page is loaded.
+    Given a mobile customer has a tester for shade "Romantic Reverie" in the basket
+    Then the basket contains 1 item
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+
+  @smoke @tablet
+  Scenario: Tablet customer sees the tester in the basket
+    The same basket check on a tablet (TC-23), at 768 px wide.
+    Given a tablet customer has a tester for shade "Romantic Reverie" in the basket
+    Then the basket contains 1 item
+    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"

@@ -27,8 +27,8 @@ Allure reports are published to GitHub Pages by CI — two reports, two purposes
 
 | Report | Updated | Covers |
 |---|---|---|
-| [**Smoke report**](https://magdau.github.io/playwright-python-dulux-uk/smoke/) | on every merge to `main` | the 12 `@smoke` tests (11 scenarios) — the fast, every-push gate |
-| [**Nightly regression report**](https://magdau.github.io/playwright-python-dulux-uk/nightly/) | daily, and on manual run | all 28 `@regression` test cases against production — purchase, basket edit, boundary values, negative paths, search, cookie consent and the Visualizer |
+| [**Smoke report**](https://magdau.github.io/playwright-python-dulux-uk/smoke/) | on every merge to `main` | the 14 `@smoke` tests (13 scenarios) — the fast, every-push gate |
+| [**Nightly regression report**](https://magdau.github.io/playwright-python-dulux-uk/nightly/) | daily, and on manual run | all 30 `@regression` test cases against production — purchase, basket edit, boundary values, negative paths, search, cookie consent and the Visualizer |
 
 Each report links back to the CI run that produced it (*Executors* widget) and groups any
 failure into a category — catalogue drift, accessibility, infrastructure, product or test defect.

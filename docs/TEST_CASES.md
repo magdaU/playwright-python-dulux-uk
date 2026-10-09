@@ -135,6 +135,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Open the basket.<br>2. Click "Continue shopping". |
 | **Expected result** | The customer lands on `/en/products`. The basket page has two such links (header and order summary), both to the same address; the test uses the first |
 
+### TC-22 — Mobile basket shows the tester, quantity and price
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Mobile customer sees the tester in the basket"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Mobile viewport 375×667; one "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Steps** | 1. Open the basket. |
+| **Expected result** | Quantity 1, "Dulux Colour Tester" for "Romantic Reverie", tester £2.90, delivery £1.50, order total £4.40 |
+
+### TC-23 — Tablet basket shows the tester, quantity and price
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Tablet customer sees the tester in the basket"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Tablet viewport 768×1024; same basket as TC-22 |
+| **Steps** | 1. Open the basket. |
+| **Expected result** | Same as TC-22 |
+
 ---
 
 ## Visualizer journey

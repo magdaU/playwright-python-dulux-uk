@@ -17,16 +17,36 @@ def desktop_empty_basket(desktop_page):
     return Context(page=desktop_page, desktop=True)
 
 
+def _with_tester_in_basket(page, desktop, shade):
+    ctx = Context(page=page, desktop=desktop)
+    ctx.seed_basket_with_tester(shade)
+    # Guards the recorded ids: if the shade changed, the basket would show something else.
+    expect(ctx.cart.find_text(shade)).to_be_visible()
+    return ctx
+
+
 @given(
     parsers.parse('a desktop customer has a tester for shade "{shade}" in the basket'),
     target_fixture="ctx",
 )
 def desktop_with_tester_in_basket(desktop_page, shade):
-    ctx = Context(page=desktop_page, desktop=True)
-    ctx.seed_basket_with_tester(shade)
-    # Guards the recorded ids: if the shade changed, the basket would show something else.
-    expect(ctx.cart.find_text(shade)).to_be_visible()
-    return ctx
+    return _with_tester_in_basket(desktop_page, True, shade)
+
+
+@given(
+    parsers.parse('a mobile customer has a tester for shade "{shade}" in the basket'),
+    target_fixture="ctx",
+)
+def mobile_with_tester_in_basket(mobile_page, shade):
+    return _with_tester_in_basket(mobile_page, False, shade)
+
+
+@given(
+    parsers.parse('a tablet customer has a tester for shade "{shade}" in the basket'),
+    target_fixture="ctx",
+)
+def tablet_with_tester_in_basket(tablet_page, shade):
+    return _with_tester_in_basket(tablet_page, False, shade)
 
 
 @given("a tablet customer starts with an empty basket", target_fixture="ctx")

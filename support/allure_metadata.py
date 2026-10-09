@@ -82,6 +82,8 @@ SCENARIOS = {
     "Tablet customer sees the menu on the home page": ScenarioMetadata(
         "TC-21", USING_THE_SITE, "Main navigation"
     ),
+    "Mobile customer sees the tester in the basket": ScenarioMetadata("TC-22", BUYING, "See the basket"),
+    "Tablet customer sees the tester in the basket": ScenarioMetadata("TC-23", BUYING, "See the basket"),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),
