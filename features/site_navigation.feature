@@ -51,3 +51,16 @@ Feature: Use the Dulux site
     Then the cookie banner is shown
     When the customer rejects all cookies
     Then the cookie banner is gone
+
+  @smoke @mobile
+  Scenario: Mobile customer sees the menu on the home page
+    Home page health check on a phone (TC-20). The navigation collapses into the hamburger menu, so
+    the customer must find the menu, site search and the shopping cart. Only the home page is loaded.
+    Given a mobile customer is on the home page
+    Then the responsive navigation offers the menu, site search and the shopping cart
+
+  @smoke @tablet
+  Scenario: Tablet customer sees the menu on the home page
+    The same health check on a tablet (TC-21), where the site also uses the hamburger menu.
+    Given a tablet customer is on the home page
+    Then the responsive navigation offers the menu, site search and the shopping cart

@@ -159,7 +159,7 @@ later step of the same scenario automatically.
 
 | Marker | Meaning |
 |---|---|
-| `smoke` | Fast critical-path set — desktop-only: both journeys plus cheap basket, search, cookie and navigation checks |
+| `smoke` | Fast critical-path set — mostly desktop: both journeys plus cheap basket, search, cookie and navigation checks, and a home-page check on mobile and tablet |
 | `regression` | Full journey coverage |
 | `desktop` | Desktop-viewport (`1920×1080`) scenarios |
 | `tablet` | Tablet-viewport (`768×1024`) scenarios |

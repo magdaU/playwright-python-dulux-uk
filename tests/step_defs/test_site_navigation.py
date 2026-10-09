@@ -18,6 +18,20 @@ def desktop_on_home_page(desktop_page):
     return ctx
 
 
+@given("a mobile customer is on the home page", target_fixture="ctx")
+def mobile_on_home_page(mobile_page):
+    ctx = Context(page=mobile_page, desktop=False)
+    ctx.open_home_page_and_reject_cookies()
+    return ctx
+
+
+@given("a tablet customer is on the home page", target_fixture="ctx")
+def tablet_on_home_page(tablet_page):
+    ctx = Context(page=tablet_page, desktop=False)
+    ctx.open_home_page_and_reject_cookies()
+    return ctx
+
+
 @given(
     "a desktop customer opens the home page without answering the cookie banner",
     target_fixture="ctx",
@@ -84,5 +98,12 @@ def navigation_usable(ctx):
 @then("the main navigation offers the colour finder, site search and the shopping cart")
 def main_navigation_entry_points(ctx):
     expect(ctx.navigation.get_find_a_colour_button()).to_be_visible()
+    expect(ctx.navigation.get_search_button()).to_be_visible()
+    expect(ctx.navigation.get_shopping_cart_link()).to_be_visible()
+
+
+@then("the responsive navigation offers the menu, site search and the shopping cart")
+def responsive_navigation_entry_points(ctx):
+    expect(ctx.navigation.get_menu_button()).to_be_visible()
     expect(ctx.navigation.get_search_button()).to_be_visible()
     expect(ctx.navigation.get_shopping_cart_link()).to_be_visible()
