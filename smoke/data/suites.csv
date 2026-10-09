@@ -3,15 +3,9 @@
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
-Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","1924","Desktop customer searches for a shade","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
 Home page health check (TC-12). A first-time visitor who has answered the cookie banner must
 find the three entry points every journey starts from: the colour finder, site search and the
-shopping cart. Only the home page is loaded.","2723","Desktop customer sees the main navigation on the home page","","2026-10-09","passed","2026-10-09","","","",""
+shopping cart. Only the home page is loaded.","1631","Desktop customer sees the main navigation on the home page","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -19,22 +13,28 @@ I want to add a tester for a chosen shade to my basket
 The critical purchase path (TC-01). The customer finds a shade through the colour finder
 in the top navigation, adds a tester to the basket and must end up with exactly one tester
 for that shade. The shade page is also scanned for new serious or critical accessibility
-violations.","9475","Desktop customer adds a tester from the colour finder","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","1815","Desktop customer searches for a shade","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
-"To preview a colour before making a purchase decision
-As a Dulux customer
-I want to open the Visualizer from a selected shade page
-
-From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
-open in a new browser tab, at the expected address.","3585","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-09","passed","2026-10-09","","Open the Dulux Visualizer experience","",""
+violations.","10099","Desktop customer adds a tester from the colour finder","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
 "To find a colour quickly and get on with browsing
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
 Cookie consent (TC-10). On a first visit the banner covers the page, so the navigation behind
-it cannot be used. After ""Reject all"" the banner is gone and the navigation works again.","4960","Desktop customer cannot use the site until the cookie banner is answered","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
+it cannot be used. After ""Reject all"" the banner is gone and the navigation works again.","4784","Desktop customer cannot use the site until the cookie banner is answered","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Site search (TC-09). A known shade is found and shown on the results page; a term that matches
+nothing gets the site's ""no results"" message instead of an empty or broken page.","1806","Desktop customer searches for a shade","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Site search (TC-09). A known shade is found and shown on the results page; a term that matches
+nothing gets the site's ""no results"" message instead of an empty or broken page.","1720","Desktop customer searches for a shade","Desktop","2026-10-09","passed","2026-10-09","","Use the Dulux site","",""
+"To preview a colour before making a purchase decision
+As a Dulux customer
+I want to open the Visualizer from a selected shade page
+
+From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
+open in a new browser tab, at the expected address.","3487","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-09","passed","2026-10-09","","Open the Dulux Visualizer experience","",""
