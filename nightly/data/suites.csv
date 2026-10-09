@@ -1,28 +1,69 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket","12982","Tablet customer adds a tester from the colour finder","","2026-10-08","passed","2026-10-08","","","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket","14369","Desktop customer adds a tester from the colour finder","","2026-10-08","passed","2026-10-08","","","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket","11017","Desktop customer changes the tester quantity at its boundaries","","2026-10-08","passed","2026-10-08","","","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket","12586","Mobile customer adds a tester from the colour finder","","2026-10-08","passed","2026-10-08","","","",""
 "To preview a colour before making a purchase decision
 As a Dulux customer
-I want to open the Visualizer from a selected shade page","4580","Desktop customer opens the Visualizer for a shade","","2026-10-08","passed","2026-10-08","","","",""
+I want to open the Visualizer from a selected shade page
+
+From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
+open in a new browser tab, at the expected address.","8252","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-09","passed","2026-10-09","","Open the Dulux Visualizer experience","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
-I want to add a tester for a chosen shade to my basket","11042","Desktop customer changes the tester quantity at its boundaries","","2026-10-08","passed","2026-10-08","","","",""
+I want to add a tester for a chosen shade to my basket
+
+Negative path (TC-06). Not every shade can be bought as a tester: ""Cotton Breeze"" offers
+only ""Find Products in this colour"". The customer must not be offered a tester to buy,
+and the basket must stay empty. If the retailer ever adds a tester for this shade the test
+fails, flagging catalogue drift in the pinned-shade assumption.","10193","Desktop customer views a shade that has no tester available","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
-I want to add a tester for a chosen shade to my basket","11456","Desktop customer changes the tester quantity at its boundaries","","2026-10-08","passed","2026-10-08","","","",""
+I want to add a tester for a chosen shade to my basket
+
+Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
+the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
+and the field settles back on the last accepted quantity.","28270","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
+the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
+and the field settles back on the last accepted quantity.","12270","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The same purchase path on a tablet (TC-02). At this width the site collapses to the
+hamburger-menu navigation, so the colour finder is reached through the menu.","13584","Tablet customer adds a tester from the colour finder","Tablet","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The critical purchase path (TC-01). The customer finds a shade through the colour finder
+in the top navigation, adds a tester to the basket and must end up with exactly one tester
+for that shade. The shade page is also scanned for new serious or critical accessibility
+violations.","15314","Desktop customer adds a tester from the colour finder","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
+the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
+and the field settles back on the last accepted quantity.","13112","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
 "To preview a colour before making a purchase decision
 As a Dulux customer
-I want to open the Visualizer from a selected shade page","4966","Mobile customer tries to open the Visualizer for a shade","","2026-10-08","passed","2026-10-08","","","",""
+I want to open the Visualizer from a selected shade page
+
+On mobile the Visualizer does not open (TC-08): the site shows a known third-party
+store-data message instead. This is documented behaviour, not a defect, so the test
+asserts that message.","5944","Mobile customer tries to open the Visualizer for a shade","Mobile","2026-10-09","passed","2026-10-09","","Open the Dulux Visualizer experience","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
-I want to add a tester for a chosen shade to my basket","11692","Desktop customer changes the tester quantity at its boundaries","","2026-10-08","passed","2026-10-08","","","",""
+I want to add a tester for a chosen shade to my basket
+
+The same purchase path on a phone (TC-03), reached through the hamburger menu.","13600","Mobile customer adds a tester from the colour finder","Mobile","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
+the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
+and the field settles back on the last accepted quantity.","12735","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-09","passed","2026-10-09","","Purchase a colour tester","",""

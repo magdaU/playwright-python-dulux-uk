@@ -1,3 +1,5 @@
 "BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
-"0","","0","Purchase a colour tester","7","0","","0"
-"0","","0","Open the Dulux Visualizer experience","2","0","","0"
+"0","Exploring colours","0","Open the Dulux Visualizer experience","2","0","Open the Visualizer","0"
+"0","Buying paint","0","Purchase a colour tester","1","0","Shade without a tester option","0"
+"0","Buying paint","0","Purchase a colour tester","4","0","Change the tester quantity","0"
+"0","Buying paint","0","Purchase a colour tester","3","0","Add a tester to the basket","0"
