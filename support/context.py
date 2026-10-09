@@ -20,6 +20,15 @@ class Context:
     # Bounded retry for a known-flaky interaction (see browse_to_shade below).
     SHADE_SELECTION_ATTEMPTS = 4
 
+    # Basket-focused scenarios seed the basket through the site's own add-to-cart API instead of
+    # browsing to a shade: one request and the basket page, rather than ~50 requests across
+    # several pages for each scenario. The ids are those the site itself sends when the tester
+    # is bought through the UI (observed 2026-10-08). They belong to the pinned shade, so they
+    # change with it — the Given step checks the shade name in the basket and fails if they drift.
+    SEEDABLE_TESTERS = {
+        "Romantic Reverie": {"articleNumber": "5695986", "colorId": "2440843"},
+    }
+
     def __init__(self, page: Page, desktop: bool):
         self.page = page
         self.desktop = desktop
@@ -30,10 +39,6 @@ class Context:
         self.color_selection = ColorSelectionPage(page)
         self.cart = CartPage(page)
         self.alert = AlertComponent(page)
-
-    def open_empty_cart(self) -> None:
-        self.cart.open_cart_page()
-        self.home.reject_all_cookies()
 
     def open_home_page_and_reject_cookies(self) -> None:
         self.home.open_home_page()
@@ -46,7 +51,7 @@ class Context:
         mobile_navigation: bool,
         tester_available: bool = True,
     ) -> None:
-        self.home.open_home_page()
+        self.open_home_page_and_reject_cookies()
 
         if mobile_navigation:
             self.navigation.click_dropdown_hamburger_menu()
@@ -88,6 +93,19 @@ class Context:
             self.color_selection.expect_tester_purchase_option_visible()
         else:
             self.color_selection.expect_find_products_option_visible()
+
+    def seed_basket_with_tester(self, shade: str) -> None:
+        if shade not in self.SEEDABLE_TESTERS:
+            raise ValueError(f'No tester ids recorded for "{shade}"; known: {sorted(self.SEEDABLE_TESTERS)}')
+        # context.request shares the browser context's cookies, so the basket created here
+        # is the one the page then shows.
+        response = self.page.context.request.post(
+            self.cart.ADD_TO_BASKET_URL,
+            data={**self.SEEDABLE_TESTERS[shade], "quantity": 1, "patternId": "", "substrate": ""},
+        )
+        assert response.ok, f"Seeding the basket failed: HTTP {response.status} {response.text()[:200]}"
+        self.cart.open_cart_page()
+        self.home.reject_all_cookies()
 
     def search_for_shade(self, shade: str) -> None:
         self.navigation.search_click_on_page()

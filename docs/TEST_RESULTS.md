@@ -15,7 +15,7 @@
 
 | TC ID | Scenario | Chromium | Firefox | WebKit | Last verified | Notes |
 |---|---|---|---|---|---|---|
-| TC-01 | Desktop customer adds a tester from the colour finder | ✅ | ⚠️ | ⚠️ | 2026-08-03 | Chromium clean; Firefox/WebKit succeed via the bounded shade-selection retry |
+| TC-01 | Desktop customer adds a tester from the colour finder | ✅ | ✅ | ✅ | 2026-10-09 | Single run per engine after the performance changes (blocked third-party hosts, 15 s timeout): Firefox 59 s, WebKit 21 s. Whether the bounded shade-selection retry was used was not checked. Chromium last verified 2026-08-03 |
 | TC-02 | Tablet customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | Cross-browser matrix currently exercises `regression` generally; tablet-specific per-engine results not separately tracked yet |
 | TC-03 | Mobile customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | See TC-02 note |
 | TC-04a | Tester quantity boundary values (1, 23, 0, 24) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, 4 examples, all engines. Cap of 23 is server-side (HTML declares `max=999`) |

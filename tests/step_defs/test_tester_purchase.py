@@ -11,26 +11,32 @@ SUCCESS_MESSAGE = "successfully added to your cart"
 
 @given("a desktop customer starts with an empty basket", target_fixture="ctx")
 def desktop_empty_basket(desktop_page):
+    # A fresh browser context has no cart, so the basket starts empty without a page visit.
+    return Context(page=desktop_page, desktop=True)
+
+
+@given(
+    parsers.parse('a desktop customer has a tester for shade "{shade}" in the basket'),
+    target_fixture="ctx",
+)
+def desktop_with_tester_in_basket(desktop_page, shade):
     ctx = Context(page=desktop_page, desktop=True)
-    ctx.open_empty_cart()
-    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
+    ctx.seed_basket_with_tester(shade)
+    # Guards the recorded ids: if the shade changed, the basket would show something else.
+    expect(ctx.cart.find_text(shade)).to_be_visible()
     return ctx
 
 
 @given("a tablet customer starts with an empty basket", target_fixture="ctx")
 def tablet_empty_basket(tablet_page):
-    ctx = Context(page=tablet_page, desktop=False)
-    ctx.open_empty_cart()
-    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
-    return ctx
+    # A fresh browser context has no cart, so the basket starts empty without a page visit.
+    return Context(page=tablet_page, desktop=False)
 
 
 @given("a mobile customer starts with an empty basket", target_fixture="ctx")
 def mobile_empty_basket(mobile_page):
-    ctx = Context(page=mobile_page, desktop=False)
-    ctx.open_empty_cart()
-    expect(ctx.cart.get_basket_empty_text()).to_be_visible()
-    return ctx
+    # A fresh browser context has no cart, so the basket starts empty without a page visit.
+    return Context(page=mobile_page, desktop=False)
 
 
 @when(parsers.parse('the customer browses to shade "{shade}" from colour family "{colour_family}"'))

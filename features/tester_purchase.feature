@@ -53,11 +53,10 @@ Feature: Purchase a colour tester
   Scenario Outline: Desktop customer changes the tester quantity at its boundaries
     Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
     the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
-    and the field settles back on the last accepted quantity.
-    Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
-    And the customer adds a tester to the basket
-    And the customer changes the tester quantity to <entered>
+    and the field settles back on the last accepted quantity. The basket is seeded through the
+    site's own add-to-cart API, so each example loads only the basket page.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer changes the tester quantity to <entered>
     Then the basket quantity is <expected>
 
     # The site accepts 1-23 testers per order. Values outside that range are
@@ -73,11 +72,10 @@ Feature: Purchase a colour tester
   Scenario: Desktop customer changes the basket quantity and removes the tester
     Editing the basket after a purchase (TC-04). The customer raises and lowers the quantity
     with the + and - buttons, finds the - button disabled at 1 (the minimum), and finally
-    removes the tester, leaving an empty basket.
-    Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
-    And the customer adds a tester to the basket
-    And the customer increases the tester quantity
+    removes the tester, leaving an empty basket. The basket is seeded through the site's own
+    add-to-cart API, so only the basket page is loaded and production is hit as little as possible.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer increases the tester quantity
     Then the basket quantity is 2
     When the customer decreases the tester quantity
     Then the basket quantity is 1

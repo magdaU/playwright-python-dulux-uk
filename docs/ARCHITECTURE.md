@@ -50,7 +50,7 @@ playwright-python-dulux-uk/
 ├── requirements.txt
 ├── pyproject.toml                       # ruff lint + format config
 ├── pytest.ini                           # markers = pytest equivalent of Cucumber tags
-├── conftest.py                          # viewport fixtures (desktop/tablet/mobile) + failure screenshot attached to Allure
+├── conftest.py                          # viewport fixtures (desktop/tablet/mobile), 15 s action timeout, noise blocking, failure screenshot attached to Allure
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
 ├── .github/workflows/
 │   ├── e2e-tests.yml                    # CI: smoke suite + Allure report + GitHub Pages
@@ -73,6 +73,7 @@ playwright-python-dulux-uk/
 │       └── alert_component.py           # "added to basket" confirmation
 ├── support/
 │   ├── context.py                       # Context: business methods + page objects per scenario
+│   ├── network.py                       # blocks third-party noise hosts (analytics, chat, captcha, monitoring) per context
 │   ├── allure_metadata.py               # Allure epic/story/severity/owner/TC link/viewport suite per scenario (reads docs/TEST_CASES.md)
 │   ├── accessibility.py                 # axe-core scan + allow-listed known violation IDs
 │   └── retry.py                         # bounded, reported retry for known-flaky steps
@@ -82,6 +83,26 @@ playwright-python-dulux-uk/
         ├── test_site_navigation.py
         └── test_visualizer_experience.py
 ```
+
+---
+
+## Keeping load on production low
+
+The suite runs against live production, so every request it makes is a request to someone else's
+servers. Three measures keep that small (measured figures in
+[Lessons Learned #10](LESSONS_LEARNED.md#10-a-test-suite-is-also-a-client-of-the-site-it-tests)):
+
+1. **Block third-party noise** — `support/network.py` aborts requests to analytics, tag manager,
+   chat, captcha and monitoring hosts in every test context (`BLOCKED_HOSTS`). The cookie banner
+   host, fonts and images are left alone.
+2. **Seed the basket through the site's own API** — scenarios that are about the basket, not
+   about buying, call `POST /en/store/api/v2/cart` (`Context.seed_basket_with_tester`) rather than
+   browsing to a shade. Ids live in `Context.SEEDABLE_TESTERS`, observed 2026-10-08.
+3. **15 s default action timeout** (`DEFAULT_ACTION_TIMEOUT_MS` in `conftest.py`) so failures end quickly.
+
+Rules of thumb: do not add a host to `BLOCKED_HOSTS` unless a test asserts nothing about it; seed
+only where the full journey is already covered by another scenario; do not run the suite in
+parallel against production.
 
 ---
 
