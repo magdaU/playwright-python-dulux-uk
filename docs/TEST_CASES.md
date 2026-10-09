@@ -153,6 +153,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Open the basket. |
 | **Expected result** | Same as TC-22 |
 
+### TC-26 — Mobile basket quantity can be changed and the tester removed
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Mobile customer changes the basket quantity and removes the tester"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Mobile viewport 375×667; one "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Steps** | 1. Click +.<br>2. Click −.<br>3. Check − is disabled at 1.<br>4. Click Remove. |
+| **Expected result** | Quantity 1 → 2 → 1, − disabled at the minimum, then "Your basket is empty". Same behaviour as TC-04 on desktop |
+
+### TC-27 — Tablet basket quantity can be changed and the tester removed
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Tablet customer changes the basket quantity and removes the tester"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Tablet viewport 768×1024; same basket as TC-26 |
+| **Steps** | As TC-26 |
+| **Expected result** | As TC-26 |
+
 ---
 
 ## Visualizer journey
