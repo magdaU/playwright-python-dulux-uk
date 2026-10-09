@@ -1,5 +1,6 @@
 from playwright.sync_api import Page
 
+import allure
 from pages.cart_page import CartPage
 from pages.color_selection_page import ColorSelectionPage
 from pages.components.alert_component import AlertComponent
@@ -51,13 +52,18 @@ class Context:
         mobile_navigation: bool,
         tester_available: bool = True,
     ) -> None:
-        self.open_home_page_and_reject_cookies()
+        # Each stage is an Allure sub-step, so the report shows which one makes the
+        # journey slow without splitting it into several tests (and more requests).
+        with allure.step("Open the home page and reject cookies"):
+            self.open_home_page_and_reject_cookies()
 
         if mobile_navigation:
-            self.navigation.click_dropdown_hamburger_menu()
+            with allure.step("Open the hamburger menu"):
+                self.navigation.click_dropdown_hamburger_menu()
 
-        self.navigation.click_dropdown_find_colour()
-        self.navigation.click_find_colour()
+        with allure.step("Open the colour finder"):
+            self.navigation.click_dropdown_find_colour()
+            self.navigation.click_find_colour()
 
         # Known-flaky on Firefox/WebKit: selecting the colour family
         # occasionally doesn't take effect before the next click queries for
@@ -85,14 +91,17 @@ class Context:
         )
 
     def _select_colour_family_and_shade(self, colour_family: str, shade: str, tester_available: bool) -> None:
-        self.color_selection.choose_colour(colour_family)
-        self.color_selection.choose_shade(shade)
+        with allure.step(f'Choose colour family "{colour_family}"'):
+            self.color_selection.choose_colour(colour_family)
+        with allure.step(f'Choose shade "{shade}"'):
+            self.color_selection.choose_shade(shade)
         # What a successful selection looks like depends on the shade: the tester
         # button, or — for a shade with no tester — only "Find Products in this colour".
-        if tester_available:
-            self.color_selection.expect_tester_purchase_option_visible()
-        else:
-            self.color_selection.expect_find_products_option_visible()
+        with allure.step("Wait for the shade panel"):
+            if tester_available:
+                self.color_selection.expect_tester_purchase_option_visible()
+            else:
+                self.color_selection.expect_find_products_option_visible()
 
     def seed_basket_with_tester(self, shade: str) -> None:
         if shade not in self.SEEDABLE_TESTERS:
