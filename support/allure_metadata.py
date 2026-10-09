@@ -84,6 +84,8 @@ SCENARIOS = {
     ),
     "Mobile customer sees the tester in the basket": ScenarioMetadata("TC-22", BUYING, "See the basket"),
     "Tablet customer sees the tester in the basket": ScenarioMetadata("TC-23", BUYING, "See the basket"),
+    "Mobile customer searches for a shade": ScenarioMetadata("TC-24", EXPLORING, "Search for a shade"),
+    "Tablet customer searches for a shade": ScenarioMetadata("TC-25", EXPLORING, "Search for a shade"),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),
