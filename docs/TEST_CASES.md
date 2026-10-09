@@ -111,7 +111,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | 🟡 candidate — `search_for_shade()` already exists in `Context` and is exercised as setup in TC-07/TC-08, but has no dedicated scenario asserting *search itself* works for an arbitrary term |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer searches for a shade"](../features/site_navigation.feature) (outline, 2 examples; `@smoke`) |
 | **Preconditions** | On the home page, cookies rejected |
 | **Steps** | 1. Open search.<br>2. Enter a term.<br>3. Press Enter. |
 | **Expected result** | Known shade ("Romantic Reverie"): the results page `/search-results?search=…` shows that shade. Unknown term ("zzqqxxnoshade"): the results page shows "Sorry, we couldn't find any results for '…'" |
@@ -124,6 +124,15 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Preconditions** | Fresh browser context, cookie banner not yet interacted with |
 | **Steps** | 1. Open the home page.<br>2. Check that the "Find a colour" navigation button cannot be clicked (Playwright trial click, nothing is navigated to).<br>3. Click "Reject all".<br>4. Check the banner is gone and the navigation button can be clicked. |
 | **Expected result** | The banner blocks the navigation until "Reject all" is clicked; afterwards it is gone and the page is usable. The banner's buttons are localised (Polish was seen), so the test uses the stable `#onetrust-…` ids, not button text |
+
+### TC-12 — Home page shows the main navigation
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer sees the main navigation on the home page"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | On the home page, cookies rejected |
+| **Steps** | 1. Look at the top navigation. |
+| **Expected result** | The "Find a colour" button, the "Search" button and the "Shopping Cart" link are visible — the entry points of every journey. Only the home page is loaded |
 
 ---
 

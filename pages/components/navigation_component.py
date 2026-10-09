@@ -13,6 +13,12 @@ class NavigationComponent(BasePage):
     def get_find_a_colour_button(self) -> Locator:
         return self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM)
 
+    def get_search_button(self) -> Locator:
+        return self.page.get_by_role("button", name=self.SEARCH_BUTTON)
+
+    def get_shopping_cart_link(self) -> Locator:
+        return self.page.get_by_role("link", name=self.SHOPPING_CART)
+
     def click_dropdown_find_colour(self) -> None:
         self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM).click()
         # The button triggers a page navigation (not a dropdown). Wait for the new

@@ -69,3 +69,10 @@ def navigation_blocked_by_banner(ctx):
 @then("the navigation can be used")
 def navigation_usable(ctx):
     ctx.navigation.get_find_a_colour_button().click(trial=True)
+
+
+@then("the main navigation offers the colour finder, site search and the shopping cart")
+def main_navigation_entry_points(ctx):
+    expect(ctx.navigation.get_find_a_colour_button()).to_be_visible()
+    expect(ctx.navigation.get_search_button()).to_be_visible()
+    expect(ctx.navigation.get_shopping_cart_link()).to_be_visible()
