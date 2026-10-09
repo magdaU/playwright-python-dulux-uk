@@ -170,3 +170,8 @@ def basket_shows_prices(ctx, price, delivery, total):
     expect(ctx.cart.find_amount(price)).to_have_count(2)
     expect(ctx.cart.find_amount(delivery)).to_have_count(1)
     expect(ctx.cart.find_amount(total)).to_have_count(1)
+
+
+@then("the shade offers a tester to buy")
+def shade_offers_tester(ctx):
+    expect(ctx.color_selection.get_buy_a_tester_button()).to_be_visible()
