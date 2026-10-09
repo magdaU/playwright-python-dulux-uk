@@ -69,6 +69,12 @@ SCENARIOS = {
     "Desktop customer can open a shade from the colour finder": ScenarioMetadata(
         "TC-16", BUYING, "Find a shade"
     ),
+    "Desktop customer with nothing in the basket is told so and can keep shopping": ScenarioMetadata(
+        "TC-17", BUYING, "Leave the basket"
+    ),
+    "Desktop customer can leave the basket and keep shopping": ScenarioMetadata(
+        "TC-18", BUYING, "Leave the basket"
+    ),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),

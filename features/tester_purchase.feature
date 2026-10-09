@@ -140,3 +140,21 @@ Feature: Purchase a colour tester
     Given a desktop customer starts with an empty basket
     When the customer browses to shade "Romantic Reverie" from colour family "Violet"
     Then the shade offers a tester to buy
+
+  @smoke @desktop
+  Scenario: Desktop customer with nothing in the basket is told so and can keep shopping
+    Empty basket (TC-17). A first-time visitor who opens the basket sees that it is empty and is
+    offered a way back to the products. Only the basket page is loaded.
+    Given a desktop customer starts with an empty basket
+    When the customer opens the basket
+    Then the basket is empty
+    And the customer is offered a way to continue shopping
+
+  @smoke @desktop
+  Scenario: Desktop customer can leave the basket and keep shopping
+    Leaving the basket (TC-18). "Continue shopping" takes a customer with a tester in the basket
+    to the product listing without losing the basket. The basket is seeded through the site's own
+    add-to-cart API.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer chooses to continue shopping
+    Then the customer is on the products page
