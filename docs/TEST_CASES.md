@@ -188,6 +188,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Steps** | 1. Open search.<br>2. Enter a term.<br>3. Press Enter. |
 | **Expected result** | Known shade ("Romantic Reverie"): the results page `/search-results?search=…` shows that shade. Unknown term ("zzqqxxnoshade"): the results page shows "Sorry, we couldn't find any results for '…'". The term's letter case and a partial name ("romantic reverie", "Reverie") still find "Romantic Reverie" |
 
+### TC-24 — Mobile site search finds a shade
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Mobile customer searches for a shade"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | Mobile viewport 375×667, home page open, cookies rejected |
+| **Steps** | 1. Open search.<br>2. Enter "Romantic Reverie".<br>3. Press Enter. |
+| **Expected result** | The results page `/search-results?search=Romantic+Reverie` shows "Romantic Reverie" |
+
+### TC-25 — Tablet site search finds a shade
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Tablet customer searches for a shade"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | Tablet viewport 768×1024, home page open, cookies rejected |
+| **Steps** | 1. Open search.<br>2. Enter "Romantic Reverie".<br>3. Press Enter. |
+| **Expected result** | Same as TC-24 |
+
 ### TC-10 — Cookie banner blocks interaction until dismissed
 | | |
 |---|---|

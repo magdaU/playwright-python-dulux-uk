@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 30 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
+| **Status** | Implemented and verified against production — all 32 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
 
 ---
 
@@ -82,7 +82,7 @@ Characteristics that shape the test design:
 
 ### 3.1 Test scenarios implemented
 
-Twenty-three scenarios (thirty test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
+Twenty-five scenarios (thirty-two test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
 
 | # | Scenario | Feature | Tags | Viewport | Verifies |
 |---|---|---|---|---|---|
@@ -109,10 +109,12 @@ Twenty-three scenarios (thirty test cases — scenarios 6, 10 and 13 are example
 | 21 | Tablet customer sees the menu on the home page | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @tablet @regression` | Tablet `768×1024` | The same health check on a tablet |
 | 22 | Mobile customer sees the tester in the basket | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @mobile @purchase @regression` | Mobile `375×667` | Name, shade, quantity and price/total shown in the phone layout (seeded basket) |
 | 23 | Tablet customer sees the tester in the basket | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @tablet @purchase @regression` | Tablet `768×1024` | The same basket check on a tablet |
+| 24 | Mobile customer searches for a shade | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @mobile @search @regression` | Mobile `375×667` | The search box is reachable on a phone and a known shade is found (one search) |
+| 25 | Tablet customer searches for a shade | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @tablet @search @regression` | Tablet `768×1024` | The same search on a tablet |
 
-Scenarios 1, 4, 10, 11, 12, 14, 16, 17, 18, 20, 21, 22 and 23 carry `@smoke` — the every-push/PR gate (14 tests, as 10 is a
+Scenarios 1, 4, 10, 11, 12, 14, 16, 17, 18, 20, 21, 22, 23, 24 and 25 carry `@smoke` — the every-push/PR gate (16 tests, as 10 is a
 2-example outline). Scenarios 1 and 4 are the single desktop path through each in-scope journey;
-10, 11, 12, 14, 16, 17, 18, 20, 21, 22 and 23 are cheap checks (a single page load, one search, or an API-seeded basket) that
+10, 11, 12, 14, 16, 17, 18, 20, 21, 22, 23, 24 and 25 are cheap checks (a single page load, one search, or an API-seeded basket) that
 keep production load low. Scenarios 2, 3, 5, 6, 7, 8 and 9 run only under `@regression` (on-demand /
 nightly) since they're viewport variants or slower edge cases of an already-smoke-tested flow.
 

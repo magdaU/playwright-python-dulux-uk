@@ -64,3 +64,20 @@ Feature: Use the Dulux site
     The same health check on a tablet (TC-21), where the site also uses the hamburger menu.
     Given a tablet customer is on the home page
     Then the responsive navigation offers the menu, site search and the shopping cart
+
+  @smoke @mobile @search
+  Scenario: Mobile customer searches for a shade
+    Site search on a phone (TC-24). The search box is reachable at 375 px wide, and a known shade is
+    found and shown on the results page. One search from the home page.
+    Given a mobile customer is on the home page
+    When the customer searches for "Romantic Reverie"
+    Then the search results are for "Romantic Reverie"
+    And the results show "Romantic Reverie"
+
+  @smoke @tablet @search
+  Scenario: Tablet customer searches for a shade
+    The same search on a tablet (TC-25), at 768 px wide.
+    Given a tablet customer is on the home page
+    When the customer searches for "Romantic Reverie"
+    Then the search results are for "Romantic Reverie"
+    And the results show "Romantic Reverie"
