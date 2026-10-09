@@ -94,7 +94,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer sees the price of a tester and the order total"](../features/tester_purchase.feature) |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer sees the price of a tester and the order total"](../features/tester_purchase.feature) (`@smoke`) |
 | **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the site's add-to-cart API) |
 | **Steps** | 1. Open the basket. |
 | **Expected result** | Tester £2.90 (shown as item price and subtotal), delivery £1.50, order total £4.40. These are production prices, so a failure usually means a price change |
@@ -107,6 +107,15 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the API) |
 | **Steps** | 1. Increase the quantity to 2.<br>2. Reload the basket page. |
 | **Expected result** | The basket still holds the same tester, with quantity 2 |
+
+### TC-16 — A shade can be opened from the colour finder
+| | |
+|---|---|
+| **Priority** | P1 |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer can open a shade from the colour finder"](../features/tester_purchase.feature) (`@smoke`) |
+| **Preconditions** | Empty basket, desktop |
+| **Steps** | 1. Open the colour finder from the top navigation.<br>2. Choose colour family "Violet" and shade "Romantic Reverie". |
+| **Expected result** | The shade panel opens and offers "Buy a Tester in this colour". Nothing is added to the basket |
 
 ---
 

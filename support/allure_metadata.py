@@ -66,6 +66,9 @@ SCENARIOS = {
     "Desktop customer finds the basket unchanged after reloading the page": ScenarioMetadata(
         "TC-15", BUYING, "Edit the basket"
     ),
+    "Desktop customer can open a shade from the colour finder": ScenarioMetadata(
+        "TC-16", BUYING, "Find a shade"
+    ),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),

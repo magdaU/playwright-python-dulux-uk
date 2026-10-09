@@ -113,7 +113,7 @@ Feature: Purchase a colour tester
       | Blue          | Breton Blue  |
       | Green         | Fresh Sage   |
 
-  @desktop
+  @smoke @desktop
   Scenario: Desktop customer sees the price of a tester and the order total
     Pricing (TC-14). One tester costs 2.90, delivery adds 1.50, so the order total is 4.40. The
     basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
@@ -131,3 +131,12 @@ Feature: Purchase a colour tester
     And the customer reloads the basket page
     Then the basket quantity is 2
     And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+
+  @smoke @desktop
+  Scenario: Desktop customer can open a shade from the colour finder
+    Colour finder health check (TC-16). The customer reaches a shade through the top navigation
+    and is offered a tester to buy. Nothing is added to the basket, so this is the cheapest check
+    of the step that has proved timing-sensitive on other engines.
+    Given a desktop customer starts with an empty basket
+    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    Then the shade offers a tester to buy

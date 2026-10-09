@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 16 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
+| **Status** | Implemented and verified against production — all 21 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
 
 ---
 
@@ -82,7 +82,7 @@ Characteristics that shape the test design:
 
 ### 3.1 Test scenarios implemented
 
-Fifteen scenarios (twenty test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
+Sixteen scenarios (twenty-one test cases — scenarios 6, 10 and 13 are example-driven outlines) across two features, all in Gherkin under [`features/`](../features/):
 
 | # | Scenario | Feature | Tags | Viewport | Verifies |
 |---|---|---|---|---|---|
@@ -97,14 +97,15 @@ Fifteen scenarios (twenty test cases — scenarios 6, 10 and 13 are example-driv
 | 9 | Desktop customer is told when adding a tester to the basket fails *(failure path)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @negative @purchase @regression` | Desktop `1920×1080` | With the add-to-basket request stubbed to HTTP 500 (never sent to production) the customer sees "Something has gone wrong, please try again.", not the success confirmation, and the basket stays empty |
 | 10 | Desktop customer searches for a shade *(Scenario Outline, 2 examples)* | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop @search @regression` | Desktop `1920×1080` | A known shade is found on the results page; an unknown term shows the site's "no results" message |
 | 11 | Desktop customer cannot use the site until the cookie banner is answered | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop @cookies @regression` | Desktop `1920×1080` | On a first visit the banner blocks the navigation; after "Reject all" it is gone and the navigation works |
+| 16 | Desktop customer can open a shade from the colour finder | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | The colour finder leads to a shade that offers a tester; nothing is added to the basket |
 | 12 | Desktop customer sees the main navigation on the home page | [`site_navigation.feature`](../features/site_navigation.feature) | `@smoke @desktop` | Desktop `1920×1080` | The colour finder, search and shopping cart entry points are visible on the home page (health check; one page load) |
 | 13 | Desktop customer adds a tester for a shade from another colour family *(Scenario Outline, 2 examples)* | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @purchase @regression` | Desktop `1920×1080` | Blue / "Breton Blue" and Green / "Fresh Sage" go through the colour finder into the basket like the pinned shade does |
-| 14 | Desktop customer sees the price of a tester and the order total | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @purchase @regression` | Desktop `1920×1080` | Tester £2.90, delivery £1.50, order total £4.40 (seeded basket) |
+| 14 | Desktop customer sees the price of a tester and the order total | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@smoke @desktop @purchase @regression` | Desktop `1920×1080` | Tester £2.90, delivery £1.50, order total £4.40 (seeded basket) |
 | 15 | Desktop customer finds the basket unchanged after reloading the page | [`tester_purchase.feature`](../features/tester_purchase.feature) | `@desktop @purchase @regression` | Desktop `1920×1080` | Quantity 2 and the tester survive a reload (seeded basket) |
 
-Scenarios 1, 4, 10, 11 and 12 carry `@smoke` — the every-push/PR gate (6 tests, as 10 is a
+Scenarios 1, 4, 10, 11, 12, 14 and 16 carry `@smoke` — the every-push/PR gate (8 tests, as 10 is a
 2-example outline). Scenarios 1 and 4 are the single desktop path through each in-scope journey;
-10, 11 and 12 are cheap checks (a single page load plus one search) that
+10, 11, 12, 14 and 16 are cheap checks (a single page load, one search, or an API-seeded basket) that
 keep production load low. Scenarios 2, 3, 5, 6, 7, 8 and 9 run only under `@regression` (on-demand /
 nightly) since they're viewport variants or slower edge cases of an already-smoke-tested flow.
 
