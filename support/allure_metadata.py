@@ -54,6 +54,18 @@ SCENARIOS = {
     "Desktop customer cannot use the site until the cookie banner is answered": ScenarioMetadata(
         "TC-10", USING_THE_SITE, "Cookie consent"
     ),
+    "Desktop customer sees the main navigation on the home page": ScenarioMetadata(
+        "TC-12", USING_THE_SITE, "Main navigation"
+    ),
+    "Desktop customer adds a tester for a shade from another colour family": ScenarioMetadata(
+        "TC-13", BUYING, "Add a tester to the basket"
+    ),
+    "Desktop customer sees the price of a tester and the order total": ScenarioMetadata(
+        "TC-14", BUYING, "See the price"
+    ),
+    "Desktop customer finds the basket unchanged after reloading the page": ScenarioMetadata(
+        "TC-15", BUYING, "Edit the basket"
+    ),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"
     ),

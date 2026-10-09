@@ -153,3 +153,20 @@ def basket_includes_tester(ctx, tester_name, shade):
 def shade_page_has_no_unexpected_a11y_violations(ctx):
     violations = ctx.get_unexpected_accessibility_violations()
     assert not violations, [f"{v['impact']}:{v['id']}" for v in violations]
+
+
+@when("the customer reloads the basket page")
+def reload_basket_page(ctx):
+    ctx.cart.reload()
+
+
+@then(
+    parsers.parse(
+        'the basket shows the tester price "{price}", delivery "{delivery}" and order total "{total}"'
+    )
+)
+def basket_shows_prices(ctx, price, delivery, total):
+    # With one tester the item price and the subtotal are the same amount, so it shows twice.
+    expect(ctx.cart.find_amount(price)).to_have_count(2)
+    expect(ctx.cart.find_amount(delivery)).to_have_count(1)
+    expect(ctx.cart.find_amount(total)).to_have_count(1)

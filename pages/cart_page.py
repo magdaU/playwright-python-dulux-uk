@@ -17,6 +17,12 @@ class CartPage(BasePage):
     def open_cart_page(self) -> None:
         self.page.goto(self.CART_PAGE_URL)
 
+    def reload(self) -> None:
+        self.page.reload()
+
+    def find_amount(self, amount: str) -> Locator:
+        return self.page.get_by_text(amount, exact=True)
+
     def get_quantity(self) -> Locator:
         return self.page.get_by_role("spinbutton", name=self.QUANTITY_INPUT_LABEL)
 
