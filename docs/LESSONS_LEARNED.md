@@ -211,6 +211,37 @@ running the scenario with and without the stub.
 probe that waits is not evidence of absence. Poll for the message instead, and always run the
 test once against the opposite condition to see it fail.
 
+## 10. A test suite is also a client of the site it tests
+
+**What happened:** one purchase journey sent about 306 requests, and only 69 of them went to
+dulux.co.uk — the rest were analytics, tag managers, live chat, captcha and monitoring scripts.
+Basket-only scenarios still browsed to a shade page first (about 53 requests to dulux.co.uk) just
+to get an item into the basket. A full run took 218 s and hit production hard, daily.
+
+**Root cause:** the suite drove the site like a real visitor everywhere, including where the
+scenario is not about that part of the journey, and nothing limited what the browser loaded.
+
+**Fix:**
+- `support/network.py` aborts requests to a fixed list of third-party hosts for every test context.
+  The cookie banner host (`cdn.cookielaw.org`), fonts and images stay unblocked, so the cookie
+  scenario and the accessibility scan still see the real page.
+- Scenarios about the basket (TC-04 and its boundary examples) seed it with one call to the
+  site's own `POST /en/store/api/v2/cart` instead of browsing to a shade
+  (`Context.seed_basket_with_tester`). The journey itself is still covered end to end by TC-01–03.
+- The default action timeout went from 30 s to 15 s, so a real problem fails sooner instead of
+  holding a connection to production open for half a minute.
+- The "starts with an empty basket" Givens no longer open the cart first: a fresh context has no cart.
+
+**Result (Chromium, single runs, so noisy):** requests per purchase journey 306 → 149 (to
+dulux.co.uk 69 → 53); a seeded basket scenario ~14 s and ~53 dulux requests → ~5 s and ~4;
+whole suite (15 tests) 218 s → 116 s.
+
+**Takeaway:** blocking is safe only for things the tests assert nothing about, so the list is
+explicit and short rather than a wildcard. Seeding trades realism for load, so it belongs only
+where the journey is covered elsewhere, and the seeded ids (pinned in `SEEDABLE_TESTERS`) must be
+updated together with the pinned shade — the Given step fails loudly when the shade is not in the
+basket, instead of passing on a stale id.
+
 ## See also
 
 - [Test Strategy §10 — Risk analysis & mitigations](TEST_STRATEGY.md#10-risk-analysis--mitigations) — the same incidents as a likelihood/impact register.
