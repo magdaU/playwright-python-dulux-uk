@@ -20,11 +20,16 @@
 | TC-03 | Mobile customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | See TC-02 note |
 | TC-04a | Tester quantity boundary values (1, 23, 0, 24) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, 4 examples, all engines. Cap of 23 is server-side (HTML declares `max=999`) |
 | TC-06 | Shade with no tester option (negative path) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, "Cotton Breeze" under "Violet". Data-dependent: fails if the shade gains a tester |
+| TC-04 | Basket increment/decrement/remove | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; + / − / bin button |
+| TC-05 | Add-to-basket failure is surfaced (stubbed HTTP 500) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; the error alert is short-lived, asserted as soon as it appears |
+| TC-09 | Site search (known shade, unknown term) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; 2 examples |
+| TC-10 | Cookie banner blocks interaction until dismissed | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; ids used because the banner text is localised |
 | TC-07 | Desktop customer opens the Visualizer for a shade | ✅ | — | — | 2026-08-03 | |
 | TC-08 | Mobile customer tries to open the Visualizer for a shade | ✅ | — | — | 2026-08-03 | Asserts the documented store-data message, not app success |
+| TC-12 | Home page shows the main navigation | ✅ | — | — | 2026-10-09 | Desktop; Chromium only so far. Home page load only |
 | TC-11 | Shade page a11y scan (no new critical/serious violations) | ✅ | — | — | 2026-08-03 | Known violations allow-listed; scan itself run on Chromium as part of TC-01/TC-03 |
 
-**Overall status as of the last full verification:** all 10 automated test cases (6 scenarios; one is a
+**Overall status as of the last full verification:** all 16 automated test cases (12 scenarios; two are
 4-example outline) pass on
 Chromium (the `smoke`-gating engine); Firefox and WebKit pass the `purchase` journey via
 the documented, bounded retry rather than outright — see the risk register entry in
@@ -37,7 +42,7 @@ navigation timing").
 
 | Run mode | What it covers | Where to find current results |
 |---|---|---|
-| Push/PR smoke gate | TC-01, TC-07 (desktop-only, Chromium) | [`e2e-tests.yml`](../.github/workflows/e2e-tests.yml) run history + Allure report on GitHub Pages |
+| Push/PR smoke gate | TC-01, TC-07, TC-09 (2 examples), TC-10, TC-12 (desktop-only, Chromium) | [`e2e-tests.yml`](../.github/workflows/e2e-tests.yml) run history + Allure report on GitHub Pages |
 | Cross-browser regression | All `regression`-marked scenarios × Chromium/Firefox/WebKit | [`cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml) run history |
 | Nightly regression | All `regression`-marked scenarios, Chromium, daily | [`nightly-regression.yml`](../.github/workflows/nightly-regression.yml) run history (uploaded as a build artifact) |
 

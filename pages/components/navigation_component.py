@@ -1,3 +1,5 @@
+from playwright.sync_api import Locator
+
 from pages.base_page import BasePage
 
 
@@ -7,6 +9,15 @@ class NavigationComponent(BasePage):
     SHOPPING_CART = "Shopping Cart"
     SEARCH_FIELD = "search-field"
     SEARCH_BUTTON = "Search"
+
+    def get_find_a_colour_button(self) -> Locator:
+        return self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM)
+
+    def get_search_button(self) -> Locator:
+        return self.page.get_by_role("button", name=self.SEARCH_BUTTON)
+
+    def get_shopping_cart_link(self) -> Locator:
+        return self.page.get_by_role("link", name=self.SHOPPING_CART)
 
     def click_dropdown_find_colour(self) -> None:
         self.page.get_by_role("button", name=self.FIND_A_COLOUR_MENU_ITEM).click()

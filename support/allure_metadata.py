@@ -24,6 +24,7 @@ VIEWPORT_SUITES = {"desktop": "Desktop", "tablet": "Tablet", "mobile": "Mobile"}
 
 BUYING = "Buying paint"
 EXPLORING = "Exploring colours"
+USING_THE_SITE = "Using the site"
 
 
 @dataclass(frozen=True)
@@ -42,6 +43,16 @@ SCENARIOS = {
     ),
     "Mobile customer adds a tester from the colour finder": ScenarioMetadata(
         "TC-03", BUYING, "Add a tester to the basket"
+    ),
+    "Desktop customer changes the basket quantity and removes the tester": ScenarioMetadata(
+        "TC-04", BUYING, "Edit the basket"
+    ),
+    "Desktop customer is told when adding a tester to the basket fails": ScenarioMetadata(
+        "TC-05", BUYING, "Handle a failed add to the basket"
+    ),
+    "Desktop customer searches for a shade": ScenarioMetadata("TC-09", EXPLORING, "Search for a shade"),
+    "Desktop customer cannot use the site until the cookie banner is answered": ScenarioMetadata(
+        "TC-10", USING_THE_SITE, "Cookie consent"
     ),
     "Desktop customer views a shade that has no tester available": ScenarioMetadata(
         "TC-06", BUYING, "Shade without a tester option"

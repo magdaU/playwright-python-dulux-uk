@@ -53,23 +53,24 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Expected result** | `1` → 1 and `23` → 23 are accepted. `0` and `24` are rejected and the field settles back on the last accepted quantity (1). Behaviour observed on production 2026-10-08: the field's HTML declares `min=1 max=999`, but the server (`POST /store/api/order`) rejects quantities above 23 with HTTP 422 |
 | **Note** | The 23 limit is server-side and not documented; if the retailer changes it, the `23`/`24` rows need updating (same catalogue-drift risk as the pinned shade) |
 
-### TC-04 — Basket increment/decrement/remove *(manual/candidate)*
+### TC-04 — Basket increment/decrement/remove
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | 🟡 candidate — see [Test Strategy §14](TEST_STRATEGY.md#14-coverage-gaps--improvement-opportunities) |
-| **Preconditions** | Basket already contains 1 tester (result of TC-01) |
-| **Steps** | 1. Increase quantity by 1 via the spinbutton.<br>2. Decrease quantity back to 1.<br>3. Remove the item entirely. |
-| **Expected result** | Quantity updates correctly at each step; basket shows the "empty" state after removal |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer changes the basket quantity and removes the tester"](../features/tester_purchase.feature) |
+| **Preconditions** | Basket already contains 1 tester (the TC-01 steps) |
+| **Steps** | 1. Click "Increase quantity" (+).<br>2. Click "Decrease quantity" (−).<br>3. Click the remove (bin) button. |
+| **Expected result** | Quantity goes 1 → 2 → 1; the − button is disabled at 1 (the minimum); after removal the basket shows "Your basket is empty" |
 
-### TC-05 — Add-to-basket failure is surfaced to the customer *(manual/candidate)*
+### TC-05 — Add-to-basket failure is surfaced to the customer
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | 🟡 candidate — via `page.route()` interception, see [Test Strategy §14](TEST_STRATEGY.md#14-coverage-gaps--improvement-opportunities) |
-| **Preconditions** | Customer is on a shade page; the add-to-basket network call can be intercepted |
-| **Steps** | 1. Force the add-to-basket request to fail (mocked error response).<br>2. Click "Buy a Tester in this colour". |
-| **Expected result** | The customer sees a visible error/failure indication — not a silent no-op |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer is told when adding a tester to the basket fails"](../features/tester_purchase.feature) (`@negative`) — the request is stubbed with `page.route()`, so the failure never reaches production |
+| **Preconditions** | Customer is on a shade page that offers a tester |
+| **Steps** | 1. Stub `POST /store/api/v2/cart` to return HTTP 500.<br>2. Click "Buy a Tester in this colour". |
+| **Expected result** | The customer sees "Something has gone wrong, please try again." and never the "successfully added to your cart" confirmation; the basket stays empty |
+| **Note** | The error message is a short-lived alert (about 0.7 s to appear, gone after ~3.5 s), so it must be asserted as soon as it appears — see [Lessons Learned #9](LESSONS_LEARNED.md#9-a-short-lived-message-can-hide-from-a-slow-check) |
 
 ### TC-06 — Shade with no tester option
 | | |
@@ -106,23 +107,32 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 
 ## Navigation & search
 
-### TC-09 — Site search returns the searched shade *(manual/candidate)*
+### TC-09 — Site search returns the searched shade
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | 🟡 candidate — `search_for_shade()` already exists in `Context` and is exercised as setup in TC-07/TC-08, but has no dedicated scenario asserting *search itself* works for an arbitrary term |
-| **Preconditions** | On the home page |
-| **Steps** | 1. Open search.<br>2. Enter a known shade name.<br>3. Press Enter. |
-| **Expected result** | Navigates to that shade's detail page |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer searches for a shade"](../features/site_navigation.feature) (outline, 2 examples; `@smoke`) |
+| **Preconditions** | On the home page, cookies rejected |
+| **Steps** | 1. Open search.<br>2. Enter a term.<br>3. Press Enter. |
+| **Expected result** | Known shade ("Romantic Reverie"): the results page `/search-results?search=…` shows that shade. Unknown term ("zzqqxxnoshade"): the results page shows "Sorry, we couldn't find any results for '…'" |
 
-### TC-10 — Cookie banner blocks interaction until dismissed *(manual/exploratory)*
+### TC-10 — Cookie banner blocks interaction until dismissed
 | | |
 |---|---|
 | **Priority** | P3 |
-| **Automation** | ⚪ manual — implicitly covered by every scenario rejecting cookies first, but never asserted as a standalone case |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer cannot use the site until the cookie banner is answered"](../features/site_navigation.feature) |
 | **Preconditions** | Fresh browser context, cookie banner not yet interacted with |
-| **Steps** | 1. Attempt to interact with the page behind the banner before dismissing it. |
-| **Expected result** | The banner blocks the intended interaction until "Reject All" (or equivalent) is clicked |
+| **Steps** | 1. Open the home page.<br>2. Check that the "Find a colour" navigation button cannot be clicked (Playwright trial click, nothing is navigated to).<br>3. Click "Reject all".<br>4. Check the banner is gone and the navigation button can be clicked. |
+| **Expected result** | The banner blocks the navigation until "Reject all" is clicked; afterwards it is gone and the page is usable. The banner's buttons are localised (Polish was seen), so the test uses the stable `#onetrust-…` ids, not button text |
+
+### TC-12 — Home page shows the main navigation
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`site_navigation.feature` — "Desktop customer sees the main navigation on the home page"](../features/site_navigation.feature) (`@smoke`) |
+| **Preconditions** | On the home page, cookies rejected |
+| **Steps** | 1. Look at the top navigation. |
+| **Expected result** | The "Find a colour" button, the "Search" button and the "Shopping Cart" link are visible — the entry points of every journey. Only the home page is loaded |
 
 ---
 

@@ -61,6 +61,7 @@ playwright-python-dulux-uk/
 │   └── ARCHITECTURE.md                  # this file
 ├── features/
 │   ├── tester_purchase.feature          # ported as-is (Gherkin is language-agnostic)
+│   ├── site_navigation.feature          # site search + cookie consent
 │   └── visualizer_experience.feature
 ├── pages/
 │   ├── base_page.py                     # shared `page` handle
@@ -78,6 +79,7 @@ playwright-python-dulux-uk/
 └── tests/
     └── step_defs/
         ├── test_tester_purchase.py
+        ├── test_site_navigation.py
         └── test_visualizer_experience.py
 ```
 
@@ -136,7 +138,7 @@ later step of the same scenario automatically.
 
 | Marker | Meaning |
 |---|---|
-| `smoke` | Fast critical-path set — desktop-only, both journeys |
+| `smoke` | Fast critical-path set — desktop-only: both journeys plus cheap basket, search, cookie and navigation checks |
 | `regression` | Full journey coverage |
 | `desktop` | Desktop-viewport (`1920×1080`) scenarios |
 | `tablet` | Tablet-viewport (`768×1024`) scenarios |
