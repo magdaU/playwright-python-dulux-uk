@@ -175,3 +175,28 @@ Feature: Purchase a colour tester
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
     And the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+
+  @smoke @mobile
+  Scenario: Mobile customer changes the basket quantity and removes the tester
+    Editing the basket on a phone (TC-26): the + and - buttons, the - button disabled at 1, and
+    removing the tester, at 375 px wide. The basket is seeded through the site's own add-to-cart API.
+    Given a mobile customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer increases the tester quantity
+    Then the basket quantity is 2
+    When the customer decreases the tester quantity
+    Then the basket quantity is 1
+    And the tester quantity cannot be decreased any further
+    When the customer removes the tester from the basket
+    Then the basket is empty
+
+  @smoke @tablet
+  Scenario: Tablet customer changes the basket quantity and removes the tester
+    The same basket edit on a tablet (TC-27), at 768 px wide.
+    Given a tablet customer has a tester for shade "Romantic Reverie" in the basket
+    When the customer increases the tester quantity
+    Then the basket quantity is 2
+    When the customer decreases the tester quantity
+    Then the basket quantity is 1
+    And the tester quantity cannot be decreased any further
+    When the customer removes the tester from the basket
+    Then the basket is empty
