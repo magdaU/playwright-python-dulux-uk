@@ -5,6 +5,21 @@
     "messageRegex": "(?s).*RetryExhaustedError.*"
   },
   {
+    "name": "Unexpected page address (navigation or redirect changed)",
+    "matchedStatuses": ["failed"],
+    "messageRegex": "(?s).*Page URL expected.*"
+  },
+  {
+    "name": "Price or amount changed",
+    "matchedStatuses": ["failed"],
+    "messageRegex": "(?s).*get_by_text.{2}£.*"
+  },
+  {
+    "name": "Cookie banner behaviour changed",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": "(?s).*onetrust.*"
+  },
+  {
     "name": "Accessibility violations",
     "matchedStatuses": ["failed"],
     "messageRegex": "(?s).*(critical|serious):.*"
