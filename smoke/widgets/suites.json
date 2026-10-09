@@ -1,1 +1,1 @@
-{"total":2,"items":[{"uid":"e01fc6fc64f325dd9d4f11aea49dd9e9","name":"Desktop","statistic":{"failed":0,"broken":0,"skipped":0,"passed":5,"unknown":0,"total":5}}]}
+{"total":2,"items":[{"uid":"e01fc6fc64f325dd9d4f11aea49dd9e9","name":"Desktop","statistic":{"failed":1,"broken":4,"skipped":0,"passed":0,"unknown":0,"total":5}}]}
