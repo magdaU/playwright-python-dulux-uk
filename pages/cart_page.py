@@ -6,6 +6,7 @@ from pages.base_page import BasePage
 class CartPage(BasePage):
     CART_PAGE_URL = "https://www.dulux.co.uk/en/store/cart"
     ORDER_API_PATH = "/store/api/order"
+    ORDER_API_PATTERN = "**/store/api/order"
     QUANTITY_INPUT_LABEL = "Quantity input"
     INCREASE_QUANTITY_LABEL = "Increase quantity"
     DECREASE_QUANTITY_LABEL = "Decrease quantity"
@@ -55,6 +56,20 @@ class CartPage(BasePage):
     @classmethod
     def _is_order_update(cls, response: Response) -> bool:
         return response.request.method == "POST" and response.url.endswith(cls.ORDER_API_PATH)
+
+    def reject_quantity_changes_for_lack_of_stock(self) -> None:
+        # Stubbed in the browser, so the changed quantity never reaches production.
+        def reject(route) -> None:
+            if route.request.method == "POST":
+                route.fulfill(
+                    status=422,
+                    content_type="application/json",
+                    body='{"error": "Insufficient stock", "message": "Insufficient stock for order"}',
+                )
+            else:
+                route.continue_()
+
+        self.page.route(self.ORDER_API_PATTERN, reject)
 
     def get_increase_button(self) -> Locator:
         return self.page.get_by_role("button", name=self.INCREASE_QUANTITY_LABEL)
