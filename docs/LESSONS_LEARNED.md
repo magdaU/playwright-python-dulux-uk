@@ -179,6 +179,12 @@ HTML declared `min=1 max=999`, but production only accepted 1–23. A 24th teste
 by the server (`POST /store/api/order` → HTTP 422) and the field then reverts to the last
 accepted value. Values below 1 never reach the server at all.
 
+**Follow-up (2026-10-13):** the "cap of 23" turned out not to be a rule at all. The nightly
+failed on the `23 → 23` row; probing production showed `422 "Insufficient stock"` for 22–24
+while 20 was still accepted — the limit is the shade's live stock level, which had dropped.
+A value that merely *looked* like a business rule was a data snapshot. The production boundary
+rows now cover only stable client-side limits (1, 2, 0); the stock refusal is a stubbed scenario.
+
 **Root cause of a near-miss in the test itself:** the first version asserted the field's
 value straight after typing. The field briefly shows what was typed before the server's
 verdict arrives, so a deliberately wrong expectation ("24 → 24") still passed.

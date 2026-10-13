@@ -51,22 +51,32 @@ Feature: Purchase a colour tester
 
   @desktop @boundary
   Scenario Outline: Desktop customer changes the tester quantity at its boundaries
-    Boundary values for the basket quantity (TC-04a). The field declares a maximum of 999, but
-    the server only accepts 1 to 23 testers: a value outside that range is rejected (HTTP 422)
-    and the field settles back on the last accepted quantity. The basket is seeded through the
-    site's own add-to-cart API, so each example loads only the basket page.
+    Boundary values for the basket quantity (TC-04a). The field declares a minimum of 1, so 0 is
+    refused client-side and the field settles back on the last accepted quantity. A small typed
+    quantity is accepted by the server. The upper limit is deliberately not probed here: it is
+    the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
+    The basket is seeded through the site's own add-to-cart API, so each example loads only the
+    basket page.
     Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
     When the customer changes the tester quantity to <entered>
     Then the basket quantity is <expected>
 
-    # The site accepts 1-23 testers per order. Values outside that range are
-    # rejected (HTTP 422) and the field reverts to the last accepted quantity.
     Examples:
       | entered | expected | rule                         |
       | 1       | 1        | minimum accepted             |
-      | 23      | 23       | maximum accepted             |
+      | 2       | 2        | typed quantity accepted      |
       | 0       | 1        | below minimum, rejected      |
-      | 24      | 1        | above maximum, rejected      |
+
+  @desktop @boundary @negative
+  Scenario: Desktop customer asks for more testers than are in stock
+    Upper boundary (TC-04b). The server refuses a quantity above the shade's stock (HTTP 422,
+    "Insufficient stock") and the field settles back on the last accepted quantity. Stock changes
+    on production, so the refusal is stubbed in the browser: the test checks how the basket reacts
+    to it, not where the stock level happens to be today.
+    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    And the server reports insufficient stock for any quantity change
+    When the customer changes the tester quantity to 5
+    Then the basket quantity is 1
 
   @desktop
   Scenario: Desktop customer changes the basket quantity and removes the tester

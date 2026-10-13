@@ -115,6 +115,11 @@ def add_tester_to_basket(ctx):
     ctx.navigation.open_shopping_cart()
 
 
+@given("the server reports insufficient stock for any quantity change")
+def server_reports_insufficient_stock(ctx):
+    ctx.cart.reject_quantity_changes_for_lack_of_stock()
+
+
 @when(parsers.parse("the customer changes the tester quantity to {quantity:d}"))
 def change_tester_quantity(ctx, quantity):
     ctx.cart.change_quantity(quantity)

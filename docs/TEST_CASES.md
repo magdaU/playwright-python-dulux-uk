@@ -49,9 +49,18 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — Scenario Outline "changes the tester quantity at its boundaries"](../features/tester_purchase.feature) |
 | **Preconditions** | Desktop viewport (`1920×1080`); basket contains 1 tester (result of TC-01's steps) |
-| **Steps** | Enter each value into the basket quantity field and tab out: `1`, `23`, `0`, `24` |
-| **Expected result** | `1` → 1 and `23` → 23 are accepted. `0` and `24` are rejected and the field settles back on the last accepted quantity (1). Behaviour observed on production 2026-10-08: the field's HTML declares `min=1 max=999`, but the server (`POST /store/api/order`) rejects quantities above 23 with HTTP 422 |
-| **Note** | The 23 limit is server-side and not documented; if the retailer changes it, the `23`/`24` rows need updating (same catalogue-drift risk as the pinned shade) |
+| **Steps** | Enter each value into the basket quantity field and tab out: `1`, `2`, `0` |
+| **Expected result** | `1` → 1 and `2` → 2 are accepted. `0` is refused (the field declares `min=1`) and the field settles back on the last accepted quantity (1) |
+| **Note** | The upper limit is deliberately not tested against production: it is the shade's live stock level (see TC-04b). The original `23`/`24` rows failed the nightly on 2026-10-13 when stock dropped below 23 |
+
+### TC-04b — Quantity above stock is refused
+| | |
+|---|---|
+| **Priority** | P2 |
+| **Automation** | ✅ [`tester_purchase.feature` — "asks for more testers than are in stock"](../features/tester_purchase.feature) |
+| **Preconditions** | Desktop viewport (`1920×1080`); basket contains 1 tester; `POST /store/api/order` stubbed in the browser to answer HTTP 422 |
+| **Steps** | Enter `5` into the basket quantity field and tab out |
+| **Expected result** | The field settles back on the last accepted quantity (1). Production answers `422 {"error":"Insufficient stock"}` for a quantity above stock; the refusal is stubbed because stock changes |
 
 ### TC-04 — Basket increment/decrement/remove
 | | |

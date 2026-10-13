@@ -96,10 +96,12 @@ every purchase-journey run and allow-listed by ID rather than gated on — see
   `group` wrapping three elements that all mention "Quantity" in their accessible name,
   breaking a looser, substring-based locator — see
   [Lessons Learned #2](LESSONS_LEARNED.md#2-basket-ui-markup-drift--a-redesign-broke-a-locators-uniqueness-not-its-match).
-- The quantity field declares `min=1 max=999`, but the **effective rules differ** (observed
-  2026-10-08): values below 1 are ignored client-side; the server accepts 1–23 testers and
-  rejects 24+ with HTTP 422, after which the field reverts to the last accepted quantity.
-  Covered by TC-04a. The cap is undocumented and may change.
+- The quantity field declares `min=1 max=999`, but the **effective rules differ**: values
+  below 1 are ignored client-side; the server rejects a quantity above the shade's **stock**
+  with HTTP 422 (`"Insufficient stock"`), after which the field reverts to the last accepted
+  quantity. The cap looked like a fixed 23 on 2026-10-08, but by 2026-10-13 it had fallen
+  below 22 (20 was still accepted) — it is stock, not a rule. Covered by TC-04a (client side,
+  production) and TC-04b (stock refusal, stubbed).
 - The basket lists the **tester's product name** and the **shade name** as plain text.
 - No transaction ever completes against production — the suite verifies basket *state*,
   never checkout.
