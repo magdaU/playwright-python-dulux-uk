@@ -121,7 +121,7 @@ Feature: Purchase a colour tester
     Examples:
       | colour_family | shade        |
       | Blue          | Breton Blue  |
-      | Green         | Fresh Sage   |
+      | Green         | Forest Shade |
 
   @smoke @desktop
   Scenario: Desktop customer sees the price of a tester and the order total

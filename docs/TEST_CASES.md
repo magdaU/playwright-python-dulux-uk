@@ -94,7 +94,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | | |
 |---|---|
 | **Priority** | P2 |
-| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer adds a tester for a shade from another colour family"](../features/tester_purchase.feature) (outline, 2 examples: Blue / "Breton Blue", Green / "Fresh Sage") |
+| **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer adds a tester for a shade from another colour family"](../features/tester_purchase.feature) (outline, 2 examples: Blue / "Breton Blue", Green / "Forest Shade") |
 | **Preconditions** | Empty basket, desktop |
 | **Steps** | 1. Open the colour finder.<br>2. Choose the colour family and the shade.<br>3. Click "Buy a Tester in this colour".<br>4. Open the basket. |
 | **Expected result** | The basket holds one "Dulux Colour Tester" for that shade. Guards against catalogue drift and layout differences between families; a failure here with TC-01 green points at that family or shade |
