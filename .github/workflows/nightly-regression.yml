@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: write   # required by peaceiris/actions-gh-pages to push to gh-pages branch
+  issues: write     # required to open/update the nightly-failure issue
 
 jobs:
   pytest-nightly-regression:
@@ -125,3 +126,25 @@ jobs:
           destination_dir: nightly
           keep_files: true   # keep the smoke report published at the gh-pages root
           commit_message: "ci: publish nightly Allure report [skip ci]"
+
+      # A red nightly is easy to miss in the Actions tab, so it leaves a record: one open
+      # issue, with a comment per further failing night instead of a new issue each time.
+      # Only for the scheduled/main run - a manual run on a feature branch stays quiet.
+      - name: Report nightly failure as an issue
+        if: failure() && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          report_url="https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}/nightly/"
+          body="Nightly regression failed on $(date -u +%F).
+
+          - Run: ${run_url}
+          - Allure report: ${report_url}"
+          gh label create nightly-failure --color B60205 --description "Nightly regression is red" || true
+          existing=$(gh issue list --label nightly-failure --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --label nightly-failure --title "Nightly regression is failing" --body "$body"
+          fi
