@@ -179,11 +179,8 @@ HTML declared `min=1 max=999`, but production only accepted 1–23. A 24th teste
 by the server (`POST /store/api/order` → HTTP 422) and the field then reverts to the last
 accepted value. Values below 1 never reach the server at all.
 
-**Follow-up (2026-10-13):** the "cap of 23" turned out not to be a rule at all. The nightly
-failed on the `23 → 23` row; probing production showed `422 "Insufficient stock"` for 22–24
-while 20 was still accepted — the limit is the shade's live stock level, which had dropped.
-A value that merely *looked* like a business rule was a data snapshot. The production boundary
-rows now cover only stable client-side limits (1, 2, 0); the stock refusal is a stubbed scenario.
+**Follow-up (2026-10-13):** the "cap of 23" was not a rule but the shade's live stock level —
+see [#11](#11-a-rule-observed-on-production-can-be-a-data-snapshot--probe-it-then-stub-what-you-cant-control).
 
 **Root cause of a near-miss in the test itself:** the first version asserted the field's
 value straight after typing. The field briefly shows what was typed before the server's
@@ -247,6 +244,34 @@ explicit and short rather than a wildcard. Seeding trades realism for load, so i
 where the journey is covered elsewhere, and the seeded ids (pinned in `SEEDABLE_TESTERS`) must be
 updated together with the pinned shade — the Given step fails loudly when the shade is not in the
 basket, instead of passing on a stale id.
+
+## 11. A "rule" observed on production can be a data snapshot — probe it, then stub what you can't control
+
+**What happened:** the nightly regression failed on one example of the tester quantity outline,
+`23 → 23 (maximum accepted)`: the field stayed on `1`. The report only showed the symptom (the
+value reverted), not the reason. TC-04a had assumed "the server accepts 1–23 testers" since
+2026-10-08.
+
+**Investigation (a probe):** a throwaway script outside the repo seeded a basket and typed 23, 22,
+24, then 2, 5, 10, 15, 20, printing the status and body of each `POST /store/api/order`. Result on
+2026-10-13: `422 {"error":"Insufficient stock"}` for 22–24, `200` up to 20. The "cap of 23" was
+the shade's live stock level, which had dropped — not a business rule. A dozen requests were
+enough, and it replaced guessing between "limit changed" and "flaky server".
+
+**Fix (a stub):** the production rows now cover only limits that don't move with data — `1`, `2`
+and `0` (the field's own `min=1`). The server-side refusal became a separate scenario (TC-04b)
+that stubs `POST /store/api/order` in the browser to answer `422 Insufficient stock`
+(`CartPage.reject_quantity_changes_for_lack_of_stock`, same mechanism as TC-05's failing
+add-to-basket). It checks how the basket reacts to a refusal, deterministically, and no changed
+quantity reaches production. Mutation check: with the stub disabled the scenario fails (field
+shows 5).
+
+**Takeaway:** before encoding an observed boundary in a test, ask whether it is a rule or a
+reading of changing data (stock, prices, catalogue). If it is data, either don't assert it against
+production or stub the response and test the reaction. When a nightly fails with only a symptom,
+probe the real system with a small throwaway script before touching the test. Related:
+[#1](#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family),
+[#8](#8-a-declared-limit-is-not-the-enforced-limit--and-a-transient-ui-state-can-fool-an-assertion).
 
 ## See also
 
