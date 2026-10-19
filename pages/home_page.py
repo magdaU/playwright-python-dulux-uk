@@ -9,8 +9,9 @@ class HomePage(BasePage):
     COOKIE_BANNER = "#onetrust-banner-sdk"
 
     def open_home_page(self) -> None:
-        self.page.goto(self.URL)
-        self.page.wait_for_load_state()
+        # "load" waits for every sub-resource and timed out on the slow CI runner while the
+        # page was already usable; each later step waits for its own element.
+        self.page.goto(self.URL, wait_until="domcontentloaded")
 
     def get_cookie_banner(self) -> Locator:
         return self.page.locator(self.COOKIE_BANNER)
