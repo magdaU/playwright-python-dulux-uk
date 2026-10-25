@@ -1,47 +1,88 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The same basket check on a tablet (TC-23), at 768 px wide.","2612","Tablet customer sees the tester in the basket","Tablet","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Pricing (TC-14). One tester costs 2.90, delivery adds 1.50, so the order total is 4.40. The
+basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
+The amounts are production prices: a failure means the price changed, which is worth knowing.","2917","Desktop customer sees the price of a tester and the order total","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To find a colour quickly and get on with browsing
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
 Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","3877","Desktop customer searches for a shade","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
+nothing gets the site's ""no results"" message instead of an empty or broken page.","4115","Desktop customer searches for a shade","Desktop","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
-The same basket check on a tablet (TC-23), at 768 px wide.","2398","Tablet customer sees the tester in the basket","Tablet","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+Boundary values for the basket quantity (TC-04a). The field declares a minimum of 1, so 0 is
+refused client-side and the field settles back on the last accepted quantity. A small typed
+quantity is accepted by the server. The upper limit is deliberately not probed here: it is
+the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
+The basket is seeded through the site's own add-to-cart API, so each example loads only the
+basket page.","2673","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Empty basket (TC-17). A first-time visitor who opens the basket sees that it is empty and is
+offered a way back to the products. Only the basket page is loaded.","1280","Desktop customer with nothing in the basket is told so and can keep shopping","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
 Editing the basket on a phone (TC-26): the + and - buttons, the - button disabled at 1, and
-removing the tester, at 375 px wide. The basket is seeded through the site's own add-to-cart API.","4732","Mobile customer changes the basket quantity and removes the tester","Mobile","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To find a colour quickly and get on with browsing
+removing the tester, at 375 px wide. The basket is seeded through the site's own add-to-cart API.","4324","Mobile customer changes the basket quantity and removes the tester","Mobile","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
 As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
+I want to add a tester for a chosen shade to my basket
 
-Cookie consent (TC-10). On a first visit the banner covers the page, so the navigation behind
-it cannot be used. After ""Reject all"" the banner is gone and the navigation works again.","4726","Desktop customer cannot use the site until the cookie banner is answered","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
+Basket persistence (TC-15). The basket lives in the session, not in the page: after a reload
+the customer still has the same tester, in the same quantity. The basket is seeded through the
+site's own add-to-cart API.","4109","Desktop customer finds the basket unchanged after reloading the page","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To preview a colour before making a purchase decision
 As a Dulux customer
 I want to open the Visualizer from a selected shade page
 
-From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
-open in a new browser tab, at the expected address.","6030","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-24","passed","2026-10-24","","Open the Dulux Visualizer experience","",""
+On mobile the Visualizer does not open (TC-08): the site shows a known third-party
+store-data message instead. This is documented behaviour, not a defect, so the test
+asserts that message.","4298","Mobile customer tries to open the Visualizer for a shade","Mobile","2026-10-25","passed","2026-10-25","","Open the Dulux Visualizer experience","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
 The same purchase path on a tablet (TC-02). At this width the site collapses to the
-hamburger-menu navigation, so the colour finder is reached through the menu.","11783","Tablet customer adds a tester from the colour finder","Tablet","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+hamburger-menu navigation, so the colour finder is reached through the menu.","10487","Tablet customer adds a tester from the colour finder","Tablet","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
-Editing the basket after a purchase (TC-04). The customer raises and lowers the quantity
-with the + and - buttons, finds the - button disabled at 1 (the minimum), and finally
-removes the tester, leaving an empty basket. The basket is seeded through the site's own
-add-to-cart API, so only the basket page is loaded and production is hit as little as possible.","4664","Desktop customer changes the basket quantity and removes the tester","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+The same basket edit on a tablet (TC-27), at 768 px wide.","4142","Tablet customer changes the basket quantity and removes the tester","Tablet","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Cookie consent (TC-10). On a first visit the banner covers the page, so the navigation behind
+it cannot be used. After ""Reject all"" the banner is gone and the navigation works again.","4866","Desktop customer cannot use the site until the cookie banner is answered","Desktop","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Catalogue coverage (TC-13). The purchase path does not depend on the one pinned shade: shades
+from other colour families are found through the colour finder and added to the basket the same
+way. Failing here while TC-01 passes points at that family or shade, not at the purchase flow.","10019","Desktop customer adds a tester for a shade from another colour family","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The basket page on a phone (TC-22). A tester put in the basket through the site's own add-to-cart
+API is shown with its name, shade, quantity and price at 375 px wide. Only the basket page is loaded.","2753","Mobile customer sees the tester in the basket","Mobile","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -49,21 +90,20 @@ I want to add a tester for a chosen shade to my basket
 Negative path (TC-06). Not every shade can be bought as a tester: ""Cotton Breeze"" offers
 only ""Find Products in this colour"". The customer must not be offered a tester to buy,
 and the basket must stay empty. If the retailer ever adds a tester for this shade the test
-fails, flagging catalogue drift in the pinned-shade assumption.","5620","Desktop customer views a shade that has no tester available","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+fails, flagging catalogue drift in the pinned-shade assumption.","5724","Desktop customer views a shade that has no tester available","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To find a colour quickly and get on with browsing
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
-Site search on a phone (TC-24). The search box is reachable at 375 px wide, and a known shade is
-found and shown on the results page. One search from the home page.","2010","Mobile customer searches for a shade","Mobile","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
+Cookie consent on a phone (TC-19). On a first visit the banner is shown; after ""Reject all"" it is
+gone. The navigation behind the banner is not checked here: on mobile it is the hamburger menu.","1745","Mobile customer answers the cookie banner","Mobile","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
-Failure path (TC-05). The add-to-basket request is stubbed to fail in the browser, so it never
-reaches production. The customer must be shown an error message rather than the ""added to your
-cart"" confirmation, and the basket must stay empty. The message is short-lived (it fades after
-about three seconds), so it is asserted as soon as it appears.","5883","Desktop customer is told when adding a tester to the basket fails","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+Leaving the basket (TC-18). ""Continue shopping"" takes a customer with a tester in the basket
+to the product listing without losing the basket. The basket is seeded through the site's own
+add-to-cart API.","2907","Desktop customer can leave the basket and keep shopping","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -73,52 +113,7 @@ refused client-side and the field settles back on the last accepted quantity. A 
 quantity is accepted by the server. The upper limit is deliberately not probed here: it is
 the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
 The basket is seeded through the site's own add-to-cart API, so each example loads only the
-basket page.","2759","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To preview a colour before making a purchase decision
-As a Dulux customer
-I want to open the Visualizer from a selected shade page
-
-On mobile the Visualizer does not open (TC-08): the site shows a known third-party
-store-data message instead. This is documented behaviour, not a defect, so the test
-asserts that message.","4190","Mobile customer tries to open the Visualizer for a shade","Mobile","2026-10-24","passed","2026-10-24","","Open the Dulux Visualizer experience","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-Boundary values for the basket quantity (TC-04a). The field declares a minimum of 1, so 0 is
-refused client-side and the field settles back on the last accepted quantity. A small typed
-quantity is accepted by the server. The upper limit is deliberately not probed here: it is
-the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
-The basket is seeded through the site's own add-to-cart API, so each example loads only the
-basket page.","2528","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-The same health check on a tablet (TC-21), where the site also uses the hamburger menu.","847","Tablet customer sees the menu on the home page","Tablet","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","2308","Desktop customer searches for a shade","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-Catalogue coverage (TC-13). The purchase path does not depend on the one pinned shade: shades
-from other colour families are found through the colour finder and added to the basket the same
-way. Failing here while TC-01 passes points at that family or shade, not at the purchase flow.","9586","Desktop customer adds a tester for a shade from another colour family","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-The same purchase path on a phone (TC-03), reached through the hamburger menu.","10345","Mobile customer adds a tester from the colour finder","Mobile","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-The same search on a tablet (TC-25), at 768 px wide.","2088","Tablet customer searches for a shade","Tablet","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
+basket page.","2848","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -126,52 +121,7 @@ I want to add a tester for a chosen shade to my basket
 Upper boundary (TC-04b). The server refuses a quantity above the shade's stock (HTTP 422,
 ""Insufficient stock"") and the field settles back on the last accepted quantity. Stock changes
 on production, so the refusal is stubbed in the browser: the test checks how the basket reacts
-to it, not where the stock level happens to be today.","2472","Desktop customer asks for more testers than are in stock","","2026-10-24","passed","2026-10-24","","","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-Home page health check on a phone (TC-20). The navigation collapses into the hamburger menu, so
-the customer must find the menu, site search and the shopping cart. Only the home page is loaded.","882","Mobile customer sees the menu on the home page","Mobile","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-Home page health check (TC-12). A first-time visitor who has answered the cookie banner must
-find the three entry points every journey starts from: the colour finder, site search and the
-shopping cart. Only the home page is loaded.","1656","Desktop customer sees the main navigation on the home page","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To find a colour quickly and get on with browsing
-As a Dulux customer
-I want site search to work and the cookie banner not to get in my way
-
-Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","3636","Desktop customer searches for a shade","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-Pricing (TC-14). One tester costs 2.90, delivery adds 1.50, so the order total is 4.40. The
-basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
-The amounts are production prices: a failure means the price changed, which is worth knowing.","2444","Desktop customer sees the price of a tester and the order total","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-Empty basket (TC-17). A first-time visitor who opens the basket sees that it is empty and is
-offered a way back to the products. Only the basket page is loaded.","1871","Desktop customer with nothing in the basket is told so and can keep shopping","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-Basket persistence (TC-15). The basket lives in the session, not in the page: after a reload
-the customer still has the same tester, in the same quantity. The basket is seeded through the
-site's own add-to-cart API.","5052","Desktop customer finds the basket unchanged after reloading the page","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
-"To try a paint colour at home before buying a full tin
-As a Dulux customer
-I want to add a tester for a chosen shade to my basket
-
-The basket page on a phone (TC-22). A tester put in the basket through the site's own add-to-cart
-API is shown with its name, shade, quantity and price at 375 px wide. Only the basket page is loaded.","2401","Mobile customer sees the tester in the basket","Mobile","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+to it, not where the stock level happens to be today.","2847","Desktop customer asks for more testers than are in stock","","2026-10-25","passed","2026-10-25","","","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -179,34 +129,82 @@ I want to add a tester for a chosen shade to my basket
 The critical purchase path (TC-01). The customer finds a shade through the colour finder
 in the top navigation, adds a tester to the basket and must end up with exactly one tester
 for that shade. The shade page is also scanned for new serious or critical accessibility
-violations.","9539","Desktop customer adds a tester from the colour finder","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+violations.","9608","Desktop customer adds a tester from the colour finder","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+The same search on a tablet (TC-25), at 768 px wide.","2164","Tablet customer searches for a shade","Tablet","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Site search on a phone (TC-24). The search box is reachable at 375 px wide, and a known shade is
+found and shown on the results page. One search from the home page.","2276","Mobile customer searches for a shade","Mobile","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Site search (TC-09). A known shade is found and shown on the results page; a term that matches
+nothing gets the site's ""no results"" message instead of an empty or broken page.","3941","Desktop customer searches for a shade","Desktop","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
-Catalogue coverage (TC-13). The purchase path does not depend on the one pinned shade: shades
-from other colour families are found through the colour finder and added to the basket the same
-way. Failing here while TC-01 passes points at that family or shade, not at the purchase flow.","8730","Desktop customer adds a tester for a shade from another colour family","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+Editing the basket after a purchase (TC-04). The customer raises and lowers the quantity
+with the + and - buttons, finds the - button disabled at 1 (the minimum), and finally
+removes the tester, leaving an empty basket. The basket is seeded through the site's own
+add-to-cart API, so only the basket page is loaded and production is hit as little as possible.","3735","Desktop customer changes the basket quantity and removes the tester","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Site search (TC-09). A known shade is found and shown on the results page; a term that matches
+nothing gets the site's ""no results"" message instead of an empty or broken page.","3712","Desktop customer searches for a shade","Desktop","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+Home page health check on a phone (TC-20). The navigation collapses into the hamburger menu, so
+the customer must find the menu, site search and the shopping cart. Only the home page is loaded.","986","Mobile customer sees the menu on the home page","Mobile","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
 Colour finder health check (TC-16). The customer reaches a shade through the top navigation
 and is offered a tester to buy. Nothing is added to the basket, so this is the cheapest check
-of the step that has proved timing-sensitive on other engines.","5205","Desktop customer can open a shade from the colour finder","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+of the step that has proved timing-sensitive on other engines.","4483","Desktop customer can open a shade from the colour finder","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
 
-Leaving the basket (TC-18). ""Continue shopping"" takes a customer with a tester in the basket
-to the product listing without losing the basket. The basket is seeded through the site's own
-add-to-cart API.","3646","Desktop customer can leave the basket and keep shopping","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+Catalogue coverage (TC-13). The purchase path does not depend on the one pinned shade: shades
+from other colour families are found through the colour finder and added to the basket the same
+way. Failing here while TC-01 passes points at that family or shade, not at the purchase flow.","8607","Desktop customer adds a tester for a shade from another colour family","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To find a colour quickly and get on with browsing
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
-Cookie consent on a phone (TC-19). On a first visit the banner is shown; after ""Reject all"" it is
-gone. The navigation behind the banner is not checked here: on mobile it is the hamburger menu.","1674","Mobile customer answers the cookie banner","Mobile","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
+Site search (TC-09). A known shade is found and shown on the results page; a term that matches
+nothing gets the site's ""no results"" message instead of an empty or broken page.","16316","Desktop customer searches for a shade","Desktop","2026-10-25","broken","2026-10-25","","Use the Dulux site","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+The same purchase path on a phone (TC-03), reached through the hamburger menu.","10649","Mobile customer adds a tester from the colour finder","Mobile","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To try a paint colour at home before buying a full tin
+As a Dulux customer
+I want to add a tester for a chosen shade to my basket
+
+Failure path (TC-05). The add-to-basket request is stubbed to fail in the browser, so it never
+reaches production. The customer must be shown an error message rather than the ""added to your
+cart"" confirmation, and the basket must stay empty. The message is short-lived (it fades after
+about three seconds), so it is asserted as soon as it appears.","9854","Desktop customer is told when adding a tester to the basket fails","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
+"To find a colour quickly and get on with browsing
+As a Dulux customer
+I want site search to work and the cookie banner not to get in my way
+
+The same health check on a tablet (TC-21), where the site also uses the hamburger menu.","837","Tablet customer sees the menu on the home page","Tablet","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
 "To try a paint colour at home before buying a full tin
 As a Dulux customer
 I want to add a tester for a chosen shade to my basket
@@ -216,15 +214,17 @@ refused client-side and the field settles back on the last accepted quantity. A 
 quantity is accepted by the server. The upper limit is deliberately not probed here: it is
 the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
 The basket is seeded through the site's own add-to-cart API, so each example loads only the
-basket page.","3038","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+basket page.","3074","Desktop customer changes the tester quantity at its boundaries","Desktop","2026-10-25","passed","2026-10-25","","Purchase a colour tester","",""
 "To find a colour quickly and get on with browsing
 As a Dulux customer
 I want site search to work and the cookie banner not to get in my way
 
-Site search (TC-09). A known shade is found and shown on the results page; a term that matches
-nothing gets the site's ""no results"" message instead of an empty or broken page.","3620","Desktop customer searches for a shade","Desktop","2026-10-24","passed","2026-10-24","","Use the Dulux site","",""
-"To try a paint colour at home before buying a full tin
+Home page health check (TC-12). A first-time visitor who has answered the cookie banner must
+find the three entry points every journey starts from: the colour finder, site search and the
+shopping cart. Only the home page is loaded.","3768","Desktop customer sees the main navigation on the home page","Desktop","2026-10-25","passed","2026-10-25","","Use the Dulux site","",""
+"To preview a colour before making a purchase decision
 As a Dulux customer
-I want to add a tester for a chosen shade to my basket
+I want to open the Visualizer from a selected shade page
 
-The same basket edit on a tablet (TC-27), at 768 px wide.","5030","Tablet customer changes the basket quantity and removes the tester","Tablet","2026-10-24","passed","2026-10-24","","Purchase a colour tester","",""
+From a shade page the customer opens the Dulux Visualizer app (TC-07). On desktop it must
+open in a new browser tab, at the expected address.","9261","Desktop customer opens the Visualizer for a shade","Desktop","2026-10-25","passed","2026-10-25","","Open the Dulux Visualizer experience","",""
