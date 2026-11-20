@@ -54,8 +54,8 @@ viewport.
 - Not every shade offers the same actions further down the funnel (see the shade page,
   below) — this was discovered while investigating a "self-healing" shade-selection
   alternative (see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)):
-  the catalogue's first-listed shade under "Violet" ("Cotton Breeze") had no tester
-  purchase option at all.
+  the first shade listed under "Violet" ("Cotton Breeze") had no tester purchase option at
+  all. It has since left the family, so the negative-path scenario now uses "Deep Aubergine".
 - This interaction is the one place a genuine, engine-specific timing difference has been
   observed on Firefox/WebKit (not a bug in the site, a real cross-browser difference) — see
   [Lessons Learned #3](LESSONS_LEARNED.md#3-cross-engine-navigation-timing--the-same-interaction-behaves-differently-per-browser-engine).

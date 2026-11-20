@@ -40,12 +40,12 @@ Feature: Purchase a colour tester
 
   @desktop @negative
   Scenario: Desktop customer views a shade that has no tester available
-    Negative path (TC-06). Not every shade can be bought as a tester: "Cotton Breeze" offers
+    Negative path (TC-06). Not every shade can be bought as a tester: "Deep Aubergine" offers
     only "Find Products in this colour". The customer must not be offered a tester to buy,
     and the basket must stay empty. If the retailer ever adds a tester for this shade the test
     fails, flagging catalogue drift in the pinned-shade assumption.
     Given a desktop customer starts with an empty basket
-    When the customer opens shade "Cotton Breeze" from colour family "Violet"
+    When the customer opens shade "Deep Aubergine" from colour family "Violet"
     Then the shade offers products but no tester to buy
     And the basket is still empty
 
@@ -125,11 +125,11 @@ Feature: Purchase a colour tester
 
   @smoke @desktop
   Scenario: Desktop customer sees the price of a tester and the order total
-    Pricing (TC-14). One tester costs 2.90, delivery adds 1.50, so the order total is 4.40. The
+    Pricing (TC-14). One tester costs 2.90 and delivery is free, so the order total is 2.90. The
     basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
     The amounts are production prices: a failure means the price changed, which is worth knowing.
     Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
-    Then the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+    Then the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @desktop
   Scenario: Desktop customer finds the basket unchanged after reloading the page
@@ -176,7 +176,7 @@ Feature: Purchase a colour tester
     Given a mobile customer has a tester for shade "Romantic Reverie" in the basket
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
-    And the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+    And the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @smoke @tablet
   Scenario: Tablet customer sees the tester in the basket
@@ -184,7 +184,7 @@ Feature: Purchase a colour tester
     Given a tablet customer has a tester for shade "Romantic Reverie" in the basket
     Then the basket contains 1 item
     And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
-    And the basket shows the tester price "£2.90", delivery "£1.50" and order total "£4.40"
+    And the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @smoke @mobile
   Scenario: Mobile customer changes the basket quantity and removes the tester

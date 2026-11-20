@@ -86,7 +86,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P3 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer views a shade that has no tester available"](../features/tester_purchase.feature) (`@negative`) — data-dependent on which shades currently lack a tester |
-| **Preconditions** | A shade known to expose only "Find Products in this colour", no "Buy a Tester" button (e.g. "Cotton Breeze" under "Violet" at time of writing — catalogue can drift, see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) |
+| **Preconditions** | A shade known to expose only "Find Products in this colour", no "Buy a Tester" button (e.g. "Deep Aubergine" under "Violet" at time of writing, 2026-11-20 — "Cotton Breeze" left the family; catalogue can drift, see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family)) |
 | **Steps** | 1. Start with an empty basket; open the shade's page via the colour finder.<br>2. Confirm "Find Products in this colour" is shown and no "Buy a Tester" control is present.<br>3. Open the basket. |
 | **Expected result** | No tester is offered and the basket is still empty. Confirms the assumption behind the pinned-shade decision still holds. As an automated test it also acts as a canary: if it fails, the retailer has added a tester for this shade — pick another shade without one |
 
@@ -106,7 +106,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer sees the price of a tester and the order total"](../features/tester_purchase.feature) (`@smoke`) |
 | **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the site's add-to-cart API) |
 | **Steps** | 1. Open the basket. |
-| **Expected result** | Tester £2.90 (shown as item price and subtotal), delivery £1.50, order total £4.40. These are production prices, so a failure usually means a price change |
+| **Expected result** | Tester £2.90 (shown as item price and subtotal), delivery Free, order total £2.90. These are production prices: delivery is free for this basket and is not a promotion. A charge of £1.50 would fail this check (see [Lessons Learned #12](LESSONS_LEARNED.md#12-a-repeated-amount-and-exact-counts-the-delivery-cost-decides-how-often-a-price-shows)) |
 
 ### TC-15 — Basket survives a page reload
 | | |
@@ -151,7 +151,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Automation** | ✅ [`tester_purchase.feature` — "Mobile customer sees the tester in the basket"](../features/tester_purchase.feature) (`@smoke`) |
 | **Preconditions** | Mobile viewport 375×667; one "Romantic Reverie" tester in the basket (seeded through the API) |
 | **Steps** | 1. Open the basket. |
-| **Expected result** | Quantity 1, "Dulux Colour Tester" for "Romantic Reverie", tester £2.90, delivery £1.50, order total £4.40 |
+| **Expected result** | Quantity 1, "Dulux Colour Tester" for "Romantic Reverie", tester £2.90, delivery Free, order total £2.90 |
 
 ### TC-23 — Tablet basket shows the tester, quantity and price
 | | |
