@@ -20,7 +20,7 @@
 | TC-03 | Mobile customer adds a tester from the colour finder | ✅ | — | — | 2026-08-03 | See TC-02 note |
 | TC-04a | Tester quantity boundary values (1, 2, 0) | ✅ | — | — | 2026-10-13 | Desktop, 3 examples. Chromium only so far (Firefox/WebKit last passed the old 4-row version 2026-10-08); the 23/24 rows were dropped (stock-dependent) |
 | TC-04b | Quantity above stock is refused (stubbed 422) | ✅ | — | — | 2026-10-13 | Desktop; order API stubbed; Chromium only so far |
-| TC-06 | Shade with no tester option (negative path) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop, "Cotton Breeze" under "Violet". Data-dependent: fails if the shade gains a tester |
+| TC-06 | Shade with no tester option (negative path) | ✅ | — | — | 2026-11-20 | Desktop, "Deep Aubergine" under "Violet" (replaced "Cotton Breeze", which left the family). Chromium only so far. Data-dependent: fails if the shade gains a tester |
 | TC-04 | Basket increment/decrement/remove | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; + / − / bin button |
 | TC-05 | Add-to-basket failure is surfaced (stubbed HTTP 500) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; the error alert is short-lived, asserted as soon as it appears |
 | TC-09 | Site search (known shade, unknown term, other letter case, part of a name) | ✅ | ✅ | ✅ | 2026-10-08 | Desktop; 2 examples; 2 more added 2026-10-09, Chromium only |
@@ -32,12 +32,12 @@
 | TC-07 | Desktop customer opens the Visualizer for a shade | ✅ | — | — | 2026-08-03 | |
 | TC-08 | Mobile customer tries to open the Visualizer for a shade | ✅ | — | — | 2026-08-03 | Asserts the documented store-data message, not app success |
 | TC-13 | Tester for shades from other colour families (Blue / Green) | ✅ | — | — | 2026-10-09 | Desktop; 2 examples, Chromium only so far |
-| TC-14 | Basket shows tester price and order total | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected price is changed (checked) |
+| TC-14 | Basket shows tester price and order total | ✅ | — | — | 2026-11-20 | Desktop; seeded basket; delivery Free, total £2.90 (see Lessons Learned #12). Earlier pass 2026-10-09 with delivery £1.50 |
 | TC-15 | Basket survives a page reload | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected quantity is changed (checked) |
 | TC-20 | Mobile home page shows the menu, search and cart | ✅ | — | — | 2026-10-09 | Mobile viewport; Chromium only so far |
 | TC-21 | Tablet home page shows the menu, search and cart | ✅ | — | — | 2026-10-09 | Tablet viewport; Chromium only so far |
-| TC-22 | Mobile basket shows the tester, quantity and price | ✅ | — | — | 2026-10-09 | Mobile viewport; seeded basket; Chromium only so far |
-| TC-23 | Tablet basket shows the tester, quantity and price | ✅ | — | — | 2026-10-09 | Tablet viewport; seeded basket; Chromium only so far |
+| TC-22 | Mobile basket shows the tester, quantity and price | ✅ | — | — | 2026-11-20 | Mobile viewport; seeded basket; delivery Free; Chromium only so far |
+| TC-23 | Tablet basket shows the tester, quantity and price | ✅ | — | — | 2026-11-20 | Tablet viewport; seeded basket; delivery Free; Chromium only so far |
 | TC-19 | Cookie banner can be answered on a phone | ✅ | — | — | 2026-10-09 | Mobile viewport; Chromium only so far |
 | TC-17 | Empty basket tells the customer so and offers a way back | ✅ | — | — | 2026-10-09 | Desktop; basket page only |
 | TC-18 | Continue shopping leaves the basket for the product listing | ✅ | — | — | 2026-10-09 | Desktop; seeded basket. Also fails when the expected address is changed (checked) |

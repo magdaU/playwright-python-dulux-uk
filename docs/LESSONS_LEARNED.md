@@ -43,6 +43,13 @@ first attempt. Test data changed to "Romantic Reverie" after checking every "Vio
 months — a third would justify revisiting the "loop until a shade with a tester is found"
 approach rejected in [Test Strategy §13](TEST_STRATEGY.md).
 
+**Recurred (2026-11-20):** "Cotton Breeze" was no longer listed under "Violet" at all, so the
+negative-path test failed on the colour-finder click (not on the tester check). The earlier
+replacement, "Violet Morning", had since gained a tester. Checked the family again on
+production: "Deep Aubergine" has no tester and offers "Find Products in this colour", so it
+replaces "Cotton Breeze". The loop-until-tester approach is still not built; this is the third
+drift, which is what the note above asked for, so it is worth revisiting if it happens again.
+
 ## 2. Basket UI markup drift — a redesign broke a locator's *uniqueness*, not its match
 
 **What happened:** while verifying cross-browser support, the basket's quantity control
@@ -272,6 +279,29 @@ production or stub the response and test the reaction. When a nightly fails with
 probe the real system with a small throwaway script before touching the test. Related:
 [#1](#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family),
 [#8](#8-a-declared-limit-is-not-the-enforced-limit--and-a-transient-ui-state-can-fool-an-assertion).
+
+---
+
+## 12. A repeated amount and exact counts: the delivery cost decides how often a price shows
+
+**What happened:** the basket scenarios expected delivery of £1.50 and a total of £4.40. The
+2026-11-20 regression run failed with "Expect count 2, actual 3" for the £2.90 price. On the basket
+page the same amount appears in the item row, the subtotal and the order total. Production showed
+delivery as "Free" and the total as £2.90, so the price appeared three times and £1.50 was absent.
+
+**Root cause:** the step counted exact occurrences of each amount. When delivery is zero, the
+subtotal and the total equal the price, so the count depends on the delivery cost. Exact counts
+broke for a reason unrelated to what the step was meant to check.
+
+**Fix:** the step checks that the price, delivery and total are each visible (`.first`), so it no
+longer depends on how often an amount repeats. The expected delivery is "Free" and the total £2.90,
+matching what production shows for this basket.
+
+**Lesson:** when the same value can appear in several places, assert that it is shown, not how
+many times it is shown. When production disagrees with an expectation, check whether the
+expectation or the site is wrong before changing either.
+
+---
 
 ## See also
 

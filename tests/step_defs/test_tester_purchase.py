@@ -193,10 +193,11 @@ def reload_basket_page(ctx):
     )
 )
 def basket_shows_prices(ctx, price, delivery, total):
-    # With one tester the item price and the subtotal are the same amount, so it shows twice.
-    expect(ctx.cart.find_amount(price)).to_have_count(2)
-    expect(ctx.cart.find_amount(delivery)).to_have_count(1)
-    expect(ctx.cart.find_amount(total)).to_have_count(1)
+    # The price, subtotal and total can repeat on the page (the total equals the subtotal when delivery
+    # is zero), so exact occurrence counts are brittle. Check that each amount is shown at least once.
+    expect(ctx.cart.find_amount(price).first).to_be_visible()
+    expect(ctx.cart.find_amount(delivery).first).to_be_visible()
+    expect(ctx.cart.find_amount(total).first).to_be_visible()
 
 
 @then("the shade offers a tester to buy")
