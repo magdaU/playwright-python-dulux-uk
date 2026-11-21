@@ -1,0 +1,3 @@
+WARNING  support.retry:retry.py:41 "select shade "Romantic Reverie" from colour family "Violet"" failed on attempt 1/4 (TimeoutError), retrying
+WARNING  support.retry:retry.py:41 "select shade "Romantic Reverie" from colour family "Violet"" failed on attempt 2/4 (TimeoutError), retrying
+WARNING  support.retry:retry.py:41 "select shade "Romantic Reverie" from colour family "Violet"" succeeded on retry attempt 3/4
