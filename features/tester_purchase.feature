@@ -11,32 +11,32 @@ Feature: Purchase a colour tester
     for that shade. The shade page is also scanned for new serious or critical accessibility
     violations.
     Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    When the customer browses to shade "Violet Morning" from colour family "Violet"
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 
   @tablet
   Scenario: Tablet customer adds a tester from the colour finder
     The same purchase path on a tablet (TC-02). At this width the site collapses to the
     hamburger-menu navigation, so the colour finder is reached through the menu.
     Given a tablet customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet" using tablet navigation
+    When the customer browses to shade "Violet Morning" from colour family "Violet" using tablet navigation
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 
   @mobile
   Scenario: Mobile customer adds a tester from the colour finder
     The same purchase path on a phone (TC-03), reached through the hamburger menu.
     Given a mobile customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet" using mobile navigation
+    When the customer browses to shade "Violet Morning" from colour family "Violet" using mobile navigation
     Then the shade page has no unexpected accessibility violations
     When the customer adds a tester to the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 
   @desktop @negative
   Scenario: Desktop customer views a shade that has no tester available
@@ -57,7 +57,7 @@ Feature: Purchase a colour tester
     the shade's live stock level, which changes (see the stubbed out-of-stock scenario below).
     The basket is seeded through the site's own add-to-cart API, so each example loads only the
     basket page.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     When the customer changes the tester quantity to <entered>
     Then the basket quantity is <expected>
 
@@ -73,7 +73,7 @@ Feature: Purchase a colour tester
     "Insufficient stock") and the field settles back on the last accepted quantity. Stock changes
     on production, so the refusal is stubbed in the browser: the test checks how the basket reacts
     to it, not where the stock level happens to be today.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     And the server reports insufficient stock for any quantity change
     When the customer changes the tester quantity to 5
     Then the basket quantity is 1
@@ -84,7 +84,7 @@ Feature: Purchase a colour tester
     with the + and - buttons, finds the - button disabled at 1 (the minimum), and finally
     removes the tester, leaving an empty basket. The basket is seeded through the site's own
     add-to-cart API, so only the basket page is loaded and production is hit as little as possible.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     When the customer increases the tester quantity
     Then the basket quantity is 2
     When the customer decreases the tester quantity
@@ -100,7 +100,7 @@ Feature: Purchase a colour tester
     cart" confirmation, and the basket must stay empty. The message is short-lived (it fades after
     about three seconds), so it is asserted as soon as it appears.
     Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    When the customer browses to shade "Violet Morning" from colour family "Violet"
     And the add-to-basket request fails
     And the customer tries to add a tester to the basket
     Then the customer is told something went wrong
@@ -128,7 +128,7 @@ Feature: Purchase a colour tester
     Pricing (TC-14). One tester costs 2.90 and delivery is free, so the order total is 2.90. The
     basket is seeded through the site's own add-to-cart API, so only the basket page is loaded.
     The amounts are production prices: a failure means the price changed, which is worth knowing.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     Then the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @desktop
@@ -136,11 +136,11 @@ Feature: Purchase a colour tester
     Basket persistence (TC-15). The basket lives in the session, not in the page: after a reload
     the customer still has the same tester, in the same quantity. The basket is seeded through the
     site's own add-to-cart API.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     When the customer increases the tester quantity
     And the customer reloads the basket page
     Then the basket quantity is 2
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 
   @smoke @desktop
   Scenario: Desktop customer can open a shade from the colour finder
@@ -148,7 +148,7 @@ Feature: Purchase a colour tester
     and is offered a tester to buy. Nothing is added to the basket, so this is the cheapest check
     of the step that has proved timing-sensitive on other engines.
     Given a desktop customer starts with an empty basket
-    When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+    When the customer browses to shade "Violet Morning" from colour family "Violet"
     Then the shade offers a tester to buy
 
   @smoke @desktop
@@ -165,7 +165,7 @@ Feature: Purchase a colour tester
     Leaving the basket (TC-18). "Continue shopping" takes a customer with a tester in the basket
     to the product listing without losing the basket. The basket is seeded through the site's own
     add-to-cart API.
-    Given a desktop customer has a tester for shade "Romantic Reverie" in the basket
+    Given a desktop customer has a tester for shade "Violet Morning" in the basket
     When the customer chooses to continue shopping
     Then the customer is on the products page
 
@@ -173,24 +173,24 @@ Feature: Purchase a colour tester
   Scenario: Mobile customer sees the tester in the basket
     The basket page on a phone (TC-22). A tester put in the basket through the site's own add-to-cart
     API is shown with its name, shade, quantity and price at 375 px wide. Only the basket page is loaded.
-    Given a mobile customer has a tester for shade "Romantic Reverie" in the basket
+    Given a mobile customer has a tester for shade "Violet Morning" in the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
     And the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @smoke @tablet
   Scenario: Tablet customer sees the tester in the basket
     The same basket check on a tablet (TC-23), at 768 px wide.
-    Given a tablet customer has a tester for shade "Romantic Reverie" in the basket
+    Given a tablet customer has a tester for shade "Violet Morning" in the basket
     Then the basket contains 1 item
-    And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+    And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
     And the basket shows the tester price "£2.90", delivery "Free" and order total "£2.90"
 
   @smoke @mobile
   Scenario: Mobile customer changes the basket quantity and removes the tester
     Editing the basket on a phone (TC-26): the + and - buttons, the - button disabled at 1, and
     removing the tester, at 375 px wide. The basket is seeded through the site's own add-to-cart API.
-    Given a mobile customer has a tester for shade "Romantic Reverie" in the basket
+    Given a mobile customer has a tester for shade "Violet Morning" in the basket
     When the customer increases the tester quantity
     Then the basket quantity is 2
     When the customer decreases the tester quantity
@@ -202,7 +202,7 @@ Feature: Purchase a colour tester
   @smoke @tablet
   Scenario: Tablet customer changes the basket quantity and removes the tester
     The same basket edit on a tablet (TC-27), at 768 px wide.
-    Given a tablet customer has a tester for shade "Romantic Reverie" in the basket
+    Given a tablet customer has a tester for shade "Violet Morning" in the basket
     When the customer increases the tester quantity
     Then the basket quantity is 2
     When the customer decreases the tester quantity
