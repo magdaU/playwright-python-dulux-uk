@@ -60,7 +60,6 @@ navigation timing").
 |---|---|---|
 | Push/PR smoke gate | TC-01, TC-07, TC-09 (2 examples), TC-10, TC-12, TC-14, TC-16, TC-17, TC-18, plus TC-20, TC-21, TC-22, TC-24 and TC-26 (mobile), TC-23, TC-25 and TC-27 (tablet) (Chromium) | [`e2e-tests.yml`](../.github/workflows/e2e-tests.yml) run history + Allure report on GitHub Pages |
 | Cross-browser regression | All `regression`-marked scenarios × Chromium/Firefox/WebKit | [`cross-browser-regression.yml`](../.github/workflows/cross-browser-regression.yml) run history |
-| Nightly regression | All `regression`-marked scenarios, Chromium, daily | [`nightly-regression.yml`](../.github/workflows/nightly-regression.yml) run history (uploaded as a build artifact) |
 
 ## Historical incidents affecting results
 

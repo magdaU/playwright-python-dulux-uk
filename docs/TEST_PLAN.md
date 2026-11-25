@@ -3,8 +3,8 @@
 > Where the [Test Strategy](TEST_STRATEGY.md) explains *what we test and why* as a living,
 > ongoing document, this Test Plan is the execution-facing artifact for a given test
 > cycle — scope, schedule, environment, roles, entry/exit criteria and sign-off. It's
-> written generally enough to apply to any run of this suite (a push/PR gate, an on-demand
-> cross-browser pass, or the nightly regression), noting where each differs.
+> written generally enough to apply to any run of this suite (a push/PR gate or an on-demand
+> cross-browser pass), noting where each differs.
 
 | | |
 |---|---|
@@ -45,14 +45,13 @@ what it would take to bring each in scope.
   `pytest-bdd` against the real production site (no mocks, no staging environment
   available). See [Test Strategy §4](TEST_STRATEGY.md#4-test-approach).
 - **Tag-sliced execution** — `smoke` (fast, mostly desktop, gates every push/PR),
-  `regression` (full viewport matrix, on-demand and nightly). See [Test Strategy §8](TEST_STRATEGY.md#8-test-selection--tagging-strategy).
+  `regression` (full viewport matrix, on-demand only). See [Test Strategy §8](TEST_STRATEGY.md#8-test-selection--tagging-strategy).
 - **Three run modes**, each with a different cadence/purpose:
 
   | Mode | Trigger | Marker | Browser(s) |
   |---|---|---|---|
   | Push/PR gate | Every push to `main`/`feature/**`/`fix/**`, every PR | `smoke` | Chromium |
   | Cross-browser regression | Manual (`workflow_dispatch`) | `regression` (default) | Chromium, Firefox, WebKit |
-  | Nightly regression | Scheduled, `02:00 UTC` daily | `regression` | Chromium |
 
 ## 5. Item pass/fail criteria
 
@@ -113,7 +112,6 @@ There is no fixed test-cycle calendar — this is a continuously-run suite, not 
 point-in-time test campaign:
 
 - **Continuous:** `smoke` on every push/PR (minutes).
-- **Daily:** nightly `regression`, `02:00 UTC`.
 - **On demand:** cross-browser `regression`, triggered manually before anything
   cross-engine-sensitive ships, or periodically to catch drift.
 

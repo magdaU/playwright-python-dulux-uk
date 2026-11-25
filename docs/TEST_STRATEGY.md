@@ -118,7 +118,7 @@ Scenarios 1, 4, 10, 11, 12, 14, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26 and 27 ca
 2-example outline). Scenarios 1 and 4 are the single desktop path through each in-scope journey;
 10, 11, 12, 14, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26 and 27 are cheap checks (a single page load, one search, or an API-seeded basket) that
 keep production load low. Scenarios 2, 3, 5, 6, 7, 8 and 9 run only under `@regression` (on-demand /
-nightly) since they're viewport variants or slower edge cases of an already-smoke-tested flow.
+on-demand) since they're viewport variants or slower edge cases of an already-smoke-tested flow.
 
 ---
 
@@ -233,12 +233,9 @@ headless → generate Allure report → upload artifacts → publish to GitHub P
 manually-triggered (`workflow_dispatch`), matrix over Chromium/Firefox/WebKit, defaults
 to the `regression` marker. Kept separate from the push/PR gate (§10).
 
-**Nightly regression** ([`.github/workflows/nightly-regression.yml`](../.github/workflows/nightly-regression.yml)):
-scheduled (`02:00 UTC` daily) plus `workflow_dispatch`, Chromium only, defaults to the
-`regression` marker. Runs independently of any push/PR so production drift (catalogue
-changes, UI regressions — §10) is caught even on days with no code changes. Results are
-uploaded as a build artifact rather than published to the main GitHub Pages report, to
-keep the push-driven Allure Trend history uncontaminated by a differently-scoped run.
+**Nightly regression — removed.** The scheduled daily run of the `regression` marker against
+production was removed so the suite no longer adds load to the live site every night. Production
+drift is now caught only by the manual cross-browser run and by the push/PR smoke gate.
 
 **Reporting layers:**
 
@@ -369,10 +366,8 @@ Planned work, roughly in priority order:
   retried instead of reported as green (§10). Re-verified on Firefox across multiple runs:
   attempts 1-2 fail with a real `TimeoutError`, a later attempt succeeds, all visibly
   reported.
-- [x] **Scheduled regression run** — [`nightly-regression.yml`](../.github/workflows/nightly-regression.yml)
-  runs the `regression` marker against production daily at 02:00 UTC (Chromium only),
-  independent of the cross-browser workflow and the push/PR gate, so drift is caught on
-  days with no code changes.
+- [x] ~~**Scheduled regression run**~~ — removed. It ran the `regression` marker against production
+  daily at 02:00 UTC; dropped so the suite does not load production on a schedule.
 - [ ] **Visual regression** — snapshot key pages once layouts stabilise (see the Java
   project's `image-comparison`-based approach for a reusable pattern). **Revisited and
   deliberately deferred** (2026-08-03): the precondition isn't met. In this same working
@@ -405,7 +400,7 @@ concrete way each could be tested rather than just a note that it's "future work
 | **Basket edit/remove flows** *(closed 2026-10-08 — scenario 8 covers + / − / remove; typed boundaries by scenario 6)* | Adding a tester and typing boundary quantities (1, 23, 0, 24 — scenario 6) are verified; incrementing/decrementing via the spinner or removing an item entirely is unverified UI the basket redesign (§10, "Basket UI markup drift") already proved can silently change | Extend `CartPage`/`cart_page.py` with increment/decrement/remove actions and add a `@regression`-tagged scenario asserting basket state after each | Medium |
 | **Site search** *(closed 2026-10-08 — scenario 10)* | The nav component exposes search (`navigation_component.py`), but no scenario drives it — a broken search box would go undetected | Add a scenario: search for a known product/shade term, assert results contain the expected item | Low–Medium |
 | **Negative / error-state paths** *(partly closed 2026-10-08 — scenarios 7 and 9 cover a shade with no tester and a failed add; an out-of-stock tester is still open)* (e.g. an out-of-stock tester, a failed add-to-basket request) | The suite only proves the happy path; a customer-visible error state (broken error messaging, silent failure) is invisible to it today | Use Playwright's `page.route()` to intercept and force an error response on the add-to-basket call, then assert the UI surfaces it correctly, without needing production to actually be in that state | Medium |
-| **Full cross-browser coverage on every push** | A Firefox/WebKit-only regression ships on `main` and is only caught at the next nightly run (up to ~24h later), not immediately | Deliberate trade-off already made (§10) to protect push/PR speed. If the lag becomes a real problem, the narrowest fix is adding the two `@smoke`-tagged scenarios (not the whole suite) to a small WebKit job on the push gate, keeping the cost bounded | Low (accepted trade-off; revisit only if the lag causes a real incident) |
+| **Full cross-browser coverage on every push** | A Firefox/WebKit-only regression ships on `main` and is only caught when someone runs the cross-browser workflow manually (the nightly run was removed to avoid loading production) | Deliberate trade-off already made (§10) to protect push/PR speed. If the lag becomes a real problem, the narrowest fix is adding the two `@smoke`-tagged scenarios (not the whole suite) to a small WebKit job on the push gate, keeping the cost bounded | Low (accepted trade-off; revisit only if the lag causes a real incident) |
 | **Visual regression** | Unintended CSS/layout breakage that doesn't change accessible roles/text (e.g. a broken grid, an overlapping element) isn't caught by role-based assertions | Already scoped and deliberately deferred until the site's layout stabilises — see [Lessons Learned #6](LESSONS_LEARNED.md#6-visual-regression--deferred-not-skipped) for why now is the wrong time to start | Low (intentionally deferred, not forgotten) |
 | **`pytest-bdd` / pytest 10 compatibility** | A future, unrelated `pytest` version bump could break test collection outright with no advance warning beyond today's harmless deprecation warning | Track `pytest-bdd` releases for a pytest-10-compatible version; add it as a pinned-version bump *with* a `pytest --collect-only` check in the same PR, before touching the `pytest` pin itself | Low (no action needed until a `pytest-bdd` fix ships — see [Lessons Learned #7](LESSONS_LEARNED.md#7-a-pinned-dependency-can-hide-a-ticking-compatibility-problem)) |
 | **API / contract-level testing** | None today — a backend contract change could break the UI with only this slow, browser-driven E2E layer to catch it | Not currently actionable: Dulux is a third-party site exposing no API we're entitled to test against. Would only become relevant if this suite were adapted to test an internally-owned service | Not planned |

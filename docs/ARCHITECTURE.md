@@ -54,8 +54,7 @@ playwright-python-dulux-uk/
 ├── Dockerfile / docker-compose.yml      # reproducible run, mirrors CI
 ├── .github/workflows/
 │   ├── e2e-tests.yml                    # CI: smoke suite + Allure report + GitHub Pages
-│   ├── cross-browser-regression.yml     # on-demand: regression marker across Chromium/Firefox/WebKit
-│   └── nightly-regression.yml           # scheduled: regression marker daily against production
+│   └── cross-browser-regression.yml     # on-demand: regression marker across Chromium/Firefox/WebKit
 ├── docs/
 │   ├── TEST_STRATEGY.md                 # scope, risk analysis, roadmap
 │   └── ARCHITECTURE.md                  # this file
