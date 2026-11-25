@@ -27,7 +27,7 @@ class Context:
     # is bought through the UI (observed 2026-10-08). They belong to the pinned shade, so they
     # change with it — the Given step checks the shade name in the basket and fails if they drift.
     SEEDABLE_TESTERS = {
-        "Romantic Reverie": {"articleNumber": "5695986", "colorId": "2440843"},
+        "Violet Morning": {"articleNumber": "5695975", "colorId": "2440839"},
     }
 
     def __init__(self, page: Page, desktop: bool):
