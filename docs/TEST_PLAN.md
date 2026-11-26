@@ -113,7 +113,8 @@ point-in-time test campaign:
 
 - **Continuous:** `smoke` on every push/PR (minutes).
 - **On demand:** cross-browser `regression`, triggered manually before anything
-  cross-engine-sensitive ships, or periodically to catch drift.
+  cross-engine-sensitive ships. There are no scheduled runs: the nightly regression was removed to
+  limit load on the production site and its store API.
 
 ## 12. Risks & contingencies
 
