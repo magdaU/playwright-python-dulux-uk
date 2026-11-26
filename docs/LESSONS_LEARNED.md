@@ -313,7 +313,7 @@ the live Dulux site every day at 02:00 UTC. On 2026-11-25 the schedule was remov
 sends requests to those systems, and a daily schedule sends them every day whether or not anything
 has changed on the team's side. The project's own rule is to keep load on production low (see
 [Architecture — Keeping load on production low](ARCHITECTURE.md#keeping-load-on-production-low)), and a
-nightly full regression was the largest recurring load the suite produced.
+a nightly full regression was recurring load on production that the suite could avoid.
 
 **What it costs:** drift on a journey that is not in the push/PR smoke gate is found later, on the next
 manual cross-browser run, rather than the next morning. This is the accepted trade-off recorded in
