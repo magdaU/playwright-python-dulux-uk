@@ -364,8 +364,8 @@ Planned work, roughly in priority order:
   retried instead of reported as green (§10). Re-verified on Firefox across multiple runs:
   attempts 1-2 fail with a real `TimeoutError`, a later attempt succeeds, all visibly
   reported.
-- [x] ~~**Scheduled regression run**~~ — removed. It ran the `regression` marker against production
-  daily at 02:00 UTC; dropped so the suite does not load production on a schedule.
+- [x] ~~**Scheduled regression run**~~ — removed on 2026-11-25 (`76d59d5`), file deleted on 2026-11-26. It ran the `regression` marker against production
+  daily at 02:00 UTC; dropped so the suite does not load production on a schedule. See [Lessons Learned #13](LESSONS_LEARNED.md#13-a-scheduled-run-against-someone-elses-production-is-a-cost-paid-every-night).
 - [ ] **Visual regression** — snapshot key pages once layouts stabilise (see the Java
   project's `image-comparison`-based approach for a reusable pattern). **Revisited and
   deliberately deferred** (2026-08-03): the precondition isn't met. In this same working

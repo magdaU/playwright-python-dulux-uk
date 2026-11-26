@@ -303,6 +303,32 @@ expectation or the site is wrong before changing either.
 
 ---
 
+## 13. A scheduled run against someone else's production is a cost paid every night
+
+**What happened:** from 2026-08-03 (`daa6e2d`) a nightly run executed the `regression` marker against
+the live Dulux site every day at 02:00 UTC. On 2026-11-25 the schedule was removed (`76d59d5`), and on
+2026-11-26 the workflow file itself was removed (`2d53639`). Until then the run could still be started by hand.
+
+**Why:** the suite runs against production and its store API, which belong to a third party. Each run
+sends requests to those systems, and a daily schedule sends them every day whether or not anything
+has changed on the team's side. The project's own rule is to keep load on production low (see
+[Architecture — Keeping load on production low](ARCHITECTURE.md#keeping-load-on-production-low)), and a
+nightly full regression was the largest recurring load the suite produced.
+
+**What it costs:** drift on a journey that is not in the push/PR smoke gate is found later, on the next
+manual cross-browser run, rather than the next morning. This is the accepted trade-off recorded in
+[Test Strategy §14](TEST_STRATEGY.md#14-coverage-gaps--improvement-opportunities).
+
+**How to bring it back:** the last version is in git history (`76d59d5`). Restoring it is a decision
+about production load, so it should be made with that in mind, not just restored because the tab is
+empty.
+
+**Lesson:** a scheduled test run against a third party's production is a recurring cost on their
+systems. Decide its frequency the way you would decide a load budget, and record the reason next to
+the schedule, so a future reader knows whether removing it was a mistake or a choice.
+
+---
+
 ## See also
 
 - [Test Strategy §10 — Risk analysis & mitigations](TEST_STRATEGY.md#10-risk-analysis--mitigations) — the same incidents as a likelihood/impact register.
