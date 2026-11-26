@@ -71,6 +71,7 @@ root-caused rather than papered over:
 - **2026-10-08** — nightly `regression` failed: "Violet Morning" still existed but no longer
   offered "Buy a Tester in this colour". Test data changed to "Romantic Reverie", verified to
   offer a tester.
+- **2026-11-25** — nightly `regression` (commit `8bc40ea`, before the shade switch) failed in 17 of 34 results: 24 results could not find "Romantic Reverie" in the "Violet" family, and 60 could not seed the basket because the shade had no stock (HTTP 422 `Insufficient stock`). The same run had 4 results with HTTP 503 from the site. The tester shade was switched to "Violet Morning" in `111bbb7`; see [Lessons Learned #1](LESSONS_LEARNED.md#1-product-catalogue-drift--a-pinned-shade-disappeared-from-its-colour-family) and [#11](LESSONS_LEARNED.md#11-a-rule-observed-on-production-can-be-a-data-snapshot--probe-it-then-stub-what-you-cant-control).
 - **2026-08-03** — `purchase` scenarios failed on the basket-quantity assertion after a
   production markup redesign broke locator uniqueness. Fixed by narrowing the locator to
   role `spinbutton`.
