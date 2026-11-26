@@ -213,7 +213,7 @@ converts them into pytest markers automatically, so `@smoke` in a `.feature` fil
 | Marker | Meaning | When it runs |
 |---|---|---|
 | `smoke` | Minimal critical-path set, fast | **Every push & PR** (CI default) |
-| `regression` | Full journey coverage | On demand / scheduled / pre-release |
+| `regression` | Full journey coverage | On demand / pre-release |
 | `desktop` | Desktop-viewport variant | Filtered as needed |
 | `mobile` | Mobile-viewport variant | Filtered as needed |
 | `purchase`, `visualizer` | Feature grouping | Targeted debugging of one journey |
@@ -233,7 +233,13 @@ headless → generate Allure report → upload artifacts → publish to GitHub P
 manually-triggered (`workflow_dispatch`), matrix over Chromium/Firefox/WebKit, defaults
 to the `regression` marker. Kept separate from the push/PR gate (§10).
 
-**Nightly regression — removed.** The nightly Chromium `regression` workflow (`nightly-regression.yml`) was removed from the repository on 2026-11-26. The suite runs against the live Dulux production site and its store API, both third-party systems: a scheduled or on-demand full regression adds load to them each time it runs, and the project does not want that load, so no regression workflow runs against production on a schedule. Production drift is caught only by the manual cross-browser run and by the push/PR smoke gate. The last version of the file is in git history (`76d59d5`).
+**Nightly regression — schedule removed, manual run kept.** The scheduled daily run of the `regression`
+marker against production was removed so the suite no longer adds load to the live site every night.
+[`nightly-regression.yml`](../.github/workflows/nightly-regression.yml) remains available as a
+manual-only (`workflow_dispatch`) Chromium run with the `regression` marker by default; it publishes
+its Allure report to `gh-pages/nightly/` and, on `main`, opens or comments on a `nightly-failure` issue
+when it fails. Production drift is otherwise caught only by the manual cross-browser run and by the
+push/PR smoke gate.
 
 **Reporting layers:**
 
