@@ -13,7 +13,7 @@
 | **Framework** | Playwright for Python · pytest-bdd · pytest · Allure |
 | **Pipeline** | GitHub Actions → smoke suite on every push/PR, report published to GitHub Pages |
 | **Owner** | QA / SDET |
-| **Status** | Implemented and verified against production — all 34 test cases pass (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). |
+| **Status** | Implemented against production — 34 test cases (desktop + tablet + mobile `purchase`, a 4-example desktop `boundary` outline, `negative` scenarios, a basket edit, `search` and `cookies` scenarios, desktop + mobile `visualizer`). The `purchase` scenarios originally used "Gentle Lavender", which was found to have been removed from the "Violet" family (§10); test data was refreshed to "Violet Morning", confirmed present in the catalogue as of 2026-07-09. On 2026-10-08 "Violet Morning" lost its tester option and was replaced with "Romantic Reverie" (§10). On 2026-11-25 the tester shade was switched back to "Violet Morning" (`111bbb7`); the nightly run of that day, still on "Romantic Reverie", failed on catalogue and stock drift (Lessons Learned #1 and #11). The smoke gate was 18/18 that day. |
 
 ---
 

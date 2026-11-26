@@ -50,6 +50,11 @@ production: "Deep Aubergine" has no tester and offers "Find Products in this col
 replaces "Cotton Breeze". The loop-until-tester approach is still not built; this is the third
 drift, which is what the note above asked for, so it is worth revisiting if it happens again.
 
+**Recurred (2026-11-25):** the nightly run at `8bc40ea` still used "Romantic Reverie", which was no
+longer listed under "Violet" (24 results failed to select it). The tester shade was switched to
+"Violet Morning" in `111bbb7`, and a colour-finder run on `main` passed afterwards. This is the
+fourth drift in the family; the loop-until-tester question is still open.
+
 ## 2. Basket UI markup drift — a redesign broke a locator's *uniqueness*, not its match
 
 **What happened:** while verifying cross-browser support, the basket's quantity control
@@ -272,6 +277,11 @@ that stubs `POST /store/api/order` in the browser to answer `422 Insufficient st
 add-to-basket). It checks how the basket reacts to a refusal, deterministically, and no changed
 quantity reaches production. Mutation check: with the stub disabled the scenario fails (field
 shows 5).
+
+**Recurred (2026-11-25):** the same seeding fixture hit the whole nightly run. "Romantic Reverie" had no
+stock, so `POST /en/store/api/v2/cart` returned HTTP 422 `Insufficient stock` for 60 results, and the
+site returned HTTP 503 for 4 more. The fixture still seeds through the live API; whether to stub that
+step for scenarios that do not test stock is an open decision.
 
 **Takeaway:** before encoding an observed boundary in a test, ask whether it is a rule or a
 reading of changing data (stock, prices, catalogue). If it is data, either don't assert it against
