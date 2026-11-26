@@ -22,8 +22,8 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Priority** | P1 |
 | **Automation** | ✅ [`tester_purchase.feature` — Scenario 1](../features/tester_purchase.feature) |
 | **Preconditions** | Desktop viewport (`1920×1080`); basket is empty; cookie banner not yet dismissed |
-| **Steps** | 1. Open the home page and reject cookies.<br>2. Open "Find a colour" from the top nav.<br>3. Select colour family "Violet".<br>4. Select shade "Romantic Reverie".<br>5. Click "Buy a Tester in this colour".<br>6. Dismiss the confirmation alert.<br>7. Open the shopping cart. |
-| **Expected result** | Shade page has no unexpected accessibility violations; basket contains exactly 1 item; basket shows tester "Dulux Colour Tester" for shade "Romantic Reverie" |
+| **Steps** | 1. Open the home page and reject cookies.<br>2. Open "Find a colour" from the top nav.<br>3. Select colour family "Violet".<br>4. Select shade "Violet Morning".<br>5. Click "Buy a Tester in this colour".<br>6. Dismiss the confirmation alert.<br>7. Open the shopping cart. |
+| **Expected result** | Shade page has no unexpected accessibility violations; basket contains exactly 1 item; basket shows tester "Dulux Colour Tester" for shade "Violet Morning" |
 
 ### TC-02 — Tablet customer adds a tester from the colour finder
 | | |
@@ -104,7 +104,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer sees the price of a tester and the order total"](../features/tester_purchase.feature) (`@smoke`) |
-| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the site's add-to-cart API) |
+| **Preconditions** | One "Violet Morning" tester in the basket (seeded through the site's add-to-cart API) |
 | **Steps** | 1. Open the basket. |
 | **Expected result** | Tester £2.90 (shown as item price and subtotal), delivery Free, order total £2.90. These are production prices: delivery is free for this basket and is not a promotion. A charge of £1.50 would fail this check (see [Lessons Learned #12](LESSONS_LEARNED.md#12-a-repeated-amount-and-exact-counts-the-delivery-cost-decides-how-often-a-price-shows)) |
 
@@ -113,7 +113,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer finds the basket unchanged after reloading the page"](../features/tester_purchase.feature) |
-| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Preconditions** | One "Violet Morning" tester in the basket (seeded through the API) |
 | **Steps** | 1. Increase the quantity to 2.<br>2. Reload the basket page. |
 | **Expected result** | The basket still holds the same tester, with quantity 2 |
 
@@ -123,7 +123,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 | **Priority** | P1 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer can open a shade from the colour finder"](../features/tester_purchase.feature) (`@smoke`) |
 | **Preconditions** | Empty basket, desktop |
-| **Steps** | 1. Open the colour finder from the top navigation.<br>2. Choose colour family "Violet" and shade "Romantic Reverie". |
+| **Steps** | 1. Open the colour finder from the top navigation.<br>2. Choose colour family "Violet" and shade "Violet Morning". |
 | **Expected result** | The shade panel opens and offers "Buy a Tester in this colour". Nothing is added to the basket |
 
 ### TC-17 — Empty basket tells the customer so and offers a way back
@@ -140,7 +140,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Desktop customer can leave the basket and keep shopping"](../features/tester_purchase.feature) (`@smoke`) |
-| **Preconditions** | One "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Preconditions** | One "Violet Morning" tester in the basket (seeded through the API) |
 | **Steps** | 1. Open the basket.<br>2. Click "Continue shopping". |
 | **Expected result** | The customer lands on `/en/products`. The basket page has two such links (header and order summary), both to the same address; the test uses the first |
 
@@ -149,9 +149,9 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Mobile customer sees the tester in the basket"](../features/tester_purchase.feature) (`@smoke`) |
-| **Preconditions** | Mobile viewport 375×667; one "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Preconditions** | Mobile viewport 375×667; one "Violet Morning" tester in the basket (seeded through the API) |
 | **Steps** | 1. Open the basket. |
-| **Expected result** | Quantity 1, "Dulux Colour Tester" for "Romantic Reverie", tester £2.90, delivery Free, order total £2.90 |
+| **Expected result** | Quantity 1, "Dulux Colour Tester" for "Violet Morning", tester £2.90, delivery Free, order total £2.90 |
 
 ### TC-23 — Tablet basket shows the tester, quantity and price
 | | |
@@ -167,7 +167,7 @@ P3 → minor) — `support/allure_metadata.py` reads it from this file, so chang
 |---|---|
 | **Priority** | P2 |
 | **Automation** | ✅ [`tester_purchase.feature` — "Mobile customer changes the basket quantity and removes the tester"](../features/tester_purchase.feature) (`@smoke`) |
-| **Preconditions** | Mobile viewport 375×667; one "Romantic Reverie" tester in the basket (seeded through the API) |
+| **Preconditions** | Mobile viewport 375×667; one "Violet Morning" tester in the basket (seeded through the API) |
 | **Steps** | 1. Click +.<br>2. Click −.<br>3. Check − is disabled at 1.<br>4. Click Remove. |
 | **Expected result** | Quantity 1 → 2 → 1, − disabled at the minimum, then "Your basket is empty". Same behaviour as TC-04 on desktop |
 

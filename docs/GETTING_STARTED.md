@@ -34,9 +34,8 @@ site, which surfaces the same problems a professional QA/SDET role deals with da
   critical/serious violations while allow-listing known, pre-existing production issues
   the team doesn't own — a real-world compromise between "gate on everything" and "gate on
   nothing".
-- **CI/CD pipeline design, not just a green checkmark** — three purpose-built GitHub
-  Actions workflows (push/PR smoke gate, on-demand cross-browser matrix, scheduled nightly
-  regression) kept deliberately separate so flaky cross-engine differences never block a
+- **CI/CD pipeline design, not just a green checkmark** — two purpose-built GitHub
+  Actions workflows (push/PR smoke gate, on-demand cross-browser matrix) kept deliberately separate so flaky cross-engine differences never block a
   merge, with Allure history/trend published to GitHub Pages.
 - **Debugging past "it builds"** — the Docker image build succeeded while the container
   itself failed 100% of the time (`support/` was missing from the `COPY` list); the fix and

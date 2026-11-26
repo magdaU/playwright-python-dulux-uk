@@ -99,6 +99,10 @@ servers. Three measures keep that small (measured figures in
    browsing to a shade. Ids live in `Context.SEEDABLE_TESTERS`, observed 2026-10-08.
 3. **15 s default action timeout** (`DEFAULT_ACTION_TIMEOUT_MS` in `conftest.py`) so failures end quickly.
 
+Run frequency: there are no scheduled runs. The suite runs on push/PR (smoke) and on manual
+cross-browser runs only; the nightly regression was removed so production and its store API are not
+loaded every day (see [Test Strategy §9](TEST_STRATEGY.md#9-cicd--reporting)).
+
 Rules of thumb: do not add a host to `BLOCKED_HOSTS` unless a test asserts nothing about it; seed
 only where the full journey is already covered by another scenario; do not run the suite in
 parallel against production.
@@ -113,11 +117,11 @@ A real scenario from [`features/tester_purchase.feature`](../features/tester_pur
 @smoke @desktop
 Scenario: Desktop customer adds a tester from the colour finder
   Given a desktop customer starts with an empty basket
-  When the customer browses to shade "Romantic Reverie" from colour family "Violet"
+  When the customer browses to shade "Violet Morning" from colour family "Violet"
   Then the shade page has no unexpected accessibility violations
   When the customer adds a tester to the basket
   Then the basket contains 1 item
-  And the basket includes tester "Dulux Colour Tester" for shade "Romantic Reverie"
+  And the basket includes tester "Dulux Colour Tester" for shade "Violet Morning"
 ```
 
 ...bound to real Playwright actions in
